@@ -25,7 +25,7 @@ const width = frame === 'phone' ? 260 : 360;
           {[0, 1].map((copy) =>
             base.map((img) => (
               <div class="marquee__item" aria-hidden={copy === 1 ? 'true' : undefined}>
-                <Image src={img} alt="" widths={[width, width * 2]} sizes={`${width}px`} loading="eager" decoding="async" />
+                <Image src={img} alt="" widths={[width, width * 2]} sizes={`${width}px`} loading="eager" decoding="async" fetchpriority="low" />
               </div>
             ))
           )}
