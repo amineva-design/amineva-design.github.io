@@ -1,0 +1,160 @@
+---
+import { Image } from 'astro:assets';
+import { getSettings, resumeHref, telegramHref } from '../lib/content';
+
+const s = await getSettings();
+const resume = resumeHref(s);
+const tg = telegramHref(s.telegram);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer dark" id="contacts">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__cta">
+        <h2 class="footer__title">Время <span class="nw">в<mark>job</mark>ывать</span></h2>
+        <p class="footer__status">{s.statusText}</p>
+        <div class="footer__buttons">
+          {tg && <a class="btn btn--accent" href={tg} target="_blank" rel="noopener">Написать в Telegram</a>}
+          {s.email && <a class="btn btn--ghost" href={`mailto:${s.email}`}>Написать на почту</a>}
+        </div>
+      </div>
+      {
+        s.footerImage && (
+          <Image class="footer__img" src={s.footerImage} alt="" widths={[240, 480]} sizes="240px" loading="lazy" />
+        )
+      }
+    </div>
+
+    <div class="footer__cols">
+      <div>
+        <p class="label">Контакты</p>
+        <ul>
+          {s.email && <li><a href={`mailto:${s.email}`}>{s.email}</a></li>}
+          {tg && <li><a href={tg} target="_blank" rel="noopener">@{s.telegram.replace(/^@/, '')}</a></li>}
+          {resume && <li><a href={resume} target="_blank" rel="noopener">Резюме ↗</a></li>}
+        </ul>
+      </div>
+      <div>
+        <p class="label">Соцсети</p>
+        <ul>
+          {s.socials.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="label">Сайт</p>
+        <ul>
+          <li><a href="/">Главная</a></li>
+          <li><a href="/#cases">Кейсы</a></li>
+          <li><a href="/about">Обо мне</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© {year} {s.name}</span>
+      <a href="#main">Наверх ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-top: clamp(56px, 8vw, 112px);
+  }
+  .footer__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    padding-bottom: clamp(40px, 6vw, 80px);
+    border-bottom: 1px solid var(--line);
+  }
+  .footer__title {
+    font-size: clamp(48px, 8vw, 120px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .nw {
+    white-space: nowrap;
+  }
+  .footer__title mark {
+    display: inline-block;
+    margin: 0 0.04em;
+    padding: 0 0.08em;
+    background: var(--accent);
+    color: var(--ink);
+    transform: rotate(-3deg);
+  }
+  .footer__status {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 18px;
+  }
+  .footer__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .footer__img {
+    width: 240px;
+    height: auto;
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+  .footer__cols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+    padding-block: 40px;
+  }
+  .footer ul {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .footer ul a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer ul a:hover {
+    color: var(--accent);
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 24px 32px;
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+  .footer__bottom a {
+    text-decoration: none;
+    color: var(--paper);
+  }
+
+  @media (max-width: 720px) {
+    .footer__top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer__img {
+      width: 180px;
+    }
+    .footer__cols {
+      grid-template-columns: 1fr 1fr;
+      row-gap: 32px;
+    }
+    .footer__cols > div:first-child {
+      grid-column: 1 / -1;
+    }
+    .footer__buttons .btn {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+  }
+</style>

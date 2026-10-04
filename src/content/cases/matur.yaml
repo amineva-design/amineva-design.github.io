@@ -1,0 +1,163 @@
+title: Матур
+published: true
+order: 3
+year: '2025'
+direction: E-com, учебный проект
+summary: >-
+  Исследование пользовательского опыта в онлайн-шоппинге. Разработала модуль
+  ИИ-стилиста: концепцию, точки встраивания и сценарии
+lead: >-
+  Внедрила ИИ-стилиста в интернет-магазин одежды. Исследовала пользовательский
+  опыт и поведение в онлайн-шоппинге
+role: Продуктовый дизайнер
+duration: ''
+team: Учебный проект в магистратуре
+metrics:
+  - value: '50'
+    label: респондентов в глубинном анкетировании
+  - value: '3'
+    label: адаптива — мобильный, планшет, десктоп
+cardImage: ../../assets/cases/matur/card-1.png
+cardImage2: ../../assets/cases/matur/card-2.webp
+heroImage: ../../assets/cases/matur/hero.png
+blocks:
+  - discriminant: section
+    value:
+      heading: О проекте
+      text: >-
+        Учебный проект в рамках магистерской работы. «Матур» — интернет-магазин
+        одежды с ИИ-стилистом для людей, которые устали от масс-маркета и мук выбора.
+      inNav: false
+  - discriminant: section
+    value:
+      heading: Проблема
+      text: >-
+        Онлайн-шоппинг стал базовой потребностью: товаров и брендов много, времени
+        мало, выбор бесконечный. Люди теряются в каталогах и либо не покупают, либо
+        берут «на авось».
+      inNav: true
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/01.webp
+      alt: Проблема выбора в онлайн-шоппинге
+      caption: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: Решение
+      text: >-
+        Облегчить поиск и выбор одежды с помощью ИИ-стилиста, который помогает
+        принять решение быстрее и увереннее.
+      inNav: true
+  - discriminant: section
+    value:
+      heading: Процесс
+      text: >-
+        Итеративный подход в четыре этапа: исследование, гипотезы, разработка и
+        тестирование, пост-анализ. Так дизайн становится управляемым процессом,
+        который опирается на данные и последовательно улучшает продукт.
+      inNav: true
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/02.png
+      alt: Этапы процесса
+      caption: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: Исследование
+      text: >-
+        Анализ целевой аудитории на основе глубинного анкетирования (n = 50).
+        Данные помогли понять социальные и поведенческие характеристики пользователей.
+      inNav: true
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/03.webp
+      alt: Инфографика по результатам анкетирования
+      caption: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: CJM
+      text: >-
+        Полный путь пользователя от осознания потребности до пост-покупки. Фокус
+        на ключевых болях: сложный поиск, мало релевантных фото и фильтров,
+        сомнения на этапе оплаты и возврата.
+      inNav: true
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/04.webp
+      alt: Карта пути пользователя (CJM)
+      caption: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: User Flow
+      text: >-
+        Провести пользователя от главной к карточке товара и оформлению заказа
+        с минимумом кликов. ИИ-стилист встроен как заметный канал персональных
+        рекомендаций в каталоге и карточке товара.
+      inNav: true
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/05.webp
+      alt: User Flow
+      caption: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: Экраны
+      text: >-
+        Макеты под три адаптива — мобильный, планшет и десктоп — с единой
+        визуальной идентичностью и ключевыми сценариями на всех устройствах.
+      inNav: true
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/06.png
+      alt: Экраны интернет-магазина «Матур»
+      caption: ''
+      wide: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/07.png
+      alt: Экраны интернет-магазина «Матур»
+      caption: ''
+      wide: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/08.webp
+      alt: Экраны ИИ-стилиста
+      caption: ''
+      wide: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/09.png
+      alt: Экраны интернет-магазина «Матур»
+      caption: ''
+      wide: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/10.png
+      alt: Экраны интернет-магазина «Матур»
+      caption: ''
+      wide: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/11.png
+      alt: Экраны интернет-магазина «Матур»
+      caption: ''
+      wide: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/matur/12.png
+      alt: Экраны интернет-магазина «Матур»
+      caption: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: Итог
+      text: |-
+        - Спроектирован интерфейс «Матур» с ИИ-стилистом; требования выведены из исследований, а не из интуиции
+        - Ключевые боли — неопределённость выбора, перегрузка, недоверие к контенту — учтены в архитектуре, каталоге и карточке товара; ИИ-стилист работает как навигатор и рекомендатель
+        - Проект можно масштабировать: AR-примерка, персональные подборки, система лояльности
+      inNav: true

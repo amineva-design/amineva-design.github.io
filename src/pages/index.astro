@@ -1,0 +1,382 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import CaseCard from '../components/CaseCard.astro';
+import { getSettings, getAbout, getCases, inline, telegramHref } from '../lib/content';
+
+const s = await getSettings();
+const about = await getAbout();
+const cases = await getCases();
+const tg = telegramHref(s.telegram);
+const [firstName, ...rest] = s.name.split(' ');
+const lastName = rest.join(' ');
+const greeting = [...(s.greeting || 'Привет!')];
+---
+
+<Base theme="dark">
+  <section class="hero dark">
+    <div class="container hero__grid">
+      <h1 class="visually-hidden">{s.name} — {s.role}</h1>
+
+      <p class="hero__greeting" aria-hidden="true">
+        {greeting.map((ch, i) => <span class:list={['g', i === 0 && 'g--blur']}>{ch}</span>)}
+      </p>
+
+      <div class="hero__name">
+        <p class="hero__note">Давай знакомиться,<br />меня зовут</p>
+        <p class="hero__fullname" aria-hidden="true">{firstName}<br />{lastName}</p>
+        <p class="hero__role"><span class="dot-accent" aria-hidden="true"></span>{s.role}</p>
+      </div>
+
+      {
+        s.heroPhoto && (
+          <figure class="hero__photo hero__photo--small">
+            <Image src={s.heroPhoto} alt={s.name} widths={[360, 720]} sizes="(max-width: 720px) 45vw, 22vw" loading="eager" />
+          </figure>
+        )
+      }
+
+      <div class="hero__intro">
+        <p>{s.intro}</p>
+        <div class="hero__buttons">
+          <a class="btn btn--accent" href="#cases">Смотреть кейсы</a>
+          {tg && <a class="btn btn--ghost" href={tg} target="_blank" rel="noopener">Telegram</a>}
+        </div>
+      </div>
+
+      {
+        s.heroPhoto2 && (
+          <figure class="hero__photo hero__photo--big">
+            <Image src={s.heroPhoto2} alt="" widths={[600, 960, 1280]} sizes="(max-width: 720px) 100vw, 40vw" loading="eager" fetchpriority="high" />
+          </figure>
+        )
+      }
+
+      <p class="hero__location" set:html={inline(s.location)} />
+    </div>
+  </section>
+
+  <section class="cases" id="cases">
+    <div class="container">
+      <h2 class="section-title">Кейсы <sup>{String(cases.length).padStart(2, '0')}</sup></h2>
+      <div class="cases__list">
+        {cases.map((entry, i) => <CaseCard entry={entry} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-teaser">
+    <div class="container about-teaser__grid">
+      <div class="about-teaser__text">
+        <p class="about-teaser__label">Обо мне</p>
+        <h2 class="about-teaser__headline">{about.headline}</h2>
+        <div class="about-teaser__body">
+          <p>{about.text}</p>
+          <a class="link-arrow" href="/about">Опыт, навыки и инструменты →</a>
+        </div>
+      </div>
+      <div class="about-teaser__photos">
+        {
+          about.photos.slice(0, 3).map(
+            (p, i) =>
+              p && (
+                <figure class:list={['ph', `ph--${i}`]}>
+                  <Image src={p} alt="" widths={[320, 640]} sizes="(max-width: 720px) 45vw, 20vw" loading="lazy" />
+                </figure>
+              )
+          )
+        }
+        {about.hobbies && <p class="about-teaser__hobbies">{about.hobbies}</p>}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ——— Hero ——— */
+  .hero {
+    padding-bottom: clamp(32px, 4vw, 56px);
+    margin-top: -1px;
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: clamp(24px, 3vw, 40px);
+    padding-top: clamp(32px, 4vw, 56px);
+  }
+  .hero__greeting {
+    grid-column: 1 / 8;
+    font-family: var(--display);
+    font-size: var(--fs-hero);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+  .g {
+    display: inline-block;
+    font-variation-settings: 'wght' 700;
+    transition: font-variation-settings 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .g:hover {
+    font-variation-settings: 'wght' 400;
+    transform: translateY(-0.04em);
+  }
+  .g--blur {
+    animation: focus 4.5s ease-in-out infinite;
+  }
+  @keyframes focus {
+    0%,
+    100% {
+      filter: blur(10px);
+      opacity: 0.85;
+    }
+    45%,
+    60% {
+      filter: blur(0);
+      opacity: 1;
+    }
+  }
+  .hero__name {
+    grid-column: 8 / 13;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .hero__note {
+    position: relative;
+    margin: clamp(8px, 2vw, 32px) clamp(40px, 8vw, 140px) clamp(16px, 2vw, 28px) 0;
+    padding: 14px 22px;
+    font-size: var(--fs-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+    text-align: left;
+  }
+  .hero__note::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    transform: rotate(-6deg);
+  }
+  .hero__fullname {
+    font-family: var(--display);
+    font-size: clamp(56px, 8.4vw, 132px);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+  .hero__role {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(16px, 2vw, 24px);
+    font-family: var(--display);
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 500;
+  }
+  .dot-accent {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .hero__photo {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #2a2a26;
+  }
+  .hero__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+    transition: filter 0.8s var(--ease), transform 0.8s var(--ease);
+  }
+  .hero__photo:hover :global(img) {
+    filter: grayscale(0);
+    transform: scale(1.02);
+  }
+  .hero__photo--small {
+    grid-column: 1 / 4;
+    grid-row: 2 / 4;
+    align-self: end;
+    aspect-ratio: 3 / 4;
+  }
+  .hero__intro {
+    grid-column: 4 / 8;
+    grid-row: 3;
+    align-self: end;
+    display: grid;
+    gap: 24px;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.5;
+    max-width: 440px;
+  }
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .hero__photo--big {
+    grid-column: 8 / 13;
+    grid-row: 3 / 5;
+    aspect-ratio: 5 / 4;
+  }
+  .hero__location {
+    grid-column: 1 / 8;
+    grid-row: 4;
+    align-self: end;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 900px) {
+    .hero__grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .hero__greeting {
+      grid-column: 1 / -1;
+    }
+    .hero__name {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .hero__photo--small {
+      grid-column: 1 / 3;
+      grid-row: auto;
+    }
+    .hero__intro {
+      grid-column: 3 / -1;
+      grid-row: auto;
+      max-width: none;
+    }
+    .hero__photo--big {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .hero__location {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+  }
+  @media (max-width: 560px) {
+    .hero__note {
+      margin-right: 0;
+    }
+    .hero__photo--small {
+      display: none;
+    }
+    .hero__intro {
+      grid-column: 1 / -1;
+    }
+    .hero__buttons .btn {
+      flex: 1 1 auto;
+      justify-content: center;
+    }
+  }
+
+  /* ——— Кейсы ——— */
+  .cases {
+    padding-block: clamp(56px, 8vw, 112px);
+  }
+  .section-title {
+    font-size: var(--fs-h2);
+    margin-bottom: clamp(24px, 3vw, 48px);
+  }
+  .section-title sup {
+    font-size: 0.4em;
+    vertical-align: top;
+    margin-left: 4px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .cases__list {
+    display: grid;
+    gap: clamp(32px, 3vw, 40px);
+  }
+
+  /* ——— Обо мне ——— */
+  .about-teaser {
+    padding-bottom: clamp(72px, 10vw, 144px);
+  }
+  .about-teaser__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: start;
+  }
+  .about-teaser__text {
+    grid-column: 1 / 7;
+  }
+  .about-teaser__label {
+    font-family: var(--display);
+    font-size: var(--fs-h3);
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .about-teaser__headline {
+    font-size: var(--fs-h2);
+  }
+  .about-teaser__body {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+    margin-top: clamp(24px, 3vw, 40px);
+    max-width: 520px;
+    font-size: 18px;
+  }
+  .about-teaser__photos {
+    grid-column: 8 / 13;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+  }
+  .ph {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #e4e4e2;
+  }
+  .ph :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+    transition: filter 0.8s var(--ease);
+  }
+  .ph:hover :global(img) {
+    filter: none;
+  }
+  .ph--0 {
+    grid-row: 1 / 3;
+    aspect-ratio: 3 / 4;
+  }
+  .ph--1 {
+    aspect-ratio: 4 / 3;
+  }
+  .ph--2 {
+    aspect-ratio: 4 / 3;
+  }
+  .about-teaser__hobbies {
+    grid-column: 1 / -1;
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .about-teaser__text,
+    .about-teaser__photos {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

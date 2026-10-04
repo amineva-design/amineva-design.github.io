@@ -1,0 +1,192 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'cases'>;
+  index: number;
+}
+const { entry, index } = Astro.props;
+const c = entry.data;
+const href = `/cases/${entry.id}`;
+const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 432px';
+const eager = index === 0;
+---
+
+<a class="case" href={href} aria-label={`Кейс «${c.title}»`}>
+  <div class="case__info">
+    <div>
+      <h3 class="case__title">{c.title}</h3>
+      {c.summary && <p class="case__summary">{c.summary}</p>}
+    </div>
+
+    {
+      c.metrics.length > 0 && (
+        <ul class="case__metrics">
+          {c.metrics.slice(0, 2).map((m) => (
+            <li>
+              <b>{m.value}</b> {m.label}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="case__meta">
+      <div>
+        <span class="label">Направление</span>
+        <span>{c.direction}</span>
+      </div>
+      <div>
+        <span class="label">Год</span>
+        <span>{c.year}</span>
+      </div>
+      <span class="case__arrow" aria-hidden="true">→</span>
+    </div>
+  </div>
+
+  <div class="case__media">
+    {
+      c.cardImage && (
+        <Image src={c.cardImage} alt="" widths={[480, 864]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
+      )
+    }
+  </div>
+
+  {
+    c.cardVideo ? (
+      <div class="case__media case__media--second">
+        <iframe
+          src={`${c.cardVideo}${c.cardVideo.includes('?') ? '&' : '?'}muted=true&autoplay=true&loop=true&autopause=false&controls=false`}
+          title={`Видео: ${c.title}`}
+          loading="lazy"
+          allow="autoplay; fullscreen"
+          tabindex="-1"
+        />
+      </div>
+    ) : (
+      c.cardImage2 && (
+        <div class="case__media case__media--second">
+          <Image src={c.cardImage2} alt="" widths={[480, 864]} sizes={sizes} loading="lazy" />
+        </div>
+      )
+    )
+  }
+</a>
+
+<style>
+  .case {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+    text-decoration: none;
+  }
+  .case__info,
+  .case__media {
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .case__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    padding: clamp(20px, 2.2vw, 32px);
+    background: var(--card);
+    transition: box-shadow 0.3s var(--ease);
+  }
+  .case__title {
+    font-size: var(--fs-h3);
+  }
+  .case__summary {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .case__metrics {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+  .case__metrics b {
+    color: var(--ink);
+    font-weight: 700;
+    font-family: var(--display);
+    font-size: 16px;
+    margin-right: 4px;
+  }
+  .case__meta {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    font-size: 15px;
+  }
+  .case__meta > div {
+    display: grid;
+    gap: 2px;
+  }
+  .case__arrow {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 18px;
+    transition: transform 0.35s var(--ease), background-color 0.2s;
+  }
+  .case__media {
+    background: #e4e4e2;
+  }
+  .case__media :global(img),
+  .case__media iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+  .case__media iframe {
+    border: 0;
+    pointer-events: none;
+    transform: scale(1.02);
+  }
+  .case:hover .case__media :global(img) {
+    transform: scale(1.04);
+  }
+  .case:hover .case__arrow {
+    background: var(--accent);
+    color: var(--ink);
+    transform: translateX(4px);
+  }
+  .case:hover .case__info {
+    box-shadow: 0 10px 40px rgba(26, 26, 23, 0.08);
+  }
+
+  @media (max-width: 1024px) {
+    .case {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .case__media--second {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .case {
+      grid-template-columns: 1fr;
+    }
+    .case__info {
+      aspect-ratio: auto;
+      min-height: 0;
+    }
+    .case__summary {
+      margin-top: 10px;
+    }
+  }
+</style>

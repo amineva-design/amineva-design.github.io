@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getSettings } from '../lib/content';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  title?: string;
+  description?: string;
+  theme?: 'dark' | 'light';
+}
+
+const { title, description, theme = 'light' } = Astro.props;
+const s = await getSettings();
+const fullTitle = title ? `${title} — ${s.name}` : `${s.name} — ${s.role}`;
+const desc = description || s.intro;
+const og = s.heroPhoto2 ? await getImage({ src: s.heroPhoto2, width: 1200, format: 'jpg' }) : null;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    {og && <meta property="og:image" content={new URL(og.src, Astro.site)} />}
+    <meta name="theme-color" content="#1a1a17" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="visually-hidden" href="#main">К содержимому</a>
+    <Header theme={theme} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

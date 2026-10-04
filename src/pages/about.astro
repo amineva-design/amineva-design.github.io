@@ -1,0 +1,293 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { getAbout, getSettings, richText, resumeHref } from '../lib/content';
+
+const about = await getAbout();
+const s = await getSettings();
+const resume = resumeHref(s);
+---
+
+<Base title="Обо мне" description={about.text}>
+  <section class="container about">
+    <p class="about__label">Обо мне</p>
+    <h1 class="about__headline">{about.headline}</h1>
+
+    <div class="about__grid">
+      <div class="rich about__text" set:html={richText(about.text)} />
+      <div class="about__photos">
+        {
+          about.photos.map(
+            (p, i) =>
+              p && (
+                <figure class:list={['ph', `ph--${i}`]}>
+                  <Image src={p} alt="" widths={[360, 720]} sizes="(max-width: 720px) 50vw, 25vw" loading={i < 2 ? 'eager' : 'lazy'} />
+                </figure>
+              )
+          )
+        }
+      </div>
+      {about.hobbies && <p class="about__hobbies">{about.hobbies}</p>}
+    </div>
+  </section>
+
+  {
+    about.experience.length > 0 && (
+      <section class="container block">
+        <div class="block__head">
+          <h2>Опыт</h2>
+          {resume && (
+            <a class="link-arrow" href={resume} target="_blank" rel="noopener">
+              Полное резюме ↗
+            </a>
+          )}
+        </div>
+        <ol class="timeline">
+          {about.experience.map((e) => (
+            <li>
+              <span class="label">{e.period}</span>
+              <div>
+                <h3>{e.company}</h3>
+                <p class="timeline__role">{e.role}</p>
+                {e.text && <p class="timeline__text">{e.text}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  <section class="container block cards">
+    {
+      about.skills.length > 0 && (
+        <div class="card">
+          <h2>Навыки</h2>
+          <div class="skills">
+            {about.skills.map((g) => (
+              <div>
+                <h3>{g.title}</h3>
+                <ul>
+                  {g.items.split('\n').filter(Boolean).map((i) => (
+                    <li>{i}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
+    {
+      about.tools.length > 0 && (
+        <div class="card card--dark">
+          <h2>Инструменты</h2>
+          <dl class="tools">
+            {about.tools.map((t) => (
+              <div>
+                <dt>{t.name}</dt>
+                <dd>{t.details}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .about {
+    padding-top: clamp(40px, 6vw, 88px);
+  }
+  .about__label {
+    font-family: var(--display);
+    font-size: var(--fs-h3);
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .about__headline {
+    max-width: 1040px;
+    font-size: clamp(40px, 5.4vw, 80px);
+    letter-spacing: -0.035em;
+  }
+  .about__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    margin-top: clamp(32px, 5vw, 72px);
+  }
+  .about__text {
+    grid-column: 1 / 6;
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.55;
+  }
+  .about__photos {
+    grid-column: 7 / 13;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+  }
+  .ph {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #e4e4e2;
+  }
+  .ph :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+    transition: filter 0.8s var(--ease);
+  }
+  .ph:hover :global(img) {
+    filter: none;
+  }
+  .ph--0 {
+    grid-row: span 2;
+    aspect-ratio: 3 / 4;
+  }
+  .ph--1,
+  .ph--2 {
+    aspect-ratio: 4 / 3;
+  }
+  .about__hobbies {
+    grid-column: 7 / 13;
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+
+  .block {
+    padding-top: clamp(64px, 9vw, 128px);
+  }
+  .block:last-child {
+    padding-bottom: clamp(64px, 9vw, 128px);
+  }
+  .block__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: clamp(24px, 3vw, 40px);
+  }
+  .block h2 {
+    font-size: var(--fs-h2);
+  }
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .timeline li {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    padding-block: clamp(20px, 2.4vw, 32px);
+    border-bottom: 1px solid var(--line);
+  }
+  .timeline li > .label {
+    grid-column: 1 / 4;
+    font-size: 15px;
+    padding-top: 6px;
+  }
+  .timeline li > div {
+    grid-column: 4 / 11;
+  }
+  .timeline h3 {
+    font-size: var(--fs-h3);
+  }
+  .timeline__role {
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .timeline__text {
+    margin-top: 10px;
+    color: var(--muted);
+    max-width: 680px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--gap);
+    align-items: start;
+  }
+  .card {
+    padding: clamp(24px, 3vw, 40px);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+  .card--dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .card h2 {
+    font-size: var(--fs-h3);
+    margin-bottom: 24px;
+  }
+  .skills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px var(--gap);
+  }
+  .skills h3 {
+    font-family: var(--text);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+  .skills ul {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+  .tools {
+    margin: 0;
+    display: grid;
+    gap: 18px;
+  }
+  .tools div {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
+  }
+  .tools dt {
+    font-weight: 600;
+  }
+  .tools dd {
+    margin: 0;
+    color: var(--muted-on-dark);
+  }
+
+  @media (max-width: 900px) {
+    .about__text,
+    .about__photos,
+    .about__hobbies {
+      grid-column: 1 / -1;
+    }
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .timeline li > .label,
+    .timeline li > div {
+      grid-column: 1 / -1;
+    }
+    .timeline li {
+      row-gap: 4px;
+    }
+  }
+  @media (max-width: 560px) {
+    .skills {
+      grid-template-columns: 1fr;
+    }
+    .block__head {
+      flex-direction: column;
+    }
+  }
+</style>
