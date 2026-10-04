@@ -3,9 +3,7 @@ published: true
 order: 2
 year: '2026'
 direction: B2C, недвижимость
-summary: >-
-  Конкурентный бенчмаркинг, обновление дизайна бренда и создание дизайн-системы
-  продукта
+summary: Конкурентный бенчмаркинг, обновление дизайна бренда и создание дизайн-системы продукта
 lead: Обновила дизайн бренда и создала дизайн-систему продукта
 role: Продуктовый и графический дизайнер
 duration: 3 месяца, проектная работа
@@ -19,44 +17,77 @@ blocks:
     value:
       heading: О проекте
       text: >-
-        «СпецНовострой» — компания по приёмке квартир в новостройках и юридической
-        помощи дольщикам в Москве и области.
+        «СпецНовострой» — компания по приёмке квартир в новостройках и юридической помощи дольщикам
+        в Москве и области.
       inNav: false
+      headingEn: About the project
+      textEn: >-
+        “SpetsNovostroy” inspects new-build apartments before handover and provides legal help to
+        buyers in Moscow and the Moscow region.
   - discriminant: section
     value:
       heading: Проблема
-      text: |-
-        В продукте не было дизайн-системы: интерфейсы собирались в разрозненных Figma-файлах без единых правил. На сайте одновременно жили разные шрифты и стили, а решения принимались ситуативно.
+      text: >-
+        В продукте не было дизайн-системы: интерфейсы собирались в разрозненных Figma-файлах без
+        единых правил. На сайте одновременно жили разные шрифты и стили, а решения принимались
+        ситуативно.
+
 
         Оформленного брендинга тоже не было — из констант только логотип и фирменный синий.
       inNav: true
+      headingEn: Problem
+      textEn: >-
+        The product had no design system: interfaces lived in scattered Figma files with no shared
+        rules. The website mixed different fonts and styles, and decisions were made ad hoc.
+
+
+        There was no proper branding either — the only constants were the logo and the brand blue.
   - discriminant: section
     value:
       heading: Ограничение
       text: >-
-        Любое нестандартное решение упиралось в архитектуру Битрикса, поэтому
-        задача — освежить текущий сайт, оставаясь в рамках стандартных блоков.
+        Любое нестандартное решение упиралось в архитектуру Битрикса, поэтому задача — освежить
+        текущий сайт, оставаясь в рамках стандартных блоков.
       inNav: false
+      headingEn: Constraint
+      textEn: >-
+        Any non-standard solution ran into the limits of the Bitrix architecture, so the task was to
+        refresh the existing site within its standard blocks.
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/card-1.png
       alt: Сайт «СпецНовострой» на ноутбуке
       caption: ''
       wide: false
+      altEn: SpetsNovostroy website on a laptop
+      captionEn: ''
   - discriminant: section
     value:
       heading: Исследование
-      text: |-
-        - Анализ прямых и непрямых конкурентов: как они объясняют продукт на главной и ведут пользователя дальше
+      text: >-
+        - Анализ прямых и непрямых конкурентов: как они объясняют продукт на главной и ведут
+        пользователя дальше
+
         - Опросы и интервью внутри компании: что хочется видеть на главной
+
         - Потребности и мотивация целевой аудитории
       inNav: true
+      headingEn: Research
+      textEn: >-
+        - Analysis of direct and indirect competitors: how they explain the product on the home page
+        and guide users further
+
+        - Internal surveys and interviews: what the team wants to see on the home page
+
+        - Needs and motivations of the target audience
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/01.png
       alt: Анализ конкурентов
       caption: ''
       wide: false
+      altEn: Competitor analysis
+      captionEn: ''
   - discriminant: section
     value:
       heading: Решение
@@ -67,67 +98,122 @@ blocks:
         - Спроектировала раздел «Отчёты по приёмкам»: карточки ЖК, галереи дефектов, форма заявки
         - Собрала базовые токены дизайн-системы: цвета, типографика, компоненты, иконки
       inNav: true
+      headingEn: Solution
+      textEn: >-
+        - Refreshed the brand: new palette and visual style
+
+        - Mapped key user scenarios and navigation logic
+
+        - Gave each service its own page with a clear structure and a focused CTA
+
+        - Designed an “Inspection reports” section: building cards, defect galleries and a request
+        form
+
+        - Built the base design system tokens: colours, typography, components, icons
   - discriminant: section
     value:
       heading: Сайт
       text: >-
-        Визуал был «кашей»: разные стили иллюстраций, несистемная типографика и
-        кнопки, шаблонные и неактуальные материалы. Из-за этого продукт выглядел
-        проще и старее, чем компания есть на самом деле.
+        Визуал был «кашей»: разные стили иллюстраций, несистемная типографика и кнопки, шаблонные и
+        неактуальные материалы. Из-за этого продукт выглядел проще и старее, чем компания есть на
+        самом деле.
       inNav: true
+      headingEn: Website
+      textEn: >-
+        The visuals were a mess: mixed illustration styles, inconsistent typography and buttons,
+        generic and outdated materials. As a result the product looked simpler and older than the
+        company really is.
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/02.png
       alt: Сайт до и после редизайна
       caption: ''
       wide: false
+      altEn: Website before and after the redesign
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/03.webp
       alt: Страницы услуг
       caption: ''
       wide: false
+      altEn: Service pages
+      captionEn: ''
   - discriminant: section
     value:
       heading: Отчёты о приёмках
-      text: |-
-        Страницы-отчёты повысили доверие к бренду: жители ЖК находят свой дом, сравнивают дефекты и оставляют заявку. Это усиливает экспертность и приносит релевантные лиды.
+      text: >-
+        Страницы-отчёты повысили доверие к бренду: жители ЖК находят свой дом, сравнивают дефекты и
+        оставляют заявку. Это усиливает экспертность и приносит релевантные лиды.
 
-        Пользователи видят примеры реальных дефектов, барьер доверия снижается, и они быстрее доходят до CTA.
+
+        Пользователи видят примеры реальных дефектов, барьер доверия снижается, и они быстрее
+        доходят до CTA.
       inNav: true
+      headingEn: Inspection reports
+      textEn: >-
+        Report pages built trust in the brand: residents find their building, compare defects and
+        leave a request. This strengthens expertise and brings relevant leads.
+
+
+        Users see examples of real defects, the trust barrier goes down, and they reach the CTA
+        faster.
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/04.webp
       alt: Раздел «Отчёты по приёмкам»
       caption: ''
       wide: false
+      altEn: “Inspection reports” section
+      captionEn: ''
   - discriminant: section
     value:
       heading: Фирменный цвет
       text: >-
-        Более яркий и чистый синий воспринимается современнее и быстрее цепляет
-        взгляд в карточках и миниатюрах. Добавила тёмный вариант цвета и правила
-        использования логотипа, чтобы сохранить читаемость и соответствовать
-        стандартам доступности.
+        Более яркий и чистый синий воспринимается современнее и быстрее цепляет взгляд в карточках и
+        миниатюрах. Добавила тёмный вариант цвета и правила использования логотипа, чтобы сохранить
+        читаемость и соответствовать стандартам доступности.
       inNav: true
+      headingEn: Brand colour
+      textEn: >-
+        A brighter, cleaner blue feels more modern and catches the eye faster in cards and
+        thumbnails. I added a dark variant and logo usage rules to keep things readable and meet
+        accessibility standards.
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/05.png
       alt: Обновлённая палитра бренда
       caption: ''
       wide: false
+      altEn: Updated brand palette
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/specnovostroy/06.png
       alt: Дизайн-система «СпецНовострой»
       caption: ''
       wide: false
+      altEn: SpetsNovostroy design system
+      captionEn: ''
   - discriminant: section
     value:
       heading: Итог
       text: >-
-        Обновлённый бренд, структурированные страницы услуг и раздел «Отчёты по
-        приёмкам» сделали сервис прозрачнее и упростили путь клиента к заявке.
-        Дизайн-система ускоряет разработку и снижает число правок, а готовые шаблоны
-        позволяют быстрее запускать рекламные и контентные кампании.
+        Обновлённый бренд, структурированные страницы услуг и раздел «Отчёты по приёмкам» сделали
+        сервис прозрачнее и упростили путь клиента к заявке. Дизайн-система ускоряет разработку и
+        снижает число правок, а готовые шаблоны позволяют быстрее запускать рекламные и контентные
+        кампании.
       inNav: true
+      headingEn: Results
+      textEn: >-
+        The refreshed brand, structured service pages and the “Inspection reports” section made the
+        service more transparent and simplified the path to a request. The design system speeds up
+        development and cuts revisions, and ready-made templates let the team launch ad and content
+        campaigns faster.
+titleEn: SpetsNovostroy
+directionEn: B2C, real estate
+summaryEn: Competitive benchmarking, brand refresh and a product design system
+leadEn: Refreshed the brand and built a design system for the product
+roleEn: Product and graphic designer
+durationEn: 3 months, project-based
+teamEn: ''

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPrivacy, richText } from '../lib/content';
+import { loc, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const p = await getPrivacy();
+const title = loc(p, 'title', lang);
+---
+
+<Base title={title} lang={lang}>
+  <article class="container privacy">
+    <h1>{title}</h1>
+    <div class="rich privacy__text" set:html={richText(loc(p, 'text', lang))} />
+  </article>
+</Base>
+
+<style>
+  .privacy {
+    padding-block: clamp(40px, 6vw, 88px) clamp(64px, 9vw, 128px);
+  }
+  .privacy h1 {
+    max-width: 900px;
+    font-size: clamp(36px, 5vw, 72px);
+    letter-spacing: -0.035em;
+  }
+  .privacy__text {
+    max-width: 760px;
+    margin-top: clamp(32px, 4vw, 56px);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .privacy__text :global(h2) {
+    margin: 2.2em 0 0.8em;
+    font-size: clamp(20px, 1.8vw, 24px);
+  }
+  .privacy__text :global(h2:first-child) {
+    margin-top: 0;
+  }
+</style>

@@ -1,9 +1,15 @@
 ---
 import { Image } from 'astro:assets';
 import { getSettings, resumeHref, telegramHref } from '../lib/content';
+import { href, loc, t, type Lang } from '../lib/i18n';
 
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tx = t(lang);
 const s = await getSettings();
-const resume = resumeHref(s);
+const resume = resumeHref(s, lang);
 const tg = telegramHref(s.telegram);
 const year = new Date().getFullYear();
 ---
@@ -12,11 +18,11 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer__top">
       <div class="footer__cta">
-        <h2 class="footer__title">Время <span class="nw">в<mark>job</mark>ывать</span></h2>
-        <p class="footer__status">{s.statusText}</p>
+        <h2 class="footer__title" set:html={tx.footerTitle} />
+        <p class="footer__status">{loc(s, 'statusText', lang)}</p>
         <div class="footer__buttons">
-          {tg && <a class="btn btn--accent" href={tg} target="_blank" rel="noopener">Написать в Telegram</a>}
-          {s.email && <a class="btn btn--ghost" href={`mailto:${s.email}`}>Написать на почту</a>}
+          {tg && <a class="btn btn--accent" href={tg} target="_blank" rel="noopener">{tx.writeTelegram}</a>}
+          {s.email && <a class="btn btn--ghost" href={`mailto:${s.email}`}>{tx.writeEmail}</a>}
         </div>
       </div>
       {
@@ -28,32 +34,32 @@ const year = new Date().getFullYear();
 
     <div class="footer__cols">
       <div>
-        <p class="label">Контакты</p>
+        <p class="label">{tx.contactsLabel}</p>
         <ul>
           {s.email && <li><a href={`mailto:${s.email}`}>{s.email}</a></li>}
           {tg && <li><a href={tg} target="_blank" rel="noopener">@{s.telegram.replace(/^@/, '')}</a></li>}
-          {resume && <li><a href={resume} target="_blank" rel="noopener">Резюме ↗</a></li>}
+          {resume && <li><a href={resume} target="_blank" rel="noopener">{tx.resume} ↗</a></li>}
         </ul>
       </div>
       <div>
-        <p class="label">Соцсети</p>
+        <p class="label">{tx.socialsLabel}</p>
         <ul>
-          {s.socials.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>)}
+          {s.socials.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{loc(l, 'label', lang)}</a></li>)}
         </ul>
       </div>
       <div>
-        <p class="label">Сайт</p>
+        <p class="label">{tx.siteLabel}</p>
         <ul>
-          <li><a href="/">Главная</a></li>
-          <li><a href="/#cases">Кейсы</a></li>
-          <li><a href="/about">Обо мне</a></li>
+          <li><a href={href(lang, '/')}>{tx.home}</a></li>
+          <li><a href={href(lang, '/#cases')}>{tx.nav.cases}</a></li>
+          <li><a href={href(lang, '/about')}>{tx.nav.about}</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer__bottom">
-      <span>© {year} {s.name}</span>
-      <a href="#main">Наверх ↑</a>
+      <span>© {year} {loc(s, 'name', lang)} · <a href={href(lang, '/privacy')}>{tx.privacy}</a></span>
+      <a href="#main">{tx.toTop}</a>
     </div>
   </div>
 </footer>
@@ -75,10 +81,10 @@ const year = new Date().getFullYear();
     font-weight: 700;
     letter-spacing: -0.04em;
   }
-  .nw {
+  .footer__title :global(.nw) {
     white-space: nowrap;
   }
-  .footer__title mark {
+  .footer__title :global(mark) {
     display: inline-block;
     margin: 0 0.04em;
     padding: 0 0.08em;
@@ -134,6 +140,13 @@ const year = new Date().getFullYear();
   }
   .footer__bottom a {
     text-decoration: none;
+    color: var(--paper);
+  }
+  .footer__bottom span a {
+    color: inherit;
+    transition: color 0.2s;
+  }
+  .footer__bottom span a:hover {
     color: var(--paper);
   }
 

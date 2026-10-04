@@ -2,8 +2,8 @@ name: Регина Аминева
 role: Продуктовый дизайнер
 greeting: Привет!
 intro: >-
-  Проектирую интерфейсы B2B и B2C, выстраиваю дизайн-системы и принимаю решения
-  на основе аналитики, пользовательских исследований и бизнес-целей продукта
+  Проектирую интерфейсы B2B и B2C, выстраиваю дизайн-системы и принимаю решения на основе аналитики,
+  пользовательских исследований и бизнес-целей продукта
 location: Живу ~~за ноутбуком~~ в Москве
 openToWork: true
 statusText: Открыта к full-time и контрактной работе
@@ -14,11 +14,23 @@ telegram: arousal_coffee
 resumeUrl: https://drive.google.com/file/d/1Tqdqr3Yd3KV5ZpMjxNKll8LR8S51yAFL/view
 socials:
   - label: Behance
+    labelEn: Behance
     url: https://www.behance.net/rra
   - label: Dprofile
+    labelEn: Dprofile
     url: https://dprofile.ru/reginaamineva
   - label: Telegram-канал
+    labelEn: Telegram channel
     url: https://t.me/arousaldesign
   - label: Pinterest
+    labelEn: Pinterest
     url: https://ru.pinterest.com/Arousal_Design/
 footerImage: ../assets/site/footer-cat.webp
+nameEn: Regina Amineva
+roleEn: Product Designer
+greetingEn: Hi there!
+introEn: >-
+  I design B2B and B2C interfaces, build design systems and make decisions based on analytics, user
+  research and product goals
+locationEn: Living ~~at my laptop~~ in Moscow
+statusTextEn: Open to full-time and contract roles

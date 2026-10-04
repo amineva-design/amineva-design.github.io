@@ -1,24 +1,28 @@
 ---
+import LangSwitch from './LangSwitch.astro';
 import { getSettings, resumeHref } from '../lib/content';
+import { href, loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
   theme?: 'dark' | 'light';
+  lang: Lang;
 }
-const { theme = 'light' } = Astro.props;
+const { theme = 'light', lang } = Astro.props;
 const s = await getSettings();
-const resume = resumeHref(s);
+const tx = t(lang);
+const resume = resumeHref(s, lang);
 const nav = [
-  { href: '/#cases', label: 'Кейсы' },
-  { href: '/about', label: 'Обо мне' },
-  { href: '#contacts', label: 'Контакты' },
+  { href: href(lang, '/#cases'), label: tx.nav.cases },
+  { href: href(lang, '/about'), label: tx.nav.about },
+  { href: '#contacts', label: tx.nav.contacts },
 ];
 ---
 
 <header class:list={['header', theme === 'dark' && 'dark']}>
   <div class="container header__bar">
-    <a class="header__name" href="/">{s.name}</a>
+    <a class="header__name" href={href(lang, '/')}>{loc(s, 'name', lang)}</a>
 
-    <nav class="header__nav" aria-label="Основная навигация">
+    <nav class="header__nav" aria-label={tx.mainNav}>
       {nav.map((i) => <a href={i.href}>{i.label}</a>)}
     </nav>
 
@@ -27,22 +31,24 @@ const nav = [
         s.openToWork && (
           <span class="header__status">
             <span class="dot" aria-hidden="true" />
-            Ищу работу
+            {tx.openToWork}
           </span>
         )
       }
       {
         resume && (
           <a class="header__resume" href={resume} target="_blank" rel="noopener">
-            Резюме ↗
+            {tx.resume} ↗
           </a>
         )
       }
+      <LangSwitch lang={lang} />
       <details class="header__menu">
-        <summary aria-label="Меню"><span></span><span></span></summary>
+        <summary aria-label={tx.menu}><span></span><span></span></summary>
         <div class="header__sheet">
+          {s.openToWork && <span class="header__sheet-status"><span class="dot" aria-hidden="true" />{tx.openToWork}</span>}
           {nav.map((i) => <a href={i.href}>{i.label}</a>)}
-          {resume && <a href={resume} target="_blank" rel="noopener">Резюме ↗</a>}
+          {resume && <a href={resume} target="_blank" rel="noopener">{tx.resume} ↗</a>}
         </div>
       </details>
     </div>
@@ -180,6 +186,14 @@ const nav = [
     border-radius: 10px;
     font-size: 16px;
   }
+  .header__sheet-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px 6px;
+    color: #6b6b66;
+    font-weight: 500;
+  }
   .header__sheet a:hover {
     background: var(--paper);
   }
@@ -196,7 +210,12 @@ const nav = [
       display: block;
     }
     .header__right {
-      gap: 16px;
+      gap: 14px;
+    }
+  }
+  @media (max-width: 480px) {
+    .header__status {
+      display: none;
     }
   }
 </style>

@@ -1,0 +1,468 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { richText } from '../lib/content';
+import { href, loc, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  entry: CollectionEntry<'cases'>;
+  next?: CollectionEntry<'cases'>;
+  lang: Lang;
+}
+
+const { entry, next, lang } = Astro.props;
+const tx = t(lang);
+const L = (o: Record<string, any>, k: string) => loc(o, k, lang);
+const c = entry.data;
+const title = L(c, 'title');
+const nav = c.blocks
+  .map((b, i) => ({ b, id: `s${i}` }))
+  .filter(({ b }) => b.discriminant === 'section' && b.value.inNav && b.value.heading)
+  .map(({ b, id }) => ({ id, label: L(b.value, 'heading') }));
+const facts = [
+  { label: tx.role, value: L(c, 'role') },
+  { label: tx.duration, value: L(c, 'duration') },
+  { label: tx.team, value: L(c, 'team') },
+  { label: tx.direction, value: L(c, 'direction') },
+].filter((f) => f.value);
+const contentSizes = '(max-width: 900px) 100vw, 912px';
+---
+
+<Base title={title} description={L(c, 'summary') || L(c, 'lead')} lang={lang}>
+  <article class="case-page">
+    <header class="container intro">
+      <div class="intro__top">
+        <a class="back" href={href(lang, '/#cases')}>{tx.allCases}</a>
+        <span class="label">{c.year}</span>
+      </div>
+      <h1 class="intro__title">{title}</h1>
+      {L(c, 'lead') && <p class="intro__lead">{L(c, 'lead')}</p>}
+
+      {
+        facts.length > 0 && (
+          <dl class="facts">
+            {facts.map((f) => (
+              <div>
+                <dt class="label">{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {
+        c.metrics.length > 0 && (
+          <ul class="metrics">
+            {c.metrics.map((m) => (
+              <li>
+                <b>{m.value}</b>
+                <span>{L(m, 'label')}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        c.heroImage && (
+          <figure class="cover">
+            <Image src={c.heroImage} alt={title} widths={[640, 1024, 1440, 2048]} sizes="(max-width: 1440px) 100vw, 1344px" loading="eager" fetchpriority="high" />
+          </figure>
+        )
+      }
+    </header>
+
+    <div class="container body">
+      <aside class="toc">
+        {
+          nav.length > 1 && (
+            <nav aria-label={tx.contentsAria}>
+              <p class="label">{tx.contents}</p>
+              <ol>
+                {nav.map((n) => (
+                  <li>
+                    <a href={`#${n.id}`}>{n.label}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
+      </aside>
+
+      <div class="content">
+        {
+          c.blocks.map((b, i) => {
+            const id = `s${i}`;
+            switch (b.discriminant) {
+              case 'section':
+                return (
+                  <section class="block block--text" id={id}>
+                    {b.value.heading && <h2>{L(b.value, 'heading')}</h2>}
+                    {b.value.text && <div class="rich" set:html={richText(L(b.value, 'text'))} />}
+                  </section>
+                );
+              case 'image':
+                return (
+                  b.value.image && (
+                    <figure class:list={['block', 'block--image', b.value.wide && 'is-wide']}>
+                      <Image
+                        src={b.value.image}
+                        alt={L(b.value, 'alt')}
+                        widths={[640, 960, 1440, 1824]}
+                        sizes={b.value.wide ? '100vw' : contentSizes}
+                        loading="lazy"
+                      />
+                      {b.value.caption && <figcaption>{L(b.value, 'caption')}</figcaption>}
+                    </figure>
+                  )
+                );
+              case 'pair':
+                return (
+                  <figure class="block block--pair">
+                    <div>
+                      {[b.value.left, b.value.right].map(
+                        (img) => img && <Image src={img} alt="" widths={[480, 912]} sizes="(max-width: 640px) 100vw, 456px" loading="lazy" />
+                      )}
+                    </div>
+                    {b.value.caption && <figcaption>{L(b.value, 'caption')}</figcaption>}
+                  </figure>
+                );
+              case 'video':
+                return (
+                  b.value.url && (
+                    <figure class="block block--video">
+                      <div class="video">
+                        <iframe src={b.value.url} title={L(b.value, 'caption') || tx.video} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen />
+                      </div>
+                      {b.value.caption && <figcaption>{L(b.value, 'caption')}</figcaption>}
+                    </figure>
+                  )
+                );
+              case 'quote':
+                return (
+                  <blockquote class="block block--quote">
+                    <p>{L(b.value, 'text')}</p>
+                    {b.value.author && <cite>{L(b.value, 'author')}</cite>}
+                  </blockquote>
+                );
+            }
+          })
+        }
+      </div>
+    </div>
+
+    {
+      next && next.id !== entry.id && (
+        <nav class="container next" aria-label={tx.nextCase}>
+          <a href={href(lang, `/cases/${next.id}`)} class="next__link">
+            <span class="label">{tx.nextCase}</span>
+            <span class="next__title">{L(next.data, 'title')} →</span>
+            {L(next.data, 'summary') && <span class="next__summary">{L(next.data, 'summary')}</span>}
+          </a>
+          {next.data.cardImage && (
+            <a href={href(lang, `/cases/${next.id}`)} class="next__img" tabindex="-1" aria-hidden="true">
+              <Image src={next.data.cardImage} alt="" widths={[480, 864]} sizes="(max-width: 720px) 100vw, 432px" loading="lazy" />
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </article>
+</Base>
+
+<script>
+  // Подсвечиваем текущий раздел в оглавлении
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [a.hash.slice(1), a])
+  );
+  if (links.size) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            links.forEach((a) => a.classList.remove('is-active'));
+            links.get(e.target.id)?.classList.add('is-active');
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -70% 0px' }
+    );
+    links.forEach((_, id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+</script>
+
+<style>
+  .intro {
+    padding-top: clamp(24px, 3vw, 40px);
+  }
+  .intro__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .back {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 0;
+  }
+  .back:hover {
+    color: var(--muted);
+  }
+  .intro__title {
+    margin-top: clamp(32px, 5vw, 72px);
+    font-size: clamp(48px, 8vw, 120px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .intro__lead {
+    margin-top: clamp(16px, 2vw, 28px);
+    max-width: 920px;
+    font-family: var(--display);
+    font-size: clamp(22px, 2.4vw, 34px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--gap);
+    margin: clamp(32px, 4vw, 56px) 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .facts dd {
+    margin: 6px 0 0;
+    font-size: 16px;
+  }
+  .metrics {
+    list-style: none;
+    margin: clamp(24px, 3vw, 40px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--gap);
+  }
+  .metrics li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+  .metrics b {
+    font-family: var(--display);
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .metrics b::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 4px;
+    margin-bottom: 16px;
+    background: var(--accent);
+  }
+  .metrics span {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .cover {
+    margin: clamp(32px, 4vw, 56px) 0 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .cover :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Контент */
+  .body {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    padding-block: clamp(48px, 7vw, 104px);
+  }
+  .toc {
+    grid-column: 1 / 4;
+  }
+  .toc nav {
+    position: sticky;
+    top: 32px;
+  }
+  .toc ol {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+  }
+  .toc a {
+    display: block;
+    padding: 6px 0 6px 14px;
+    border-left: 2px solid var(--line);
+    font-size: 15px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .toc a:hover,
+  .toc a.is-active {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+  .content {
+    grid-column: 4 / 12;
+    display: grid;
+    gap: clamp(28px, 3vw, 40px);
+    min-width: 0;
+  }
+  .block {
+    margin: 0;
+  }
+  .block--text {
+    max-width: 760px;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .block--text + .block--text {
+    margin-top: 8px;
+  }
+  .block--text h2 {
+    font-size: clamp(24px, 2.2vw, 32px);
+    margin-bottom: 14px;
+  }
+  .block--image :global(img),
+  .block--pair :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    background: #e4e4e2;
+  }
+  .block--image.is-wide {
+    margin-inline: calc((min(100vw, var(--max)) - 100%) / -2 + var(--gutter));
+  }
+  figcaption {
+    margin-top: 10px;
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+  .block--pair > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+  }
+  .video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .block--quote {
+    padding: clamp(24px, 3vw, 40px);
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .block--quote p {
+    font-family: var(--display);
+    font-size: clamp(22px, 2.2vw, 30px);
+    line-height: 1.25;
+  }
+  .block--quote cite {
+    display: block;
+    margin-top: 16px;
+    font-style: normal;
+    color: var(--muted-on-dark);
+    font-size: var(--fs-small);
+  }
+
+  /* Следующий кейс */
+  .next {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+    padding-bottom: clamp(56px, 8vw, 112px);
+  }
+  .next__link {
+    grid-column: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    padding: clamp(24px, 3vw, 48px);
+    border-radius: var(--radius);
+    background: var(--card);
+    text-decoration: none;
+    transition: box-shadow 0.3s var(--ease);
+  }
+  .next__link:hover {
+    box-shadow: 0 10px 40px rgba(26, 26, 23, 0.08);
+  }
+  .next__title {
+    font-family: var(--display);
+    font-size: clamp(32px, 4vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .next__summary {
+    max-width: 520px;
+    color: var(--muted);
+  }
+  .next__img {
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .next__img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+  .next__img:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  @media (max-width: 1024px) {
+    .toc {
+      display: none;
+    }
+    .content {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 720px) {
+    .next {
+      grid-template-columns: 1fr;
+    }
+    .next__link {
+      grid-column: auto;
+    }
+    .next__img {
+      display: none;
+    }
+    .block--text {
+      font-size: 17px;
+    }
+  }
+</style>

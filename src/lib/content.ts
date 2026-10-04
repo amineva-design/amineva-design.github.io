@@ -6,6 +6,12 @@ export async function getSettings() {
   return entry.data;
 }
 
+export async function getPrivacy() {
+  const entry = await getEntry('pages', 'privacy');
+  if (!entry) throw new Error('Нет файла src/content/privacy.yaml');
+  return entry.data;
+}
+
 export async function getAbout() {
   const entry = await getEntry('pages', 'about');
   if (!entry) throw new Error('Нет файла src/content/about.yaml');
@@ -17,8 +23,12 @@ export async function getCases() {
   return all.sort((a, b) => a.data.order - b.data.order || b.data.year.localeCompare(a.data.year));
 }
 
-export function resumeHref(s: { resumeFile: string; resumeUrl: string }) {
-  return s.resumeFile || s.resumeUrl || '';
+export function resumeHref(
+  s: { resumeFile: string; resumeUrl: string; resumeFileEn: string; resumeUrlEn: string },
+  lang: 'ru' | 'en' = 'ru'
+) {
+  const ru = s.resumeFile || s.resumeUrl || '';
+  return lang === 'en' ? s.resumeFileEn || s.resumeUrlEn || ru : ru;
 }
 
 export function telegramHref(handle: string) {
@@ -54,6 +64,13 @@ export function richText(src: string) {
         para = [];
       };
       for (const line of lines) {
+        const h = line.match(/^##\s+(.*)$/);
+        if (h) {
+          flushPara();
+          flush();
+          out.push(`<h2>${inline(h[1])}</h2>`);
+          continue;
+        }
         const m = line.match(/^[-•–]\s+(.*)$/);
         if (m) {
           flushPara();

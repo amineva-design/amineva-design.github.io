@@ -4,19 +4,21 @@ order: 3
 year: '2025'
 direction: E-com, учебный проект
 summary: >-
-  Исследование пользовательского опыта в онлайн-шоппинге. Разработала модуль
-  ИИ-стилиста: концепцию, точки встраивания и сценарии
+  Исследование пользовательского опыта в онлайн-шоппинге. Разработала модуль ИИ-стилиста: концепцию,
+  точки встраивания и сценарии
 lead: >-
-  Внедрила ИИ-стилиста в интернет-магазин одежды. Исследовала пользовательский
-  опыт и поведение в онлайн-шоппинге
+  Внедрила ИИ-стилиста в интернет-магазин одежды. Исследовала пользовательский опыт и поведение в
+  онлайн-шоппинге
 role: Продуктовый дизайнер
 duration: ''
 team: Учебный проект в магистратуре
 metrics:
   - value: '50'
     label: респондентов в глубинном анкетировании
+    labelEn: respondents in an in-depth survey
   - value: '3'
     label: адаптива — мобильный, планшет, десктоп
+    labelEn: breakpoints — mobile, tablet, desktop
 cardImage: ../../assets/cases/matur/card-1.png
 cardImage2: ../../assets/cases/matur/card-2.webp
 heroImage: ../../assets/cases/matur/hero.png
@@ -25,139 +27,219 @@ blocks:
     value:
       heading: О проекте
       text: >-
-        Учебный проект в рамках магистерской работы. «Матур» — интернет-магазин
-        одежды с ИИ-стилистом для людей, которые устали от масс-маркета и мук выбора.
+        Учебный проект в рамках магистерской работы. «Матур» — интернет-магазин одежды с
+        ИИ-стилистом для людей, которые устали от масс-маркета и мук выбора.
       inNav: false
+      headingEn: About the project
+      textEn: >-
+        An academic project for my master’s thesis. “Matur” is an online clothing store with an AI
+        stylist for people tired of mass market and the agony of choice.
   - discriminant: section
     value:
       heading: Проблема
       text: >-
-        Онлайн-шоппинг стал базовой потребностью: товаров и брендов много, времени
-        мало, выбор бесконечный. Люди теряются в каталогах и либо не покупают, либо
-        берут «на авось».
+        Онлайн-шоппинг стал базовой потребностью: товаров и брендов много, времени мало, выбор
+        бесконечный. Люди теряются в каталогах и либо не покупают, либо берут «на авось».
       inNav: true
+      headingEn: Problem
+      textEn: >-
+        Online shopping has become a basic need: there are lots of products and brands, little time
+        and endless choice. People get lost in catalogues and either don’t buy or pick something at
+        random.
   - discriminant: image
     value:
       image: ../../assets/cases/matur/01.webp
       alt: Проблема выбора в онлайн-шоппинге
       caption: ''
       wide: false
+      altEn: The problem of choice in online shopping
+      captionEn: ''
   - discriminant: section
     value:
       heading: Решение
       text: >-
-        Облегчить поиск и выбор одежды с помощью ИИ-стилиста, который помогает
-        принять решение быстрее и увереннее.
+        Облегчить поиск и выбор одежды с помощью ИИ-стилиста, который помогает принять решение
+        быстрее и увереннее.
       inNav: true
+      headingEn: Solution
+      textEn: >-
+        Make finding and choosing clothes easier with an AI stylist that helps people decide faster
+        and with more confidence.
   - discriminant: section
     value:
       heading: Процесс
       text: >-
-        Итеративный подход в четыре этапа: исследование, гипотезы, разработка и
-        тестирование, пост-анализ. Так дизайн становится управляемым процессом,
-        который опирается на данные и последовательно улучшает продукт.
+        Итеративный подход в четыре этапа: исследование, гипотезы, разработка и тестирование,
+        пост-анализ. Так дизайн становится управляемым процессом, который опирается на данные и
+        последовательно улучшает продукт.
       inNav: true
+      headingEn: Process
+      textEn: >-
+        An iterative four-stage approach: research, hypotheses, design and testing, post-analysis.
+        This turns design into a manageable, data-driven process that steadily improves the product.
   - discriminant: image
     value:
       image: ../../assets/cases/matur/02.png
       alt: Этапы процесса
       caption: ''
       wide: false
+      altEn: Process stages
+      captionEn: ''
   - discriminant: section
     value:
       heading: Исследование
       text: >-
-        Анализ целевой аудитории на основе глубинного анкетирования (n = 50).
-        Данные помогли понять социальные и поведенческие характеристики пользователей.
+        Анализ целевой аудитории на основе глубинного анкетирования (n = 50). Данные помогли понять
+        социальные и поведенческие характеристики пользователей.
       inNav: true
+      headingEn: Research
+      textEn: >-
+        Target audience analysis based on an in-depth survey (n = 50). The data revealed users’
+        social and behavioural characteristics.
   - discriminant: image
     value:
       image: ../../assets/cases/matur/03.webp
       alt: Инфографика по результатам анкетирования
       caption: ''
       wide: false
+      altEn: Survey results infographic
+      captionEn: ''
   - discriminant: section
     value:
       heading: CJM
       text: >-
-        Полный путь пользователя от осознания потребности до пост-покупки. Фокус
-        на ключевых болях: сложный поиск, мало релевантных фото и фильтров,
-        сомнения на этапе оплаты и возврата.
+        Полный путь пользователя от осознания потребности до пост-покупки. Фокус на ключевых болях:
+        сложный поиск, мало релевантных фото и фильтров, сомнения на этапе оплаты и возврата.
       inNav: true
+      headingEn: CJM
+      textEn: >-
+        The full user journey from recognising a need to post-purchase, focused on key pain points:
+        hard-to-use search, too few relevant photos and filters, doubts at checkout and returns.
   - discriminant: image
     value:
       image: ../../assets/cases/matur/04.webp
       alt: Карта пути пользователя (CJM)
       caption: ''
       wide: false
+      altEn: Customer journey map (CJM)
+      captionEn: ''
   - discriminant: section
     value:
       heading: User Flow
       text: >-
-        Провести пользователя от главной к карточке товара и оформлению заказа
-        с минимумом кликов. ИИ-стилист встроен как заметный канал персональных
-        рекомендаций в каталоге и карточке товара.
+        Провести пользователя от главной к карточке товара и оформлению заказа с минимумом кликов.
+        ИИ-стилист встроен как заметный канал персональных рекомендаций в каталоге и карточке
+        товара.
       inNav: true
+      headingEn: User Flow
+      textEn: >-
+        Get the user from the home page to the product page and checkout in as few clicks as
+        possible. The AI stylist is built in as a visible channel for personal recommendations in
+        the catalogue and on product pages.
   - discriminant: image
     value:
       image: ../../assets/cases/matur/05.webp
       alt: User Flow
       caption: ''
       wide: false
+      altEn: User flow
+      captionEn: ''
   - discriminant: section
     value:
       heading: Экраны
       text: >-
-        Макеты под три адаптива — мобильный, планшет и десктоп — с единой
-        визуальной идентичностью и ключевыми сценариями на всех устройствах.
+        Макеты под три адаптива — мобильный, планшет и десктоп — с единой визуальной идентичностью и
+        ключевыми сценариями на всех устройствах.
       inNav: true
+      headingEn: Screens
+      textEn: >-
+        Layouts for three breakpoints — mobile, tablet and desktop — with a consistent visual
+        identity and key scenarios on every device.
   - discriminant: image
     value:
       image: ../../assets/cases/matur/06.png
       alt: Экраны интернет-магазина «Матур»
       caption: ''
       wide: false
+      altEn: Matur online store screens
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/matur/07.png
       alt: Экраны интернет-магазина «Матур»
       caption: ''
       wide: false
+      altEn: Matur online store screens
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/matur/08.webp
       alt: Экраны ИИ-стилиста
       caption: ''
       wide: false
+      altEn: AI stylist screens
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/matur/09.png
       alt: Экраны интернет-магазина «Матур»
       caption: ''
       wide: false
+      altEn: Matur online store screens
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/matur/10.png
       alt: Экраны интернет-магазина «Матур»
       caption: ''
       wide: false
+      altEn: Matur online store screens
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/matur/11.png
       alt: Экраны интернет-магазина «Матур»
       caption: ''
       wide: false
+      altEn: Matur online store screens
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/matur/12.png
       alt: Экраны интернет-магазина «Матур»
       caption: ''
       wide: false
+      altEn: Matur online store screens
+      captionEn: ''
   - discriminant: section
     value:
       heading: Итог
-      text: |-
-        - Спроектирован интерфейс «Матур» с ИИ-стилистом; требования выведены из исследований, а не из интуиции
-        - Ключевые боли — неопределённость выбора, перегрузка, недоверие к контенту — учтены в архитектуре, каталоге и карточке товара; ИИ-стилист работает как навигатор и рекомендатель
+      text: >-
+        - Спроектирован интерфейс «Матур» с ИИ-стилистом; требования выведены из исследований, а не
+        из интуиции
+
+        - Ключевые боли — неопределённость выбора, перегрузка, недоверие к контенту — учтены в
+        архитектуре, каталоге и карточке товара; ИИ-стилист работает как навигатор и рекомендатель
+
         - Проект можно масштабировать: AR-примерка, персональные подборки, система лояльности
       inNav: true
+      headingEn: Results
+      textEn: >-
+        - Designed the “Matur” interface with an AI stylist; requirements came from research, not
+        intuition
+
+        - Key pain points — uncertainty of choice, overload, distrust of content — are addressed in
+        the architecture, catalogue and product page; the AI stylist acts as a guide and recommender
+
+        - The project can scale with AR try-on, personal selections and a loyalty programme
+titleEn: Matur
+directionEn: E-commerce, academic project
+summaryEn: >-
+  Research into the online shopping experience. Designed an AI stylist module: concept, integration
+  points and scenarios
+leadEn: >-
+  Built an AI stylist into a clothing store. Researched user experience and behaviour in online
+  shopping
+roleEn: Product designer
+durationEn: ''
+teamEn: Academic project, master’s programme

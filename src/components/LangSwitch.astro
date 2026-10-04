@@ -1,0 +1,58 @@
+---
+import { langs, switchPath, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<nav class="lang" aria-label={t(lang).langSwitch}>
+  {
+    langs.map((l) =>
+      l === lang ? (
+        <span class="lang__item is-active" aria-current="true">{l.toUpperCase()}</span>
+      ) : (
+        <a class="lang__item" href={switchPath(Astro.url.pathname, l)} hreflang={l} lang={l}>
+          {l.toUpperCase()}
+        </a>
+      )
+    )
+  }
+</nav>
+
+<style>
+  .lang {
+    display: flex;
+    gap: 4px;
+  }
+  .lang__item {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  a.lang__item:hover {
+    opacity: 1;
+  }
+  .lang__item.is-active {
+    opacity: 1;
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  :global(.dark) .lang__item.is-active {
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--ink);
+  }
+</style>

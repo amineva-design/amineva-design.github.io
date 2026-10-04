@@ -2,24 +2,30 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import { getSettings } from '../lib/content';
+import { loc, switchPath, t, type Lang } from '../lib/i18n';
 import { getImage } from 'astro:assets';
 
 interface Props {
   title?: string;
   description?: string;
   theme?: 'dark' | 'light';
+  lang: Lang;
 }
 
-const { title, description, theme = 'light' } = Astro.props;
+const { title, description, theme = 'light', lang } = Astro.props;
 const s = await getSettings();
-const fullTitle = title ? `${title} — ${s.name}` : `${s.name} — ${s.role}`;
-const desc = description || s.intro;
+const name = loc(s, 'name', lang);
+const fullTitle = title ? `${title} — ${name}` : `${name} — ${loc(s, 'role', lang)}`;
+const desc = description || loc(s, 'intro', lang);
 const og = s.heroPhoto2 ? await getImage({ src: s.heroPhoto2, width: 1200, format: 'jpg' }) : null;
+const path = Astro.url.pathname;
+const alt = (l: Lang) => new URL(switchPath(path, l), Astro.site);
 ---
 
 <!doctype html>
-<html lang="ru">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,16 +34,20 @@ const og = s.heroPhoto2 ? await getImage({ src: s.heroPhoto2, width: 1200, forma
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'ru_RU'} />
     {og && <meta property="og:image" content={new URL(og.src, Astro.site)} />}
+    <link rel="alternate" hreflang="ru" href={alt('ru')} />
+    <link rel="alternate" hreflang="en" href={alt('en')} />
     <meta name="theme-color" content="#1a1a17" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
   </head>
   <body>
-    <a class="visually-hidden" href="#main">К содержимому</a>
-    <Header theme={theme} />
+    <a class="visually-hidden" href="#main">{t(lang).skip}</a>
+    <Header theme={theme} lang={lang} />
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
+    <CookieBanner lang={lang} />
   </body>
 </html>

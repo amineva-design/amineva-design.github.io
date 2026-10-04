@@ -3,22 +3,23 @@ published: true
 order: 1
 year: '2026'
 direction: B2C, хоумстейджинг
-summary: >-
-  Редизайн сервиса по обустройству квартир. Пересобрала UX/UI и архитектуру
-  сайта под бизнес-задачи
+summary: Редизайн сервиса по обустройству квартир. Пересобрала UX/UI и архитектуру сайта под бизнес-задачи
 lead: >-
-  Пересобрала UX/UI и архитектуру сайта под бизнес-задачи, разработала брендбук
-  и набор рекламных креативов
+  Пересобрала UX/UI и архитектуру сайта под бизнес-задачи, разработала брендбук и набор рекламных
+  креативов
 role: Дизайнер отдела маркетинга
 duration: 3 месяца, проектная занятость
 team: Маркетолог, SEO, SMM, таргетолог, разработчик Bitrix
 metrics:
   - value: +40%
     label: CTR креативов в РСЯ (с 0,20% до 0,28%)
+    labelEn: ad CTR in Yandex Ads (0.20% → 0.28%)
   - value: −20%
     label: стоимость лида (с ~1200 ₽ до ~960 ₽)
+    labelEn: cost per lead (~1,200 ₽ → ~960 ₽)
   - value: ≈70%
     label: типовых задач SMM закрывают шаблоны
+    labelEn: of routine SMM tasks covered by templates
 cardImage: ../../assets/cases/dokrutim/card-1.png
 cardVideo: https://kinescope.io/embed/7XNkhEeHeQC4EhrQeGjTTa
 heroImage: ../../assets/cases/dokrutim/hero.png
@@ -26,10 +27,12 @@ blocks:
   - discriminant: section
     value:
       heading: О проекте
-      text: >-
-        «Докрутим» — сервис по обустройству квартир под ключ и хоумстейджингу
-        в Москве и области.
+      text: «Докрутим» — сервис по обустройству квартир под ключ и хоумстейджингу в Москве и области.
       inNav: false
+      headingEn: About the project
+      textEn: >-
+        “Dokrutim” is a turnkey apartment furnishing and home staging service in Moscow and the
+        Moscow region.
   - discriminant: section
     value:
       heading: Проблема и задачи
@@ -40,91 +43,171 @@ blocks:
         - Переосмыслить архитектуру и оформление сайта
         - Запустить блог и акции, чтобы привлечь органический трафик
       inNav: true
+      headingEn: Problem and goals
+      textEn: |-
+        The business needed higher audience engagement and CTR across social and ad channels.
+
+        - Make the company noticeable and memorable among competitors
+        - Rethink the website’s architecture and visual design
+        - Launch a blog and promotions to grow organic traffic
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/card-1.png
       alt: Обновлённый сайт «Докрутим» на ноутбуке
       caption: ''
       wide: false
+      altEn: The redesigned Dokrutim website on a laptop
+      captionEn: ''
   - discriminant: section
     value:
       heading: Исследование
-      text: |-
-        Провела аудит текущих креативов и сайта, проанализировала показатели в рекламных кабинетах и соцсетях.
+      text: >-
+        Провела аудит текущих креативов и сайта, проанализировала показатели в рекламных кабинетах и
+        соцсетях.
 
-        Нашла «узкое горлышко» сайта — отсутствие структуры: не было блока акций, отдельных страниц услуг и блога.
+
+        Нашла «узкое горлышко» сайта — отсутствие структуры: не было блока акций, отдельных страниц
+        услуг и блога.
       inNav: true
+      headingEn: Research
+      textEn: >-
+        I audited the existing creatives and website and analysed performance in the ad accounts and
+        social channels.
+
+
+        I found the site’s bottleneck — a lack of structure: no promotions block, no separate
+        service pages and no blog.
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/01.png
       alt: Аудит сайта «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim website audit
+      captionEn: ''
   - discriminant: section
     value:
       heading: Решение
-      text: |-
-        - Разработала брендбук и минимальную дизайн-систему: палитра, типографика, правила обрезки фото, шаблоны
+      text: >-
+        - Разработала брендбук и минимальную дизайн-систему: палитра, типографика, правила обрезки
+        фото, шаблоны
+
         - Спроектировала и внедрила заметный блок акций
+
         - Создала визуал для блога и соцсетей
+
         - Подготовила новые рекламные креативы для Яндекс РСЯ
       inNav: true
+      headingEn: Solution
+      textEn: >-
+        - Created a brand book and a lean design system: palette, typography, photo cropping rules,
+        templates
+
+        - Designed and shipped a prominent promotions block
+
+        - Created visuals for the blog and social media
+
+        - Prepared new ad creatives for Yandex Ads
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/02.png
       alt: Структура и страницы сайта «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim site structure and pages
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/03.jpg
       alt: Визуал «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim visuals
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/04.png
       alt: Мобильные страницы услуг «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim mobile service pages
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/05.png
       alt: Брендбук «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim brand book
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/06.png
       alt: Шаблоны для соцсетей «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim social media templates
+      captionEn: ''
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/07.png
       alt: Визуал для блога «Докрутим»
       caption: ''
       wide: false
+      altEn: Dokrutim blog visuals
+      captionEn: ''
   - discriminant: section
     value:
       heading: Реклама в РСЯ
       text: >-
-        Реклама показывала низкую узнаваемость, требовались релевантные визуалы
-        для разных аудиторий. Изображение должно быть контрастным и хорошо читаться
-        в любом масштабе.
+        Реклама показывала низкую узнаваемость, требовались релевантные визуалы для разных
+        аудиторий. Изображение должно быть контрастным и хорошо читаться в любом масштабе.
       inNav: true
+      headingEn: Yandex Ads
+      textEn: >-
+        The ads had low recognition, and different audiences needed relevant visuals. Each image had
+        to be high-contrast and readable at any size.
   - discriminant: image
     value:
       image: ../../assets/cases/dokrutim/08.png
       alt: Рекламные креативы для Яндекс РСЯ
       caption: ''
       wide: false
+      altEn: Ad creatives for Yandex Ads
+      captionEn: ''
   - discriminant: section
     value:
       heading: Итог
-      text: |-
+      text: >-
         - CTR креативов в РСЯ вырос на 40%: с 0,20% до 0,28%
-        - Стоимость лида снизилась примерно на 20%: с ~1200 ₽ до ~960 ₽ за 3 месяца (данные маркетолога)
-        - Отдельные страницы услуг, акции и блог улучшили навигацию: выросли глубина просмотра и время на странице
+
+        - Стоимость лида снизилась примерно на 20%: с ~1200 ₽ до ~960 ₽ за 3 месяца (данные
+        маркетолога)
+
+        - Отдельные страницы услуг, акции и блог улучшили навигацию: выросли глубина просмотра и
+        время на странице
+
         - Единая система шаблонов закрывает около 70% типовых задач SMM и экономит время на контент
       inNav: true
+      headingEn: Results
+      textEn: >-
+        - Ad CTR in Yandex Ads grew by 40%: from 0.20% to 0.28%
+
+        - Cost per lead dropped by about 20%: from ~1,200 ₽ to ~960 ₽ over 3 months (marketer’s
+        data)
+
+        - Separate service pages, promotions and the blog improved navigation: page depth and time
+        on page went up
+
+        - A unified template system covers about 70% of routine SMM tasks and saves time on content
+titleEn: Dokrutim
+directionEn: B2C, home staging
+summaryEn: >-
+  Redesign of an apartment furnishing service. Rebuilt the UX/UI and site architecture around
+  business goals
+leadEn: >-
+  Rebuilt the website’s UX/UI and architecture around business goals, created a brand book and a set
+  of ad creatives
+roleEn: Marketing team designer
+durationEn: 3 months, project-based
+teamEn: Marketer, SEO, SMM, targeting specialist, Bitrix developer

@@ -1,7 +1,7 @@
 import { config, collection, singleton, fields } from '@keystatic/core';
 
-// Локально админка пишет файлы прямо в проект.
-// На сайте — сохраняет изменения в GitHub, после чего Vercel пересобирает сайт.
+// Локально без GitHub админка пишет файлы прямо в проект.
+// С GitHub — сохраняет изменения в репозиторий, после чего Vercel пересобирает сайт.
 const githubRepo = import.meta.env.PUBLIC_KEYSTATIC_GITHUB_REPO as `${string}/${string}` | undefined;
 
 const caseImage = (label: string, description?: string) =>
@@ -23,6 +23,20 @@ const siteImage = (label: string, description?: string) =>
 const textHint =
   'Пустая строка — новый абзац. Строка, которая начинается с «- », станет пунктом списка.';
 
+type TextOpts = { description?: string; multiline?: boolean; defaultValue?: string };
+
+// Пара полей «по-русски + по-английски». Если английское пустое — на /en показывается русское.
+function tr<K extends string>(key: K, label: string, opts: TextOpts = {}) {
+  return {
+    [key]: fields.text({ label, ...opts }),
+    [`${key}En`]: fields.text({
+      label: `${label} (EN)`,
+      multiline: opts.multiline,
+      description: 'Английская версия. Можно оставить пустым — тогда будет русский текст',
+    }),
+  } as Record<K | `${K}En`, ReturnType<typeof fields.text>>;
+}
+
 export default config({
   storage: githubRepo ? { kind: 'github', repo: githubRepo } : { kind: 'local' },
   locale: 'ru-RU',
@@ -30,7 +44,7 @@ export default config({
     brand: { name: 'Портфолио' },
     navigation: {
       'Контент': ['cases'],
-      'Страницы': ['settings', 'about'],
+      'Страницы': ['settings', 'about', 'privacy'],
     },
   },
 
@@ -50,6 +64,7 @@ export default config({
             description: 'Латиницей, без пробелов. Например: dokrutim → amineva.ru/cases/dokrutim',
           },
         }),
+        titleEn: fields.text({ label: 'Название проекта (EN)' }),
         published: fields.checkbox({
           label: 'Показывать на сайте',
           description: 'Сними галочку, чтобы спрятать кейс (черновик)',
@@ -61,24 +76,22 @@ export default config({
           defaultValue: 10,
         }),
         year: fields.text({ label: 'Год', validation: { isRequired: true } }),
-        direction: fields.text({ label: 'Направление', description: 'Например: B2C, недвижимость' }),
-        summary: fields.text({
-          label: 'Короткое описание для карточки',
+        ...tr('direction', 'Направление', { description: 'Например: B2C, недвижимость' }),
+        ...tr('summary', 'Короткое описание для карточки', {
           description: '1–2 предложения, видно на главной',
           multiline: true,
         }),
-        lead: fields.text({
-          label: 'Главная мысль кейса',
+        ...tr('lead', 'Главная мысль кейса', {
           description: 'Крупный текст в начале страницы кейса',
           multiline: true,
         }),
-        role: fields.text({ label: 'Роль', description: 'Например: продуктовый дизайнер' }),
-        duration: fields.text({ label: 'Срок', description: 'Например: 3 месяца' }),
-        team: fields.text({ label: 'Команда', multiline: true }),
+        ...tr('role', 'Роль', { description: 'Например: продуктовый дизайнер' }),
+        ...tr('duration', 'Срок', { description: 'Например: 3 месяца' }),
+        ...tr('team', 'Команда', { multiline: true }),
         metrics: fields.array(
           fields.object({
             value: fields.text({ label: 'Цифра', description: 'Например: +40%' }),
-            label: fields.text({ label: 'Что это', description: 'Например: CTR рекламы' }),
+            ...tr('label', 'Что это', { description: 'Например: CTR рекламы' }),
           }),
           {
             label: 'Результаты в цифрах',
@@ -99,8 +112,8 @@ export default config({
               label: 'Текст с заголовком',
               itemLabel: (props) => props.fields.heading.value || 'Текст',
               schema: fields.object({
-                heading: fields.text({ label: 'Заголовок', description: 'Например: Исследование' }),
-                text: fields.text({ label: 'Текст', multiline: true, description: textHint }),
+                ...tr('heading', 'Заголовок', { description: 'Например: Исследование' }),
+                ...tr('text', 'Текст', { multiline: true, description: textHint }),
                 inNav: fields.checkbox({
                   label: 'Показывать в оглавлении слева',
                   defaultValue: true,
@@ -112,8 +125,8 @@ export default config({
               itemLabel: (props) => props.fields.caption.value || 'Картинка',
               schema: fields.object({
                 image: caseImage('Картинка'),
-                alt: fields.text({ label: 'Что на картинке', description: 'Для поисковиков и незрячих' }),
-                caption: fields.text({ label: 'Подпись под картинкой' }),
+                ...tr('alt', 'Что на картинке', { description: 'Для поисковиков и незрячих' }),
+                ...tr('caption', 'Подпись под картинкой'),
                 wide: fields.checkbox({
                   label: 'Во всю ширину экрана',
                   defaultValue: false,
@@ -125,21 +138,21 @@ export default config({
               schema: fields.object({
                 left: caseImage('Левая'),
                 right: caseImage('Правая'),
-                caption: fields.text({ label: 'Подпись' }),
+                ...tr('caption', 'Подпись'),
               }),
             },
             video: {
               label: 'Видео',
               schema: fields.object({
                 url: fields.url({ label: 'Ссылка на видео (Kinescope / YouTube embed)' }),
-                caption: fields.text({ label: 'Подпись' }),
+                ...tr('caption', 'Подпись'),
               }),
             },
             quote: {
               label: 'Цитата / инсайт',
               schema: fields.object({
-                text: fields.text({ label: 'Текст', multiline: true }),
-                author: fields.text({ label: 'Кто сказал', description: 'Необязательно' }),
+                ...tr('text', 'Текст', { multiline: true }),
+                ...tr('author', 'Кто сказал', { description: 'Необязательно' }),
               }),
             },
           },
@@ -155,13 +168,13 @@ export default config({
       path: 'src/content/settings',
       format: { data: 'yaml' },
       schema: {
-        name: fields.text({ label: 'Имя и фамилия' }),
-        role: fields.text({ label: 'Роль', description: 'Например: Продуктовый дизайнер' }),
-        greeting: fields.text({ label: 'Приветствие', defaultValue: 'Привет!' }),
-        intro: fields.text({ label: 'О себе в двух строках', multiline: true }),
-        location: fields.text({ label: 'Где живу' }),
+        ...tr('name', 'Имя и фамилия'),
+        ...tr('role', 'Роль', { description: 'Например: Продуктовый дизайнер' }),
+        ...tr('greeting', 'Приветствие', { defaultValue: 'Привет!' }),
+        ...tr('intro', 'О себе в двух строках', { multiline: true }),
+        ...tr('location', 'Где живу', { description: '~~текст~~ — зачёркнутый' }),
         openToWork: fields.checkbox({ label: 'Ищу работу (зелёная точка в шапке)', defaultValue: true }),
-        statusText: fields.text({ label: 'Текст статуса', defaultValue: 'Открыта к full-time и контрактной работе' }),
+        ...tr('statusText', 'Текст статуса', { defaultValue: 'Открыта к full-time и контрактной работе' }),
         heroPhoto: siteImage('Фото на главной (маленькое)'),
         heroPhoto2: siteImage('Фото на главной (большое)'),
         email: fields.text({ label: 'E-mail' }),
@@ -175,9 +188,16 @@ export default config({
           label: 'Ссылка на резюме',
           description: 'Если PDF не загружен — используется эта ссылка',
         }),
+        resumeFileEn: fields.file({
+          label: 'Резюме на английском (PDF)',
+          description: 'Необязательно. Если нет — в английской версии будет русское резюме',
+          directory: 'public/files',
+          publicPath: '/files/',
+        }),
+        resumeUrlEn: fields.url({ label: 'Ссылка на резюме на английском' }),
         socials: fields.array(
           fields.object({
-            label: fields.text({ label: 'Название' }),
+            ...tr('label', 'Название'),
             url: fields.url({ label: 'Ссылка' }),
           }),
           { label: 'Соцсети', itemLabel: (props) => props.fields.label.value }
@@ -191,16 +211,16 @@ export default config({
       path: 'src/content/about',
       format: { data: 'yaml' },
       schema: {
-        headline: fields.text({ label: 'Заголовок', multiline: true }),
-        text: fields.text({ label: 'Текст', multiline: true, description: textHint }),
-        hobbies: fields.text({ label: 'Помимо дизайна', multiline: true }),
+        ...tr('headline', 'Заголовок', { multiline: true }),
+        ...tr('text', 'Текст', { multiline: true, description: textHint }),
+        ...tr('hobbies', 'Помимо дизайна', { multiline: true }),
         photos: fields.array(siteImage('Фото'), { label: 'Фотографии', description: 'Лучше 3 штуки' }),
         experience: fields.array(
           fields.object({
-            period: fields.text({ label: 'Период', description: 'Например: 2024 — сейчас' }),
-            company: fields.text({ label: 'Компания' }),
-            role: fields.text({ label: 'Должность' }),
-            text: fields.text({ label: 'Что делала', multiline: true }),
+            ...tr('period', 'Период', { description: 'Например: 2024 — сейчас' }),
+            ...tr('company', 'Компания'),
+            ...tr('role', 'Должность'),
+            ...tr('text', 'Что делала', { multiline: true }),
           }),
           {
             label: 'Опыт работы',
@@ -209,18 +229,31 @@ export default config({
         ),
         skills: fields.array(
           fields.object({
-            title: fields.text({ label: 'Группа' }),
-            items: fields.text({ label: 'Навыки', multiline: true, description: 'Каждый с новой строки' }),
+            ...tr('title', 'Группа'),
+            ...tr('items', 'Навыки', { multiline: true, description: 'Каждый с новой строки' }),
           }),
           { label: 'Навыки', itemLabel: (props) => props.fields.title.value }
         ),
         tools: fields.array(
           fields.object({
-            name: fields.text({ label: 'Инструмент' }),
-            details: fields.text({ label: 'Что умею' }),
+            ...tr('name', 'Инструмент'),
+            ...tr('details', 'Что умею'),
           }),
           { label: 'Инструменты', itemLabel: (props) => props.fields.name.value }
         ),
+      },
+    }),
+
+    privacy: singleton({
+      label: 'Политика конфиденциальности',
+      path: 'src/content/privacy',
+      format: { data: 'yaml' },
+      schema: {
+        ...tr('title', 'Заголовок'),
+        ...tr('text', 'Текст', {
+          multiline: true,
+          description: 'Строка, которая начинается с «## », станет подзаголовком. ' + textHint,
+        }),
       },
     }),
   },

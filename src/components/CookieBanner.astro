@@ -1,0 +1,90 @@
+---
+import { href, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tx = t(lang);
+---
+
+<div class="cookies" role="region" aria-label={tx.cookiesAria} hidden data-cookies>
+  <p>
+    {tx.cookiesText}
+    <a href={href(lang, '/privacy')}>{tx.cookiesLink}</a>
+  </p>
+  <button class="btn btn--accent cookies__ok" type="button" data-cookies-ok>{tx.cookiesOk}</button>
+</div>
+
+<script>
+  const KEY = 'cookies-accepted';
+  const banner = document.querySelector<HTMLElement>('[data-cookies]');
+  let accepted = false;
+  try {
+    accepted = localStorage.getItem(KEY) === '1';
+  } catch {}
+  if (banner && !accepted) {
+    banner.hidden = false;
+    requestAnimationFrame(() => banner.classList.add('is-visible'));
+    banner.querySelector('[data-cookies-ok]')?.addEventListener('click', () => {
+      try {
+        localStorage.setItem(KEY, '1');
+      } catch {}
+      banner.classList.remove('is-visible');
+      setTimeout(() => (banner.hidden = true), 300);
+    });
+  }
+</script>
+
+<style>
+  .cookies {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 50;
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+    max-width: 380px;
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 12px 48px rgba(26, 26, 23, 0.16);
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+  .cookies[hidden] {
+    display: none;
+  }
+  .cookies.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .cookies a {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .cookies__ok {
+    min-height: 44px;
+    padding: 0 24px;
+  }
+  @media (max-width: 560px) {
+    .cookies {
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      max-width: none;
+      padding: 20px;
+    }
+    .cookies__ok {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

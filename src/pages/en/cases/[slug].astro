@@ -1,6 +1,6 @@
 ---
-import Case from '../../views/Case.astro';
-import { getCases } from '../../lib/content';
+import Case from '../../../views/Case.astro';
+import { getCases } from '../../../lib/content';
 
 export async function getStaticPaths() {
   const cases = await getCases();
@@ -13,4 +13,4 @@ export async function getStaticPaths() {
 const { entry, next } = Astro.props;
 ---
 
-<Case entry={entry} next={next} lang="ru" />
+<Case entry={entry} next={next} lang="en" />

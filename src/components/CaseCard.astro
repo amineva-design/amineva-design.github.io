@@ -1,23 +1,28 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import { href as link, loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
   entry: CollectionEntry<'cases'>;
   index: number;
+  lang: Lang;
 }
-const { entry, index } = Astro.props;
+const { entry, index, lang } = Astro.props;
 const c = entry.data;
-const href = `/cases/${entry.id}`;
+const tx = t(lang);
+const href = link(lang, `/cases/${entry.id}`);
+const title = loc(c, 'title', lang);
+const summary = loc(c, 'summary', lang);
 const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 432px';
 const eager = index === 0;
 ---
 
-<a class="case" href={href} aria-label={`Кейс «${c.title}»`}>
+<a class="case" href={href} aria-label={tx.caseAria(title)}>
   <div class="case__info">
     <div>
-      <h3 class="case__title">{c.title}</h3>
-      {c.summary && <p class="case__summary">{c.summary}</p>}
+      <h3 class="case__title">{title}</h3>
+      {summary && <p class="case__summary">{summary}</p>}
     </div>
 
     {
@@ -25,7 +30,7 @@ const eager = index === 0;
         <ul class="case__metrics">
           {c.metrics.slice(0, 2).map((m) => (
             <li>
-              <b>{m.value}</b> {m.label}
+              <b>{m.value}</b> {loc(m, 'label', lang)}
             </li>
           ))}
         </ul>
@@ -34,11 +39,11 @@ const eager = index === 0;
 
     <div class="case__meta">
       <div>
-        <span class="label">Направление</span>
-        <span>{c.direction}</span>
+        <span class="label">{tx.direction}</span>
+        <span>{loc(c, 'direction', lang)}</span>
       </div>
       <div>
-        <span class="label">Год</span>
+        <span class="label">{tx.year}</span>
         <span>{c.year}</span>
       </div>
       <span class="case__arrow" aria-hidden="true">→</span>
@@ -58,7 +63,7 @@ const eager = index === 0;
       <div class="case__media case__media--second">
         <iframe
           src={`${c.cardVideo}${c.cardVideo.includes('?') ? '&' : '?'}muted=true&autoplay=true&loop=true&autopause=false&controls=false`}
-          title={`Видео: ${c.title}`}
+          title={tx.videoTitle(title)}
           loading="lazy"
           allow="autoplay; fullscreen"
           tabindex="-1"
