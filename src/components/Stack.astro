@@ -1,0 +1,99 @@
+---
+import { getAbout } from '../lib/content';
+import { loc, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tx = t(lang);
+const about = await getAbout();
+const L = (o: Record<string, any>, k: string) => loc(o, k, lang);
+const languages = L(about, 'languages');
+---
+
+<section class="stack" id="stack">
+  <div class="container">
+    <h2 class="stack__title">{tx.stack}</h2>
+    <ul class="stack__grid">
+      {
+        about.tools.map((tool) => (
+          <li class="stack__card">
+            <h3>{L(tool, 'name')}</h3>
+            <ul class="chips">
+              {L(tool, 'details')
+                .split(',')
+                .map((x) => x.trim())
+                .filter(Boolean)
+                .map((x) => (
+                  <li>{x}</li>
+                ))}
+            </ul>
+          </li>
+        ))
+      }
+      {
+        languages && (
+          <li class="stack__card stack__card--dark">
+            <h3>{tx.languages}</h3>
+            <p class="stack__lang">{languages}</p>
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .stack {
+    padding-bottom: clamp(72px, 10vw, 144px);
+  }
+  .stack__title {
+    font-size: var(--fs-h2);
+    margin-bottom: clamp(24px, 3vw, 48px);
+  }
+  .stack__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: var(--gap);
+  }
+  .stack__card {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    padding: clamp(20px, 2vw, 28px);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+  .stack__card h3 {
+    font-size: 20px;
+  }
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chips li {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .stack__card--dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .stack__lang {
+    font-family: var(--display);
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+</style>

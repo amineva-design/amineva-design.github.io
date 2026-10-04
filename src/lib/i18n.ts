@@ -1,13 +1,22 @@
 export type Lang = 'ru' | 'en';
 export const langs: Lang[] = ['ru', 'en'];
 
+// Короткие слова, которые не должны висеть в конце строки
+const SHORT = /(^|[\s(«"„—–-])(в|во|с|со|к|ко|и|а|о|об|у|на|по|за|из|от|до|не|ни|но|же|для|без|при|про|над|под|или|что|как|это|я|мы) +/giu;
+
+// Неразрывный пробел после предлогов и перед тире
+export function typo(s: string) {
+  if (!s) return s;
+  return s.replace(SHORT, '$1$2\u00a0').replace(SHORT, '$1$2\u00a0').replace(/ (—|–) /g, '\u00a0$1 ');
+}
+
 // Берёт английскую версию поля (keyEn), если она заполнена, иначе русскую.
 export function loc<T extends Record<string, any>>(obj: T, key: string, lang: Lang): string {
   if (lang === 'en') {
     const en = obj[`${key}En`];
     if (typeof en === 'string' && en.trim()) return en;
   }
-  return (obj[key] as string) ?? '';
+  return typo((obj[key] as string) ?? '');
 }
 
 // Ссылка внутри сайта с учётом языка: href('en', '/about') → '/en/about'
@@ -54,6 +63,8 @@ export const ui = {
     fullResume: 'Полное резюме ↗',
     skills: 'Навыки',
     tools: 'Инструменты',
+    stack: 'Стек',
+    languages: 'Языки',
     footerTitle: 'Время <span class="nw">в<mark>job</mark>ывать</span>',
     writeTelegram: 'Написать в Telegram',
     writeEmail: 'Написать на почту',
@@ -68,8 +79,8 @@ export const ui = {
     aboutTitle: 'Обо мне',
     privacy: 'Политика конфиденциальности',
     cookiesAria: 'Уведомление о cookies',
-    cookiesText: 'Сайт использует cookies, чтобы всё работало как надо. Подробнее — ',
-    cookiesLink: 'в политике конфиденциальности',
+    cookiesText: 'Сайт использует cookies, чтобы всё работало как\u00a0надо. Подробнее\u00a0— ',
+    cookiesLink: 'в\u00a0политике конфиденциальности',
     cookiesOk: 'Хорошо',
   },
   en: {
@@ -101,6 +112,8 @@ export const ui = {
     fullResume: 'Full resume ↗',
     skills: 'Skills',
     tools: 'Tools',
+    stack: 'Stack',
+    languages: 'Languages',
     footerTitle: 'Let’s get to <span class="nw"><mark>work</mark></span>',
     writeTelegram: 'Message on Telegram',
     writeEmail: 'Send an email',

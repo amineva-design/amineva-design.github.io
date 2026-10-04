@@ -214,6 +214,7 @@ export default config({
         ...tr('headline', 'Заголовок', { multiline: true }),
         ...tr('text', 'Текст', { multiline: true, description: textHint }),
         ...tr('hobbies', 'Помимо дизайна', { multiline: true }),
+        ...tr('languages', 'Языки', { description: 'Например: Английский — B2. Видно на главной в блоке «Стек»' }),
         photos: fields.array(siteImage('Фото'), { label: 'Фотографии', description: 'Лучше 3 штуки' }),
         experience: fields.array(
           fields.object({

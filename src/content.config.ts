@@ -74,7 +74,7 @@ const pages = defineCollection({
       socials: z.array(z.object({ ...tx('label'), url: text })).default([]),
       footerImage: img,
       // about
-      ...tx('headline', 'text', 'hobbies'),
+      ...tx('headline', 'text', 'hobbies', 'languages'),
       // privacy
       ...tx('title'),
       photos: z.array(img).default([]),

@@ -96,6 +96,12 @@ const resume = resumeHref(s, lang);
                 <dd>{L(tool, 'details')}</dd>
               </div>
             ))}
+            {L(about, 'languages') && (
+              <div>
+                <dt>{tx.languages}</dt>
+                <dd>{L(about, 'languages')}</dd>
+              </div>
+            )}
           </dl>
         </div>
       )
@@ -261,7 +267,7 @@ const resume = resumeHref(s, lang);
   }
   .tools div {
     display: grid;
-    grid-template-columns: 96px 1fr;
+    grid-template-columns: 112px 1fr;
     gap: 12px;
   }
   .tools dt {

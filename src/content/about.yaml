@@ -96,6 +96,10 @@ tools:
     details: Claude, Midjourney, Recraft, Lovable, Higgsfield, SYNTX
     nameEn: AI
     detailsEn: Claude, Midjourney, Recraft, Lovable, Higgsfield, SYNTX
+  - name: Аналитика и разработка
+    nameEn: Analytics & dev
+    details: Яндекс Метрика, Git, Vercel
+    detailsEn: Yandex Metrica, Git, Vercel
   - name: Ещё
     details: Tilda, Miro, Kaiten, Jira
     nameEn: More
@@ -105,3 +109,5 @@ textEn: >-
   I love the mix of analytics, research and visual design — and most of all, the moments when
   something complex becomes simple and clear.
 hobbiesEn: Outside of design I love art, film, books and travel
+languages: Английский — B2
+languagesEn: English — B2 (upper-intermediate)
