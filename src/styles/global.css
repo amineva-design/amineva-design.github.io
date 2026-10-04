@@ -208,3 +208,7 @@ s {
     transition-duration: 0.01ms !important;
   }
 }
+
+body {
+  overflow-x: clip;
+}

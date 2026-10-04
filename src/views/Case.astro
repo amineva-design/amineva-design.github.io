@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Marquee from '../components/Marquee.astro';
 import { richText } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -130,6 +131,17 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
                     {b.value.caption && <figcaption>{L(b.value, 'caption')}</figcaption>}
                   </figure>
                 );
+              case 'marquee':
+                return (
+                  <div class="block block--marquee">
+                    <Marquee
+                      images={b.value.images}
+                      frame={b.value.frame}
+                      reverse={b.value.reverse}
+                      caption={L(b.value, 'caption')}
+                    />
+                  </div>
+                );
               case 'video':
                 return (
                   b.value.url && (
@@ -174,6 +186,24 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
 </Base>
 
 <script>
+  // Бегущие ленты уходят до правого края экрана, широкие картинки — до края сетки
+  const content = document.querySelector<HTMLElement>('.content');
+  const body = document.querySelector<HTMLElement>('.body');
+  const setBleed = () => {
+    if (!content || !body) return;
+    const c = content.getBoundingClientRect();
+    const b = body.getBoundingClientRect();
+    const pad = parseFloat(getComputedStyle(body).paddingRight) || 0;
+    const vw = document.documentElement.clientWidth;
+    const mobile = window.matchMedia('(max-width: 1024px)').matches;
+    const left = mobile ? -c.left : 0;
+    content.style.setProperty('--bleed-left', `${left}px`);
+    content.style.setProperty('--bleed-width', `${vw - c.left - left}px`);
+    content.style.setProperty('--wide-right', `${b.right - pad - c.right}px`);
+  };
+  setBleed();
+  window.addEventListener('resize', setBleed);
+
   // Подсвечиваем текущий раздел в оглавлении
   const links = new Map(
     [...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [a.hash.slice(1), a])
@@ -350,7 +380,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
     background: #e4e4e2;
   }
   .block--image.is-wide {
-    margin-inline: calc((min(100vw, var(--max)) - 100%) / -2 + var(--gutter));
+    margin-right: calc(-1 * var(--wide-right, 0px));
   }
   figcaption {
     margin-top: 10px;

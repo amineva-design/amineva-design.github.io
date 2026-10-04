@@ -41,6 +41,15 @@ const cases = defineCollection({
               value: z.object({ left: img, right: img, ...tx('caption') }),
             }),
             z.object({
+              discriminant: z.literal('marquee'),
+              value: z.object({
+                images: z.array(img).default([]),
+                frame: z.enum(['none', 'phone']).default('none'),
+                reverse: z.boolean().default(false),
+                ...tx('caption'),
+              }),
+            }),
+            z.object({
               discriminant: z.literal('video'),
               value: z.object({ url: text, ...tx('caption') }),
             }),

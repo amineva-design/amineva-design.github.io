@@ -1,0 +1,160 @@
+title: КФУ
+titleEn: KFU
+published: true
+order: 4
+year: 2024–2026
+direction: Графический дизайн, SMM
+directionEn: Graphic design, social media
+summary: Афиши, мемы и инфографика для соцсетей Казанского федерального университета
+summaryEn: Posters, memes and infographics for Kazan Federal University’s social media
+lead: 'Афиши, мемы и репутации: визуал отдела соцмедиа КФУ'
+leadEn: 'Posters, memes and reputation: visuals for KFU’s social media team'
+role: Графический дизайнер, отдел соцмедиа
+roleEn: Graphic designer, social media team
+duration: 2024–2026
+durationEn: 2024–2026
+team: Отдел соцмедиа КФУ
+teamEn: KFU social media team
+metrics: []
+cardImage: ../../assets/cases/kfu/m1-1.png
+cardImage2: ../../assets/cases/kfu/info-1.png
+heroImage: ../../assets/cases/kfu/hero.png
+blocks:
+  - discriminant: section
+    value:
+      heading: О кейсе
+      headingEn: About the project
+      text: >-
+        Казанский федеральный университет — один из старейших и крупнейших классических вузов
+        России.
+      textEn: Kazan Federal University is one of the oldest and largest classical universities in Russia.
+      inNav: false
+  - discriminant: section
+    value:
+      heading: Задача
+      headingEn: Goal
+      text: >-
+        Сформировать гибкий визуальный язык для академических и развлекательных публикаций, ускорить
+        производство контента и повысить вовлечённость студенческой аудитории.
+      textEn: >-
+        Build a flexible visual language for both academic and entertaining posts, speed up content
+        production and increase engagement with the student audience.
+      inNav: true
+  - discriminant: section
+    value:
+      heading: Инструменты
+      headingEn: Tools
+      text: Figma, Illustrator, Photoshop, PowerPoint, AI tools
+      textEn: Figma, Illustrator, Photoshop, PowerPoint, AI tools
+      inNav: false
+  - discriminant: image
+    value:
+      image: ../../assets/cases/kfu/intro.png
+      alt: Визуал соцсетей КФУ
+      altEn: KFU social media visuals
+      caption: ''
+      captionEn: ''
+      wide: false
+  - discriminant: section
+    value:
+      heading: Свобода творчеству
+      headingEn: Creative freedom
+      text: >-
+        В КФУ мне дали редкую свободу экспериментировать: помимо официальной повестки я развивала
+        серию креативных афиш, научпоп-форматы и мемы, адаптированные под студенческую культуру. Это
+        позволило вывести визуал аккаунтов за пределы шаблона и создавать контент, который
+        действительно откликается аудитории.
+      textEn: >-
+        At KFU I had rare freedom to experiment: alongside the official agenda I developed a series
+        of creative posters, pop-science formats and memes tailored to student culture. This took
+        the accounts’ visuals beyond templates and produced content that genuinely resonates with
+        the audience.
+      inNav: true
+  - discriminant: marquee
+    value:
+      images:
+        - ../../assets/cases/kfu/m1-1.png
+        - ../../assets/cases/kfu/m1-2.png
+        - ../../assets/cases/kfu/m1-3.png
+        - ../../assets/cases/kfu/m1-4.png
+      frame: none
+      reverse: false
+      caption: ''
+      captionEn: ''
+  - discriminant: marquee
+    value:
+      images:
+        - ../../assets/cases/kfu/m2-1.png
+        - ../../assets/cases/kfu/m2-2.png
+        - ../../assets/cases/kfu/m2-3.png
+        - ../../assets/cases/kfu/m2-4.png
+      frame: none
+      reverse: true
+      caption: ''
+      captionEn: ''
+  - discriminant: marquee
+    value:
+      images:
+        - ../../assets/cases/kfu/m3-1.png
+        - ../../assets/cases/kfu/m3-2.png
+        - ../../assets/cases/kfu/m3-3.png
+        - ../../assets/cases/kfu/m3-4.png
+      frame: none
+      reverse: false
+      caption: ''
+      captionEn: ''
+  - discriminant: section
+    value:
+      heading: Инфографика
+      headingEn: Infographics
+      text: >-
+        Инфографика превращает сложные научные тексты в понятную графику, которая легко
+        воспринимается.
+      textEn: Infographics turn complex scientific texts into clear visuals that are easy to take in.
+      inNav: true
+  - discriminant: pair
+    value:
+      left: ../../assets/cases/kfu/info-1.png
+      right: ../../assets/cases/kfu/info-2.png
+      caption: ''
+      captionEn: ''
+  - discriminant: pair
+    value:
+      left: ../../assets/cases/kfu/info-3.png
+      right: ../../assets/cases/kfu/info-4.png
+      caption: ''
+      captionEn: ''
+  - discriminant: section
+    value:
+      heading: Мемы
+      headingEn: Memes
+      text: >-
+        Мы работали с мемами и трендами, адаптируя актуальные форматы под язык студентов и повестку:
+        сессию, приёмную кампанию. Мемы помогали быстро привлечь внимание и усилить эмоциональную
+        связь с аудиторией.
+      textEn: >-
+        We worked with memes and trends, adapting current formats to students’ language and the
+        agenda — exam season, admissions. Memes helped grab attention quickly and strengthen the
+        emotional connection with the audience.
+      inNav: true
+  - discriminant: pair
+    value:
+      left: ../../assets/cases/kfu/meme-1.png
+      right: ../../assets/cases/kfu/meme-2.png
+      caption: ''
+      captionEn: ''
+  - discriminant: pair
+    value:
+      left: ../../assets/cases/kfu/meme-3.png
+      right: ../../assets/cases/kfu/meme-4.png
+      caption: ''
+      captionEn: ''
+  - discriminant: section
+    value:
+      heading: Результат
+      headingEn: Results
+      text: >-
+        Современный контент, который отражает культуру университета и вовлекает студентов и
+        абитуриентов.
+      textEn: Modern content that reflects the university’s culture and engages students and applicants.
+      inNav: true

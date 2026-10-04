@@ -141,6 +141,28 @@ export default config({
                 ...tr('caption', 'Подпись'),
               }),
             },
+            marquee: {
+              label: 'Бегущая лента',
+              itemLabel: (props) =>
+                `Бегущая лента · ${props.fields.images.elements.length} шт.` +
+                (props.fields.frame.value === 'phone' ? ' · в рамке телефона' : ''),
+              schema: fields.object({
+                images: fields.array(caseImage('Картинка'), {
+                  label: 'Картинки',
+                  description: 'Лучше 4–8 штук. Для рамки телефона — вертикальные скриншоты экранов',
+                }),
+                frame: fields.select({
+                  label: 'Рамка',
+                  options: [
+                    { label: 'Без рамки (квадратные карточки)', value: 'none' },
+                    { label: 'Телефон (для экранов интерфейса)', value: 'phone' },
+                  ],
+                  defaultValue: 'none',
+                }),
+                reverse: fields.checkbox({ label: 'Ехать в обратную сторону', defaultValue: false }),
+                ...tr('caption', 'Подпись'),
+              }),
+            },
             video: {
               label: 'Видео',
               schema: fields.object({
