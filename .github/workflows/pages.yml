@@ -26,13 +26,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Без своего домена сайт открывается по адресу …github.io/amineva-portfolio/.
-      # Когда подключим amineva.ru: в Settings → Secrets and variables → Actions → Variables
-      # задать SITE_BASE = / и SITE_URL = https://amineva.ru
+      # Репозиторий называется amineva-design.github.io — сайт открывается с корня этого адреса.
+      # Если позже подключим свой домен: в Settings → Secrets and variables → Actions → Variables
+      # задать SITE_URL = https://amineva.ru
       - run: npm run build
         env:
-          SITE_BASE: ${{ vars.SITE_BASE || '/amineva-portfolio' }}
-          SITE_URL: ${{ vars.SITE_URL || 'https://reginarisk12022001-ui.github.io' }}
+          SITE_BASE: ${{ vars.SITE_BASE || '/' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://amineva-design.github.io' }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
