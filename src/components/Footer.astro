@@ -37,7 +37,7 @@ const year = new Date().getFullYear();
         <p class="label">{tx.contactsLabel}</p>
         <ul>
           {s.email && <li><a href={`mailto:${s.email}`}>{s.email}</a></li>}
-          {tg && <li><a href={tg} target="_blank" rel="noopener">@{s.telegram.replace(/^@/, '')}</a></li>}
+          {tg && <li><a href={tg} target="_blank" rel="noopener">Tg @{s.telegram.replace(/^@/, '')}</a></li>}
           {resume && <li><a href={resume} target="_blank" rel="noopener">{tx.resume} ↗</a></li>}
         </ul>
       </div>
