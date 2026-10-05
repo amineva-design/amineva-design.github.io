@@ -206,13 +206,13 @@ const lastName = rest.join(' ');
     .hero {
       display: flex;
       flex-direction: column;
-      padding-top: 24px;
+      padding-top: 40px;
     }
     .hero__grid {
       display: contents;
     }
     .hero__code {
-      display: none;
+      margin-bottom: 14px;
     }
     .hero__name,
     .hero__intro,
@@ -237,7 +237,8 @@ const lastName = rest.join(' ');
     }
     .hero {
       /* высота экрана минус шапка, отступ сверху и блок с именем (2 строки имени + 2 строки роли) */
-      --ascii-h: max(92vw, calc(100svh - 65px - 24px - 23.75vw - 70px));
+      /* экран минус шапка, отступ, строка кода, имя с ролью — и ещё немного, чтобы описание подтянулось выше */
+      --ascii-h: max(92vw, calc(100svh - 65px - 40px - 32px - 23.75vw - 56px - 110px));
     }
     .hero__ascii {
       order: 2;
@@ -251,7 +252,7 @@ const lastName = rest.join(' ');
     .hero__intro {
       order: 3;
       max-width: 520px;
-      margin-top: 40px;
+      margin-top: 20px;
     }
     .hero__intro p {
       font-size: 12px;
