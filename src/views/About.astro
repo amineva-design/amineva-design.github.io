@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { getAbout, getSettings, richText, resumeHref } from '../lib/content';
+import { getAbout, getSettings, inline, richText, resumeHref } from '../lib/content';
 import { loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
@@ -17,8 +17,8 @@ const resume = resumeHref(s, lang);
 
 <Base title={tx.aboutTitle} description={L(about, 'text')} lang={lang}>
   <section class="container about">
-    <p class="about__label">{tx.aboutLabel}</p>
-    <h1 class="about__headline">{L(about, 'headline')}</h1>
+    <p class="about__label accent">{tx.aboutLabel}</p>
+    <h1 class="about__headline" set:html={inline(L(about, 'headline'))} />
 
     <div class="about__grid">
       <div class="rich about__text" set:html={richText(L(about, 'text'))} />
@@ -114,8 +114,7 @@ const resume = resumeHref(s, lang);
     padding-top: clamp(40px, 6vw, 88px);
   }
   .about__label {
-    font-family: var(--display);
-    font-size: var(--fs-h3);
+    font-size: clamp(32px, 3vw, 44px);
     color: var(--accent);
     margin-bottom: 16px;
   }

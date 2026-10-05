@@ -21,7 +21,7 @@ const siteImage = (label: string, description?: string) =>
   });
 
 const textHint =
-  'Пустая строка — новый абзац. Строка, которая начинается с «- », станет пунктом списка.';
+  'Пустая строка — новый абзац. Строка, которая начинается с «- », станет пунктом списка. _слово_ — акцентный шрифт.';
 
 type TextOpts = { description?: string; multiline?: boolean; defaultValue?: string };
 
@@ -82,7 +82,7 @@ export default config({
           multiline: true,
         }),
         ...tr('lead', 'Главная мысль кейса', {
-          description: 'Крупный текст в начале страницы кейса',
+          description: 'Крупный текст в начале страницы кейса. _слово_ — акцентный шрифт',
           multiline: true,
         }),
         ...tr('role', 'Роль', { description: 'Например: продуктовый дизайнер' }),
@@ -233,7 +233,7 @@ export default config({
       path: 'src/content/about',
       format: { data: 'yaml' },
       schema: {
-        ...tr('headline', 'Заголовок', { multiline: true }),
+        ...tr('headline', 'Заголовок', { multiline: true, description: '_слово_ — акцентный шрифт (курсив Garamond)' }),
         ...tr('text', 'Текст', { multiline: true, description: textHint }),
         ...tr('hobbies', 'Помимо дизайна', { multiline: true }),
         ...tr('languages', 'Языки', { description: 'Например: Английский — B2. Видно на главной в блоке «Стек»' }),

@@ -84,8 +84,8 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
   <section class="about-teaser">
     <div class="container about">
-      <p class="about__label">{tx.aboutLabel}</p>
-      <h2 class="about__headline">{L(about, 'headline')}</h2>
+      <p class="about__label accent">{tx.aboutLabel}</p>
+      <h2 class="about__headline" set:html={inline(L(about, 'headline'))} />
 
       {about.photos[0] && (
         <figure class="about__ph about__ph--portrait">
@@ -345,8 +345,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   .about__label {
     grid-column: 1 / 8;
     grid-row: 1;
-    font-family: var(--display);
-    font-size: var(--fs-h3);
+    font-size: clamp(32px, 3vw, 44px);
     color: var(--accent);
     margin-bottom: clamp(20px, 2.4vw, 36px);
   }
