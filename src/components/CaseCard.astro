@@ -85,8 +85,6 @@ const eager = index === 0;
   /* кейс — один цельный блок: текст слева, картинка справа, без зазора */
   .case {
     display: grid;
-    /* текст ровно на 5 колонок сетки, картинка начинается с 6-й — как фото в «Обо мне» и инструменты в стеке */
-    grid-template-columns: calc((100% - 11 * var(--gap)) * 5 / 12 + 5 * var(--gap)) minmax(0, 1fr);
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--card);
@@ -183,6 +181,13 @@ const eager = index === 0;
     .case__media {
       aspect-ratio: auto;
       min-height: 100%;
+    }
+  }
+  /* текст ровно на 5 колонок сетки, картинка начинается с 6-й — как фото в «Обо мне» и инструменты в стеке.
+     Только для экранов шире телефона: так правило не перебивает мобильную раскладку в одну колонку */
+  @media (min-width: 641px) {
+    .case {
+      grid-template-columns: calc((100% - 11 * var(--gap)) * 5 / 12 + 5 * var(--gap)) minmax(0, 1fr);
     }
   }
   @media (max-width: 640px) {
