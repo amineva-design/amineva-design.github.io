@@ -99,8 +99,8 @@ export default config({
             itemLabel: (props) => `${props.fields.value.value} — ${props.fields.label.value}`,
           }
         ),
-        cardImage: caseImage('Картинка карточки 1', 'Квадратная, показывается на главной'),
-        cardImage2: caseImage('Картинка карточки 2', 'Необязательно. На телефоне не показывается'),
+        cardImage: caseImage('Картинка карточки', 'Обложка на главной, пропорции 16:10. На сайте показывается ч/б, цветная при наведении'),
+        cardImage2: caseImage('Картинка карточки 2', 'Сейчас не используется'),
         cardVideo: fields.url({
           label: 'Видео вместо картинки 2',
           description: 'Ссылка на Kinescope (embed). Если заполнено — показывается вместо картинки 2',
@@ -235,7 +235,7 @@ export default config({
         ...tr('text', 'Текст', { multiline: true, description: textHint }),
         ...tr('hobbies', 'Помимо дизайна', { multiline: true }),
         ...tr('languages', 'Языки', { description: 'Например: Английский — B2. Видно на главной в блоке «Стек»' }),
-        photos: fields.array(siteImage('Фото'), { label: 'Фотографии', description: 'Лучше 3 штуки' }),
+        photos: fields.array(siteImage('Фото'), { label: 'Фотографии', description: 'Показываются первые 2, вертикальные (4:5). Ч/б, цветные при наведении' }),
         experience: fields.array(
           fields.object({
             ...tr('period', 'Период', { description: 'Например: 2024 — сейчас' }),
