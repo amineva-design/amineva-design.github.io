@@ -9,13 +9,15 @@ interface Props {
   alt: string;
   // кадрирование исходника в долях: x, y, ширина, высота
   crop?: [number, number, number, number];
+  // куда прижать изображение внутри холста
+  align?: 'bottom' | 'left' | 'right';
   class?: string;
 }
-const { src, alt, crop = [0, 0, 1, 1], class: cls } = Astro.props;
+const { src, alt, crop = [0, 0, 1, 1], align = 'bottom', class: cls } = Astro.props;
 const small = await getImage({ src, width: 900, format: 'webp' });
 ---
 
-<div class:list={['ascii', cls]} data-ascii data-src={small.src} data-crop={crop.join(',')} role="img" aria-label={alt}>
+<div class:list={['ascii', cls]} data-ascii data-src={small.src} data-crop={crop.join(',')} data-align={align} role="img" aria-label={alt}>
   <canvas></canvas>
 </div>
 
@@ -60,10 +62,13 @@ const small = await getImage({ src, width: 900, format: 'webp' });
       const o = off.getContext('2d', { willReadFrequently: true })!;
       const sx = crop[0] * img.naturalWidth, sy = crop[1] * img.naturalHeight;
       const sw = crop[2] * img.naturalWidth, sh = crop[3] * img.naturalHeight;
-      // вписываем фигуру целиком (contain), по центру и прижатой к низу
+      // вписываем изображение целиком (contain): портрет — по центру и к низу, руки — к краю
       const k = Math.min(cols / sw, (rows * (ch / cw)) / sh);
       const dw = sw * k, dh = (sh * k) / (ch / cw);
-      o.drawImage(img, sx, sy, sw, sh, (cols - dw) / 2, rows - dh, dw, dh);
+      const align = root.dataset.align;
+      const ox0 = align === 'left' ? 0 : align === 'right' ? cols - dw : (cols - dw) / 2;
+      const oy0 = align === 'bottom' ? rows - dh : (rows - dh) / 2;
+      o.drawImage(img, sx, sy, sw, sh, ox0, oy0, dw, dh);
       const data = o.getImageData(0, 0, cols, rows).data;
       levels = new Float32Array(cols * rows);
       reveal = new Float32Array(cols * rows);

@@ -223,7 +223,6 @@ export default config({
           }),
           { label: 'Соцсети', itemLabel: (props) => props.fields.label.value }
         ),
-        footerImage: siteImage('Картинка в подвале'),
       },
     }),
 

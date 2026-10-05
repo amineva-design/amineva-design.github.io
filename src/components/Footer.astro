@@ -1,5 +1,7 @@
 ---
-import { Image } from 'astro:assets';
+import AsciiPortrait from './AsciiPortrait.astro';
+import handLeft from '../assets/site/hand-left.png';
+import handRight from '../assets/site/hand-right.png';
 import { getSettings, resumeHref, telegramHref } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -25,11 +27,6 @@ const year = new Date().getFullYear();
           {s.email && <a class="btn btn--ghost" href={`mailto:${s.email}`}>{tx.writeEmail}</a>}
         </div>
       </div>
-      {
-        s.footerImage && (
-          <Image class="footer__img" src={s.footerImage} alt="" widths={[240, 480]} sizes="240px" loading="lazy" />
-        )
-      }
     </div>
 
     <div class="footer__cols">
@@ -57,6 +54,13 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
+  </div>
+
+  <!-- руки как на фреске «Сотворение Адама», из символов -->
+  <div class="footer__hands">
+    <div class="footer__hand footer__hand--left"><AsciiPortrait src={handLeft} alt="" align="left" /></div>
+    <p class="footer__hands-text">{loc(s, 'name', lang)}<br />{loc(s, 'role', lang)}</p>
+    <div class="footer__hand footer__hand--right"><AsciiPortrait src={handRight} alt="" align="right" /></div>
   </div>
 
   <div class="footer__bottom">
@@ -105,13 +109,7 @@ const year = new Date().getFullYear();
     gap: 12px;
     margin-top: 28px;
   }
-  .footer__img {
-    width: 240px;
-    height: auto;
-    border-radius: var(--radius);
-    border: 2px solid var(--accent);
-    flex-shrink: 0;
-  }
+
   .footer__cols {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -132,6 +130,41 @@ const year = new Date().getFullYear();
   .footer ul a:hover {
     color: var(--accent);
   }
+  .footer__hands {
+    position: relative;
+    height: clamp(150px, 19vw, 300px);
+    display: grid;
+    place-items: center;
+  }
+  .footer__hand {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+  }
+  .footer__hand--left {
+    left: 0;
+  }
+  .footer__hand--right {
+    right: 0;
+  }
+  .footer__hands-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  @media (max-width: 720px) {
+    .footer__hand {
+      width: 50%;
+    }
+    .footer__hands-text {
+      display: none;
+    }
+  }
+
   /* линия на всю ширину экрана */
   .footer__bottom {
     border-top: 1px solid var(--line);
@@ -160,9 +193,6 @@ const year = new Date().getFullYear();
     .footer__top {
       flex-direction: column;
       align-items: flex-start;
-    }
-    .footer__img {
-      width: 180px;
     }
     .footer__cols {
       grid-template-columns: 1fr 1fr;

@@ -80,7 +80,6 @@ const pages = defineCollection({
       resumeFileEn: text,
       resumeUrlEn: text,
       socials: z.array(z.object({ ...tx('label'), url: text })).default([]),
-      footerImage: img,
       // about
       ...tx('headline', 'text', 'hobbies', 'languages'),
       // privacy
