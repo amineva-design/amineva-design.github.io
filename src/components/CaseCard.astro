@@ -64,7 +64,7 @@ const eager = index === 0;
   /* кейс — один цельный блок: текст слева, картинка справа, без зазора */
   .case {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
     border: 1px solid var(--line);
     background: var(--card);
     text-decoration: none;
@@ -74,14 +74,14 @@ const eager = index === 0;
     overflow: hidden;
   }
   .case__media {
-    aspect-ratio: 2 / 1;
+    aspect-ratio: 16 / 10;
   }
   .case__info {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    padding: clamp(20px, 2.2vw, 32px);
+    padding: clamp(24px, 3vw, 48px);
     background: var(--card);
     transition: box-shadow 0.3s var(--ease);
   }
