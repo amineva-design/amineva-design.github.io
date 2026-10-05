@@ -58,7 +58,15 @@ const radius = () => getComputedStyle(root).getPropertyValue('--radius').trim() 
 function reveal() {
   // Заголовки и крупный текст: строки выезжают из-под маски
   gsap.utils.toArray<HTMLElement>('[data-reveal="lines"]').forEach((el) => {
-    const split = SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
+    const split = SplitText.create(el, {
+      type: 'lines',
+      mask: 'lines',
+      linesClass: 'split-line',
+      // по умолчанию SplitText превращает неразрывные пробелы в обычные — и предлоги повисают.
+      // Схлопываем только обычные пробелы, NBSP оставляем
+      reduceWhiteSpace: false,
+      prepareText: (text) => text.replace(/[ \t\n\r]+/g, ' '),
+    });
     splits.push(split);
     gsap.set(el, { autoAlpha: 1 });
     gsap.from(split.lines, {

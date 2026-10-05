@@ -1,6 +1,5 @@
 @import '@fontsource-variable/arimo';
 @import '@fontsource-variable/onest';
-@import '@fontsource-variable/jetbrains-mono';
 @import 'lenis/dist/lenis.css';
 
 :root {
@@ -13,7 +12,6 @@
   --line: rgba(20, 20, 18, 0.12);
   --line-on-dark: rgba(242, 242, 243, 0.16);
 
-  --mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
   --display: 'Arimo Variable', 'Helvetica Neue', Arial, sans-serif;
   --text: 'Onest Variable', system-ui, sans-serif;
 
@@ -91,10 +89,9 @@ p {
 }
 
 .label {
-  font-family: var(--mono);
   font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
   line-height: 1.4;
@@ -144,18 +141,26 @@ p {
   border-color: var(--paper);
 }
 
+/* Ссылка-действие: подчёркивание + стрелка. Подчёркивание при наведении становится зелёным, стрелка сдвигается */
 .link-arrow {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  font-family: var(--display);
   font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 2px;
-  transition: border-color 0.2s;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 4px;
+  transition: border-color 0.3s;
+}
+.link-arrow__icon {
+  transition: transform 0.4s var(--ease);
 }
 .link-arrow:hover {
-  border-color: currentColor;
+  border-color: var(--accent);
+}
+.link-arrow:hover .link-arrow__icon {
+  transform: translateX(6px);
 }
 
 /* Текст из админки */
