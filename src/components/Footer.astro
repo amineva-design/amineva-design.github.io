@@ -88,9 +88,19 @@ const year = new Date().getFullYear();
 
   .footer__cols {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--gap);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
     padding-block: 40px;
+  }
+  /* колонки встают на линии общей сетки: 1-я, 6-я (как картинки кейсов и стек), 10-я */
+  .footer__cols > div:nth-child(1) {
+    grid-column: 1 / 6;
+  }
+  .footer__cols > div:nth-child(2) {
+    grid-column: 6 / 10;
+  }
+  .footer__cols > div:nth-child(3) {
+    grid-column: 10 / 13;
   }
   .footer ul {
     list-style: none;
@@ -181,8 +191,14 @@ const year = new Date().getFullYear();
       grid-template-columns: 1fr 1fr;
       row-gap: 32px;
     }
-    .footer__cols > div:first-child {
+    .footer__cols > div:nth-child(1) {
       grid-column: 1 / -1;
+    }
+    .footer__cols > div:nth-child(2) {
+      grid-column: 1;
+    }
+    .footer__cols > div:nth-child(3) {
+      grid-column: 2;
     }
 
   }

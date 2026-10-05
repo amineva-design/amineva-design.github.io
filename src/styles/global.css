@@ -17,7 +17,8 @@
 
   --gutter: clamp(16px, 3.4vw, 48px);
   --gap: clamp(12px, 1.7vw, 24px);
-  --radius: 0px;
+  --radius: 20px;
+  /* ширина N колонок 12-колоночной сетки внутри контейнера: calc(var(--cols-5)) и т.п. считаем на месте */
   --max: 1440px;
 
   --fs-body: 17px;

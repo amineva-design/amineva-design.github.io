@@ -63,17 +63,17 @@ const rows = [
   .stack__row {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
-    gap: var(--gap);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
     align-items: baseline;
-    padding: clamp(16px, 1.8vw, 26px) 12px;
+    padding-block: clamp(16px, 1.8vw, 26px);
     border-top: 1px solid var(--line);
     isolation: isolate;
   }
   .stack__row::before {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: 0 -12px;
     z-index: -1;
     background: color-mix(in srgb, var(--accent) 12%, transparent);
     opacity: 0;
@@ -95,7 +95,11 @@ const rows = [
     color: var(--muted);
     text-transform: uppercase;
   }
+  .stack__name {
+    grid-column: 1 / 6;
+  }
   .stack__items {
+    grid-column: 6 / 13;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -116,7 +120,10 @@ const rows = [
     .stack__row {
       grid-template-columns: minmax(0, 1fr);
       row-gap: 8px;
-      padding-inline: 0;
+    }
+    .stack__name,
+    .stack__items {
+      grid-column: 1;
     }
     .stack__items {
       font-size: 22px;
