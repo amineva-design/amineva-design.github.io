@@ -6,7 +6,7 @@ import CookieBanner from '../components/CookieBanner.astro';
 import Cursor from '../components/Cursor.astro';
 import { ClientRouter } from 'astro:transitions';
 import { getSettings } from '../lib/content';
-import { loc, switchPath, t, type Lang } from '../lib/i18n';
+import { loc, switchPath, t, withBase, type Lang } from '../lib/i18n';
 import { getImage } from 'astro:assets';
 
 interface Props {
@@ -41,7 +41,7 @@ const alt = (l: Lang) => new URL(switchPath(path, l), Astro.site);
     <link rel="alternate" hreflang="ru" href={alt('ru')} />
     <link rel="alternate" hreflang="en" href={alt('en')} />
     <meta name="theme-color" content="#141412" />
-    <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href={withBase('/favicon.png')} type="image/png" sizes="32x32" />
     <ClientRouter fallback="swap" />
     <script is:inline>
       // Прячем элементы до анимации появления; если скрипт не загрузится — показываем всё через 3 с

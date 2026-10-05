@@ -1,3 +1,4 @@
+import { withBase } from './i18n';
 import { getCollection, getEntry } from 'astro:content';
 
 export async function getSettings() {
@@ -28,7 +29,7 @@ export function resumeHref(
   lang: 'ru' | 'en' = 'ru'
 ) {
   const ru = s.resumeFile || s.resumeUrl || '';
-  return lang === 'en' ? s.resumeFileEn || s.resumeUrlEn || ru : ru;
+  return withBase(lang === 'en' ? s.resumeFileEn || s.resumeUrlEn || ru : ru);
 }
 
 export function telegramHref(handle: string) {

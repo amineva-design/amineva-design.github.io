@@ -22,17 +22,22 @@ export function loc<T extends Record<string, any>>(obj: T, key: string, lang: La
   return typo((obj[key] as string) ?? '');
 }
 
+// Подпапка сайта (на GitHub Pages без своего домена — /amineva-portfolio), обычно пустая
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const withBase = (path: string) => (path.startsWith('/') ? `${BASE}${path}` : path);
+
 // Ссылка внутри сайта с учётом языка: href('en', '/about') → '/en/about'
 export function href(lang: Lang, path: string) {
-  if (lang === 'ru') return path;
-  if (path === '/') return '/en/';
-  if (path.startsWith('/#')) return `/en/${path.slice(1)}`;
-  return `/en${path}`;
+  if (lang === 'ru') return withBase(path);
+  if (path === '/') return withBase('/en/');
+  if (path.startsWith('/#')) return withBase(`/en/${path.slice(1)}`);
+  return withBase(`/en${path}`);
 }
 
 // Тот же адрес на другом языке
 export function switchPath(pathname: string, to: Lang) {
-  const bare = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  const noBase = BASE && pathname.startsWith(BASE) ? pathname.slice(BASE.length) || '/' : pathname;
+  const bare = noBase.replace(/^\/en(?=\/|$)/, '') || '/';
   return href(to, bare);
 }
 

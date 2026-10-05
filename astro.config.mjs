@@ -11,7 +11,9 @@ const githubRepo = process.env.PUBLIC_KEYSTATIC_GITHUB_REPO || env.PUBLIC_KEYSTA
 const withAdmin = isDev || Boolean(githubRepo);
 
 export default defineConfig({
-  site: 'https://amineva.ru',
+  // На GitHub Pages без своего домена сайт живёт в подпапке (/amineva-portfolio/) — её задаёт сборка.
+  site: process.env.SITE_URL || 'https://amineva.ru',
+  base: process.env.SITE_BASE || '/',
   integrations: [react(), ...(withAdmin ? [keystatic()] : [])],
   adapter: withAdmin ? vercel() : undefined,
   output: 'static',
