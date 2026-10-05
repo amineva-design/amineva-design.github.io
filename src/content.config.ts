@@ -22,6 +22,7 @@ const cases = defineCollection({
       ...tx('direction', 'summary', 'lead', 'role', 'duration', 'team'),
       metrics: z.array(z.object({ value: text, ...tx('label') })).default([]),
       cardImage: img,
+      cardPosition: z.enum(['center', 'left', 'right']).default('center'),
       cardImage2: img,
       cardVideo: text,
       heroImage: img,

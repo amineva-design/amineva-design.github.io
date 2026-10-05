@@ -99,7 +99,17 @@ export default config({
             itemLabel: (props) => `${props.fields.value.value} — ${props.fields.label.value}`,
           }
         ),
-        cardImage: caseImage('Обложка на главной', 'Обложка на главной, пропорции 16:10. На сайте показывается ч/б, цветная при наведении'),
+        cardImage: caseImage('Обложка на главной', 'Квадратная (или близкая к квадрату), например 1600×1600'),
+        cardPosition: fields.select({
+          label: 'Как обрезать обложку',
+          description: 'Обложка на главной квадратная. Если важное (текст, логотип) у края — прижми к этому краю',
+          options: [
+            { label: 'По центру', value: 'center' },
+            { label: 'Прижать влево', value: 'left' },
+            { label: 'Прижать вправо', value: 'right' },
+          ],
+          defaultValue: 'center',
+        }),
         cardImage2: caseImage('Картинка карточки 2', 'Сейчас не используется'),
         cardVideo: fields.url({
           label: 'Видео вместо картинки 2',

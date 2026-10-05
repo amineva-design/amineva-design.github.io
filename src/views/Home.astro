@@ -274,9 +274,17 @@ const lastName = rest.join(' ');
     font-size: var(--fs-h2);
     margin-bottom: clamp(24px, 3vw, 48px);
   }
+  /* кейсы — по два в ряд: квадратная обложка, под ней коротко о проекте */
   .cases__list {
     display: grid;
-    gap: clamp(32px, 3vw, 40px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: clamp(32px, 4vw, 56px);
+  }
+  @media (max-width: 640px) {
+    .cases__list {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* ——— Обо мне: текст слева, две фотографии одной высоты справа ——— */

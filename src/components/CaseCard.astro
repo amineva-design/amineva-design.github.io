@@ -14,166 +14,65 @@ const tx = t(lang);
 const href = link(lang, `/cases/${entry.id}`);
 const title = loc(c, 'title', lang);
 const summary = loc(c, 'summary', lang);
-const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 900px';
+const sizes = '(max-width: 640px) 100vw, 50vw';
 const eager = index === 0;
 ---
 
 <a class="case" href={href} aria-label={tx.caseAria(title)} data-cursor={tx.cursorView} data-reveal="fade">
-  <div class="case__info">
-    <div>
-      <h3 class="case__title">{title}</h3>
-      {summary && <p class="case__summary">{summary}</p>}
-    </div>
-
-    {
-      c.metrics.length > 0 && (
-        <ul class="case__metrics">
-          {c.metrics.slice(0, 2).map((m) => (
-            <li>
-              <b>{m.value}</b> {loc(m, 'label', lang)}
-            </li>
-          ))}
-        </ul>
-      )
-    }
-
-    <div class="case__meta">
-      <div>
-        <span class="label">{tx.direction}</span>
-        <span>{loc(c, 'direction', lang)}</span>
-      </div>
-      <div>
-        <span class="label">{tx.year}</span>
-        <span>{c.year}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="case__media" transition:name={`case-${entry.id}`}>
+  <div class="case__media" transition:name={`case-${entry.id}`} style={`--pos: ${c.cardPosition}`}>
     {
       c.cardImage && (
-        <Image src={c.cardImage} alt="" widths={[640, 1000, 1600]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
+        <Image src={c.cardImage} alt="" widths={[640, 1000, 1400]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
       )
     }
   </div>
-
+  <div class="case__info">
+    <h3 class="case__title">{title}</h3>
+    {summary && <p class="case__summary">{summary}</p>}
+    {loc(c, 'direction', lang) && <p class="case__dir">{loc(c, 'direction', lang)}</p>}
+  </div>
 </a>
 
 <style>
-  /* кейс — один цельный блок: текст слева, картинка справа, без зазора */
+  /* карточка кейса: квадратная обложка, под ней название, что делалось и направление */
   .case {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--card);
     text-decoration: none;
   }
-  .case__info,
   .case__media {
+    aspect-ratio: 1;
     overflow: hidden;
+    background: #e4e4e2;
   }
-  .case__media {
-    aspect-ratio: 16 / 10;
+  .case__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--pos, center);
+    transition: transform 0.6s var(--ease);
+  }
+  .case:hover .case__media :global(img) {
+    transform: scale(1.04);
   }
   .case__info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    --pad: clamp(24px, 3vw, 48px);
-    padding: var(--pad);
-    background: var(--card);
-    transition: box-shadow 0.3s var(--ease);
+    display: grid;
+    gap: 10px;
+    padding: clamp(20px, 2.2vw, 32px);
   }
   .case__title {
     font-size: var(--fs-h3);
   }
   .case__summary {
-    margin-top: 14px;
     font-size: 16px;
     line-height: 1.5;
   }
-  .case__metrics {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 6px;
+  .case__dir {
+    margin-top: 4px;
     font-size: var(--fs-small);
     color: var(--muted);
-  }
-  .case__metrics b {
-    color: var(--ink);
-    font-weight: 700;
-    font-family: var(--display);
-    font-size: 16px;
-    margin-right: 4px;
-  }
-  .case__meta {
-    display: flex;
-    align-items: flex-start;
-    gap: 32px;
-    font-size: 15px;
-  }
-  .case__meta > div {
-    display: grid;
-    gap: 2px;
-  }
-  .case__meta > div:nth-child(2) {
-    white-space: nowrap;
-  }
-  .case__media {
-    background: #e4e4e2;
-  }
-  .case__media :global(img),
-  .case__media iframe {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s var(--ease);
-  }
-  .case__media iframe {
-    border: 0;
-    pointer-events: none;
-    transform: scale(1.02);
-  }
-  .case:hover .case__media :global(img) {
-    transform: scale(1.04);
-  }
-
-
-  /* правила по ширине экрана не пересекаются — так в собранном CSS они не перебивают друг друга */
-  @media (min-width: 641px) and (max-width: 1024px) {
-    .case .case__media {
-      aspect-ratio: auto;
-      min-height: 100%;
-    }
-  }
-  /* текст ровно на 5 колонок сетки, картинка начинается с 6-й — как фото в «Обо мне» и инструменты в стеке.
-     Только для экранов шире телефона: так правило не перебивает мобильную раскладку в одну колонку */
-  @media (min-width: 641px) {
-    .case {
-      container-type: inline-size;
-      grid-template-columns: calc((100% - 11 * var(--gap)) * 5 / 12 + 5 * var(--gap)) minmax(0, 1fr);
-    }
-    /* «Год» встаёт на 4-ю колонку общей сетки (100cqw — ширина карточки = ширина сетки) */
-    .case__meta {
-      display: grid;
-      grid-template-columns: calc(3 * ((100cqw - 11 * var(--gap)) / 12 + var(--gap)) - var(--pad)) minmax(0, 1fr);
-      gap: 0;
-    }
-  }
-  /* телефон: картинка сверху, под ней текст */
-  @media (max-width: 640px) {
-    .case {
-      grid-template-columns: 1fr;
-    }
-    .case .case__media {
-      order: -1;
-      aspect-ratio: 16 / 10;
-    }
-    .case__summary {
-      margin-top: 10px;
-    }
   }
 </style>
