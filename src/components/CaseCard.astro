@@ -80,7 +80,8 @@ const eager = index === 0;
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    padding: clamp(24px, 3vw, 48px);
+    --pad: clamp(24px, 3vw, 48px);
+    padding: var(--pad);
     background: var(--card);
     transition: box-shadow 0.3s var(--ease);
   }
@@ -165,7 +166,14 @@ const eager = index === 0;
      Только для экранов шире телефона: так правило не перебивает мобильную раскладку в одну колонку */
   @media (min-width: 641px) {
     .case {
+      container-type: inline-size;
       grid-template-columns: calc((100% - 11 * var(--gap)) * 5 / 12 + 5 * var(--gap)) minmax(0, 1fr);
+    }
+    /* «Год» встаёт на 4-ю колонку общей сетки (100cqw — ширина карточки = ширина сетки) */
+    .case__meta {
+      display: grid;
+      grid-template-columns: calc(3 * ((100cqw - 11 * var(--gap)) / 12 + var(--gap)) - var(--pad)) minmax(0, 1fr);
+      gap: 0;
     }
   }
   /* телефон: картинка сверху, под ней текст */
