@@ -18,12 +18,13 @@ const tx = t(lang);
 
 <script>
   const KEY = 'cookies-accepted';
-  const banner = document.querySelector<HTMLElement>('[data-cookies]');
-  let accepted = false;
-  try {
-    accepted = localStorage.getItem(KEY) === '1';
-  } catch {}
-  if (banner && !accepted) {
+  document.addEventListener('astro:page-load', () => {
+    const banner = document.querySelector<HTMLElement>('[data-cookies]');
+    let accepted = false;
+    try {
+      accepted = localStorage.getItem(KEY) === '1';
+    } catch {}
+    if (!banner || accepted) return;
     banner.hidden = false;
     requestAnimationFrame(() => banner.classList.add('is-visible'));
     banner.querySelector('[data-cookies-ok]')?.addEventListener('click', () => {
@@ -33,7 +34,7 @@ const tx = t(lang);
       banner.classList.remove('is-visible');
       setTimeout(() => (banner.hidden = true), 300);
     });
-  }
+  });
 </script>
 
 <style>
@@ -50,7 +51,7 @@ const tx = t(lang);
     border-radius: var(--radius);
     background: var(--card);
     color: var(--ink);
-    box-shadow: 0 12px 48px rgba(26, 26, 23, 0.16);
+    box-shadow: 0 12px 48px rgba(20, 20, 18, 0.16);
     font-size: 15px;
     line-height: 1.5;
     opacity: 0;

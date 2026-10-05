@@ -3,6 +3,8 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import Cursor from '../components/Cursor.astro';
+import { ClientRouter } from 'astro:transitions';
 import { getSettings } from '../lib/content';
 import { loc, switchPath, t, type Lang } from '../lib/i18n';
 import { getImage } from 'astro:assets';
@@ -38,8 +40,18 @@ const alt = (l: Lang) => new URL(switchPath(path, l), Astro.site);
     {og && <meta property="og:image" content={new URL(og.src, Astro.site)} />}
     <link rel="alternate" hreflang="ru" href={alt('ru')} />
     <link rel="alternate" hreflang="en" href={alt('en')} />
-    <meta name="theme-color" content="#1a1a17" />
+    <meta name="theme-color" content="#141412" />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+    <ClientRouter fallback="swap" />
+    <script is:inline>
+      // Прячем элементы до анимации появления; если скрипт не загрузится — показываем всё через 3 с
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+        setTimeout(function () {
+          if (!window.__motionReady) document.documentElement.classList.remove('motion');
+        }, 3000);
+      }
+    </script>
   </head>
   <body>
     <a class="visually-hidden" href="#main">{t(lang).skip}</a>
@@ -49,5 +61,9 @@ const alt = (l: Lang) => new URL(switchPath(path, l), Astro.site);
     </main>
     <Footer lang={lang} />
     <CookieBanner lang={lang} />
+    <Cursor />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

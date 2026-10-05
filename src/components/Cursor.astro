@@ -1,0 +1,125 @@
+---
+// Кастомный курсор: кружок с инверсией цвета. Над карточками кейсов — оранжевый круг с подписью.
+// Только для мыши; на тачскринах не показывается.
+---
+
+<div class="cursor" aria-hidden="true" data-cursor-root transition:persist>
+  <div class="cursor__dot"></div>
+  <div class="cursor__label"><span data-cursor-text></span></div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-cursor-root]');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (root && fine && !(root as any).__init) {
+    (root as any).__init = true;
+    const html = document.documentElement;
+    const text = root.querySelector<HTMLElement>('[data-cursor-text]')!;
+    let mx = -100, my = -100, x = -100, y = -100;
+    const k = reduced ? 1 : 0.3;
+
+    html.classList.add('has-cursor');
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      mx = e.clientX;
+      my = e.clientY;
+      root.classList.add('is-visible');
+    });
+    document.addEventListener('pointerleave', () => root.classList.remove('is-visible'));
+    window.addEventListener('pointerdown', () => root.classList.add('is-down'));
+    window.addEventListener('pointerup', () => root.classList.remove('is-down'));
+
+    const loop = () => {
+      x += (mx - x) * k;
+      y += (my - y) * k;
+      root.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      requestAnimationFrame(loop);
+    };
+    loop();
+
+    // Что под курсором: карточка с подписью, ссылка, картинка для перетаскивания
+    document.addEventListener('pointerover', (e) => {
+      const t = e.target as HTMLElement;
+      const labelled = t.closest<HTMLElement>('[data-cursor]');
+      const drag = t.closest('[data-drag]');
+      const link = t.closest('a, button, summary, [role="button"]');
+      root.classList.toggle('is-label', !!labelled);
+      root.classList.toggle('is-drag', !labelled && !!drag);
+      root.classList.toggle('is-link', !labelled && !drag && !!link);
+      text.textContent = labelled?.dataset.cursor || (drag as HTMLElement | null)?.dataset.drag || '';
+    });
+  }
+</script>
+
+<style>
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .cursor.is-visible {
+    opacity: 1;
+  }
+  .cursor__dot {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    background: #fff;
+    mix-blend-mode: difference;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
+  }
+  .cursor.is-link .cursor__dot {
+    transform: scale(2.6);
+  }
+  .cursor.is-down .cursor__dot {
+    transform: scale(0.7);
+  }
+  .cursor.is-label .cursor__dot,
+  .cursor.is-drag .cursor__dot {
+    opacity: 0;
+  }
+  .cursor__label {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 96px;
+    height: 96px;
+    margin: -48px 0 0 -48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transform: scale(0);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cursor.is-label .cursor__label,
+  .cursor.is-drag .cursor__label {
+    transform: scale(1);
+  }
+  .cursor.is-drag .cursor__label {
+    width: 72px;
+    height: 72px;
+    margin: -36px 0 0 -36px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 11px;
+  }
+
+  :global(html.has-cursor),
+  :global(html.has-cursor *) {
+    cursor: none !important;
+  }
+</style>

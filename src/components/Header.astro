@@ -58,10 +58,12 @@ const nav = [
 </header>
 
 <script>
-  // Закрываем мобильное меню после перехода по якорю
-  document.querySelectorAll<HTMLAnchorElement>('.header__sheet a').forEach((a) =>
-    a.addEventListener('click', () => a.closest('details')?.removeAttribute('open'))
-  );
+  // Закрываем мобильное меню после перехода по ссылке
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLAnchorElement>('.header__sheet a').forEach((a) =>
+      a.addEventListener('click', () => a.closest('details')?.removeAttribute('open'))
+    );
+  });
 </script>
 
 <style>

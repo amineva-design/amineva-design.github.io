@@ -18,7 +18,7 @@ const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 432px';
 const eager = index === 0;
 ---
 
-<a class="case" href={href} aria-label={tx.caseAria(title)}>
+<a class="case" href={href} aria-label={tx.caseAria(title)} data-cursor={tx.cursorView} data-reveal="fade">
   <div class="case__info">
     <div>
       <h3 class="case__title">{title}</h3>
@@ -50,7 +50,7 @@ const eager = index === 0;
     </div>
   </div>
 
-  <div class="case__media">
+  <div class="case__media" transition:name={`case-${entry.id}`}>
     {
       c.cardImage && (
         <Image src={c.cardImage} alt="" widths={[480, 864]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
@@ -174,7 +174,7 @@ const eager = index === 0;
     transform: translateX(4px);
   }
   .case:hover .case__info {
-    box-shadow: 0 10px 40px rgba(26, 26, 23, 0.08);
+    box-shadow: 0 10px 40px rgba(20, 20, 18, 0.08);
   }
 
   @media (max-width: 1024px) {

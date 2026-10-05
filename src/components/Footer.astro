@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer__top">
       <div class="footer__cta">
-        <h2 class="footer__title" set:html={tx.footerTitle} />
+        <h2 class="footer__title" data-reveal="fade" set:html={tx.footerTitle} />
         <p class="footer__status">{loc(s, 'statusText', lang)}</p>
         <div class="footer__buttons">
           {tg && <a class="btn btn--accent" href={tg} target="_blank" rel="noopener">{tx.writeTelegram}</a>}

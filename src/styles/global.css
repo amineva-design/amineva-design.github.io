@@ -1,14 +1,15 @@
 @import '@fontsource-variable/arimo';
 @import '@fontsource-variable/onest';
+@import 'lenis/dist/lenis.css';
 
 :root {
-  --ink: #1a1a17;
+  --ink: #141412;
   --paper: #f2f2f3;
   --card: #ffffff;
   --accent: #ff9800;
   --muted: #6b6b66;
   --muted-on-dark: #a3a39d;
-  --line: rgba(26, 26, 23, 0.12);
+  --line: rgba(20, 20, 18, 0.12);
   --line-on-dark: rgba(242, 242, 243, 0.16);
 
   --display: 'Arimo Variable', 'Helvetica Neue', Arial, sans-serif;
@@ -183,14 +184,13 @@ s {
   text-decoration: none;
   white-space: nowrap;
 }
-s::after {
-  content: '';
+s .line--strike {
   position: absolute;
   left: -4%;
-  right: -2%;
   top: 25%;
+  width: 106%;
   height: 75%;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 76.43 10.81' preserveAspectRatio='none'%3E%3Cpath d='M0.9009 2.8328C0.9009 2.8328 76.3881 -1.5078 75.52 2.8328C74.6519 7.1735 -3.7604 5.3693 11.02 7.04C34.0955 9.6483 55.0822 9.9097 55.0822 9.9097' fill='none' stroke='%23ff9800' stroke-width='1.5' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -234,4 +234,35 @@ s::after {
 
 body {
   overflow-x: clip;
+}
+
+/* Элементы с анимацией появления скрыты, пока их не покажет motion.ts */
+html.motion [data-reveal] {
+  visibility: hidden;
+}
+.split-line {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+/* Коллаж: фото как разложенные снимки */
+[data-drag] {
+  touch-action: none;
+  user-select: none;
+  transition: rotate 0.5s var(--ease), box-shadow 0.5s var(--ease), scale 0.5s var(--ease);
+  box-shadow: 0 10px 30px rgba(20, 20, 18, 0.12);
+}
+[data-drag]:hover {
+  rotate: 0deg !important;
+  scale: 1.02;
+  box-shadow: 0 20px 50px rgba(20, 20, 18, 0.2);
+}
+[data-drag].is-dragging {
+  scale: 1.05;
+  box-shadow: 0 30px 60px rgba(20, 20, 18, 0.25);
+}
+@media (hover: none) {
+  [data-drag] {
+    touch-action: auto;
+  }
 }

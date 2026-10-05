@@ -28,22 +28,22 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     <div class="container hero__grid">
       <h1 class="visually-hidden">{name} — {role}</h1>
 
-      <p class="hero__greeting" aria-hidden="true">
+      <p class="hero__greeting" aria-hidden="true" data-reveal="chars">
         {greeting.map((ch) => <span class="g">{ch === ' ' ? '\u00a0' : ch}</span>)}
       </p>
 
       <div class="hero__name">
-        <p class="hero__note caps">
+        <p class="hero__note caps" data-reveal="fade">
           <Line name="oval" class="hero__oval" />
           {tx.heroNote[0]}<br />{tx.heroNote[1]}
         </p>
-        <p class="hero__fullname" aria-hidden="true">{firstName}<br />{lastName}</p>
+        <p class="hero__fullname" aria-hidden="true" data-reveal="lines">{firstName}<br />{lastName}</p>
         <p class="hero__role caps">{role}</p>
       </div>
 
       {
         s.heroPhoto && (
-          <figure class="hero__photo hero__photo--small">
+          <figure class="hero__photo hero__photo--small" data-reveal="img">
             <Image src={s.heroPhoto} alt={name} widths={[360, 720]} sizes="(max-width: 720px) 45vw, 22vw" loading="eager" />
             <span class="hero__num caps">.: 001</span>
             <figcaption class="hero__cap caps">{tx.photoPlay}</figcaption>
@@ -52,28 +52,28 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       }
 
       <div class="hero__intro">
-        <p class="caps">{L(s, 'intro')}</p>
+        <p class="caps" data-reveal="lines">{L(s, 'intro')}</p>
       </div>
 
       {
         s.heroPhoto2 && (
           <figure class="hero__photo hero__photo--big">
-            <div class="hero__frame">
+            <div class="hero__frame" data-reveal="img">
               <Image src={s.heroPhoto2} alt="" widths={[600, 960, 1280]} sizes="(max-width: 720px) 100vw, 40vw" loading="eager" fetchpriority="high" />
             </div>
             <span class="hero__num caps">.: 002</span>
-            <figcaption class="hero__escape caps">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</figcaption>
+            <figcaption class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</figcaption>
           </figure>
         )
       }
 
-      <p class="hero__location caps" set:html={inline(L(s, 'location'))} />
+      <p class="hero__location caps" data-reveal="fade" set:html={inline(L(s, 'location'))} />
     </div>
   </section>
 
   <section class="cases" id="cases">
     <div class="container">
-      <h2 class="section-title">{tx.casesTitle} <sup>{String(cases.length).padStart(2, '0')}</sup></h2>
+      <h2 class="section-title" data-reveal="fade">{tx.casesTitle} <sup>{String(cases.length).padStart(2, '0')}</sup></h2>
       <div class="cases__list">
         {cases.map((entry, i) => <CaseCard entry={entry} index={i} lang={lang} />)}
       </div>
@@ -84,11 +84,11 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
   <section class="about-teaser">
     <div class="container about">
-      <p class="about__label">{tx.aboutLabel}</p>
-      <h2 class="about__headline">{L(about, 'headline')}</h2>
+      <p class="about__label" data-reveal="fade">{tx.aboutLabel}</p>
+      <h2 class="about__headline" data-reveal="lines">{L(about, 'headline')}</h2>
 
       {about.photos[0] && (
-        <figure class="about__ph about__ph--portrait">
+        <figure class="about__ph about__ph--portrait" data-reveal="img" data-drag={tx.cursorDrag} style="rotate: -2deg">
           <Image src={about.photos[0]} alt="" widths={[400, 800]} sizes="(max-width: 900px) 60vw, 26vw" loading="lazy" />
         </figure>
       )}
@@ -96,13 +96,13 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       <Line name="curve" class="about__curve" />
 
       <div class="about__text">
-        <p class="caps">{L(about, 'text')}</p>
+        <p class="caps" data-reveal="lines">{L(about, 'text')}</p>
         <a class="link-arrow caps" href={href(lang, '/about')}>{tx.aboutMore}</a>
       </div>
 
       {about.photos[1] && (
         <figure class="about__book">
-          <div class="about__ph about__ph--book">
+          <div class="about__ph about__ph--book" data-reveal="img" data-drag={tx.cursorDrag} style="rotate: 3deg">
             <Image src={about.photos[1]} alt="" widths={[320, 640]} sizes="(max-width: 900px) 45vw, 16vw" loading="lazy" />
           </div>
           {L(about, 'hobbies') && <figcaption class="about__hobbies caps">{L(about, 'hobbies')}</figcaption>}
@@ -110,7 +110,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       )}
 
       {about.photos[2] && (
-        <figure class="about__ph about__ph--plane">
+        <figure class="about__ph about__ph--plane" data-reveal="img" data-drag={tx.cursorDrag} style="rotate: -1.5deg">
           <Image src={about.photos[2]} alt="" widths={[400, 800]} sizes="(max-width: 900px) 60vw, 26vw" loading="lazy" />
         </figure>
       )}

@@ -37,12 +37,12 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
         <a class="back" href={href(lang, '/#cases')}>{tx.allCases}</a>
         <span class="label">{c.year}</span>
       </div>
-      <h1 class="intro__title">{title}</h1>
-      {L(c, 'lead') && <p class="intro__lead">{L(c, 'lead')}</p>}
+      <h1 class="intro__title" data-reveal="lines">{title}</h1>
+      {L(c, 'lead') && <p class="intro__lead" data-reveal="lines">{L(c, 'lead')}</p>}
 
       {
         facts.length > 0 && (
-          <dl class="facts">
+          <dl class="facts" data-reveal="fade">
             {facts.map((f) => (
               <div>
                 <dt class="label">{f.label}</dt>
@@ -55,7 +55,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
 
       {
         c.metrics.length > 0 && (
-          <ul class="metrics">
+          <ul class="metrics" data-reveal="fade">
             {c.metrics.map((m) => (
               <li>
                 <b>{m.value}</b>
@@ -68,7 +68,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
 
       {
         c.heroImage && (
-          <figure class="cover">
+          <figure class="cover" transition:name={`case-${entry.id}`}>
             <Image src={c.heroImage} alt={title} widths={[640, 1024, 1440, 2048]} sizes="(max-width: 1440px) 100vw, 1344px" loading="eager" fetchpriority="high" />
           </figure>
         )
@@ -100,7 +100,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
             switch (b.discriminant) {
               case 'section':
                 return (
-                  <section class="block block--text" id={id}>
+                  <section class="block block--text" id={id} data-reveal="fade">
                     {b.value.heading && <h2>{L(b.value, 'heading')}</h2>}
                     {b.value.text && <div class="rich" set:html={richText(L(b.value, 'text'))} />}
                   </section>
@@ -108,7 +108,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
               case 'image':
                 return (
                   b.value.image && (
-                    <figure class:list={['block', 'block--image', b.value.wide && 'is-wide']}>
+                    <figure class:list={['block', 'block--image', b.value.wide && 'is-wide']} data-reveal="img">
                       <Image
                         src={b.value.image}
                         alt={L(b.value, 'alt')}
@@ -122,7 +122,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
                 );
               case 'pair':
                 return (
-                  <figure class="block block--pair">
+                  <figure class="block block--pair" data-reveal="fade">
                     <div>
                       {[b.value.left, b.value.right].map(
                         (img) => img && <Image src={img} alt="" widths={[480, 912]} sizes="(max-width: 640px) 100vw, 456px" loading="lazy" />
@@ -169,13 +169,13 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
     {
       next && next.id !== entry.id && (
         <nav class="container next" aria-label={tx.nextCase}>
-          <a href={href(lang, `/cases/${next.id}`)} class="next__link">
+          <a href={href(lang, `/cases/${next.id}`)} class="next__link" data-cursor={tx.cursorView}>
             <span class="label">{tx.nextCase}</span>
             <span class="next__title">{L(next.data, 'title')} →</span>
             {L(next.data, 'summary') && <span class="next__summary">{L(next.data, 'summary')}</span>}
           </a>
           {next.data.cardImage && (
-            <a href={href(lang, `/cases/${next.id}`)} class="next__img" tabindex="-1" aria-hidden="true">
+            <a href={href(lang, `/cases/${next.id}`)} class="next__img" tabindex="-1" aria-hidden="true" data-cursor={tx.cursorView} transition:name={`case-${next.id}`}>
               <Image src={next.data.cardImage} alt="" widths={[480, 864]} sizes="(max-width: 720px) 100vw, 432px" loading="lazy" />
             </a>
           )}
@@ -186,29 +186,32 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
 </Base>
 
 <script>
-  // Бегущие ленты уходят до правого края экрана, широкие картинки — до края сетки
-  const content = document.querySelector<HTMLElement>('.content');
-  const body = document.querySelector<HTMLElement>('.body');
-  const setBleed = () => {
+  document.addEventListener('astro:page-load', () => {
+    const content = document.querySelector<HTMLElement>('.case-page .content');
+    const body = document.querySelector<HTMLElement>('.case-page .body');
     if (!content || !body) return;
-    const c = content.getBoundingClientRect();
-    const b = body.getBoundingClientRect();
-    const pad = parseFloat(getComputedStyle(body).paddingRight) || 0;
-    const vw = document.documentElement.clientWidth;
-    const mobile = window.matchMedia('(max-width: 1024px)').matches;
-    const left = mobile ? -c.left : 0;
-    content.style.setProperty('--bleed-left', `${left}px`);
-    content.style.setProperty('--bleed-width', `${vw - c.left - left}px`);
-    content.style.setProperty('--wide-right', `${b.right - pad - c.right}px`);
-  };
-  setBleed();
-  window.addEventListener('resize', setBleed);
 
-  // Подсвечиваем текущий раздел в оглавлении
-  const links = new Map(
-    [...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [a.hash.slice(1), a])
-  );
-  if (links.size) {
+    // Бегущие ленты уходят до правого края экрана, широкие картинки — до края сетки
+    const setBleed = () => {
+      const c = content.getBoundingClientRect();
+      const b = body.getBoundingClientRect();
+      const pad = parseFloat(getComputedStyle(body).paddingRight) || 0;
+      const vw = document.documentElement.clientWidth;
+      const mobile = window.matchMedia('(max-width: 1024px)').matches;
+      const left = mobile ? -c.left : 0;
+      content.style.setProperty('--bleed-left', `${left}px`);
+      content.style.setProperty('--bleed-width', `${vw - c.left - left}px`);
+      content.style.setProperty('--wide-right', `${b.right - pad - c.right}px`);
+    };
+    setBleed();
+    window.addEventListener('resize', setBleed);
+    document.addEventListener('astro:before-swap', () => window.removeEventListener('resize', setBleed), { once: true });
+
+    // Подсвечиваем текущий раздел в оглавлении
+    const links = new Map(
+      [...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [a.hash.slice(1), a])
+    );
+    if (!links.size) return;
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -224,7 +227,8 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
       const el = document.getElementById(id);
       if (el) io.observe(el);
     });
-  }
+    document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
+  });
 </script>
 
 <style>
@@ -445,7 +449,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
     transition: box-shadow 0.3s var(--ease);
   }
   .next__link:hover {
-    box-shadow: 0 10px 40px rgba(26, 26, 23, 0.08);
+    box-shadow: 0 10px 40px rgba(20, 20, 18, 0.08);
   }
   .next__title {
     font-family: var(--display);

@@ -14,11 +14,11 @@ const languages = L(about, 'languages');
 
 <section class="stack" id="stack">
   <div class="container">
-    <h2 class="stack__title">{tx.stack}</h2>
+    <h2 class="stack__title" data-reveal="fade">{tx.stack}</h2>
     <ul class="stack__grid">
       {
         about.tools.map((tool) => (
-          <li class="stack__card">
+          <li class="stack__card" data-reveal="fade">
             <h3>{L(tool, 'name')}</h3>
             <ul class="chips">
               {L(tool, 'details')
@@ -34,7 +34,7 @@ const languages = L(about, 'languages');
       }
       {
         languages && (
-          <li class="stack__card stack__card--dark">
+          <li class="stack__card stack__card--dark" data-reveal="fade">
             <h3>{tx.languages}</h3>
             <p class="stack__lang">{languages}</p>
           </li>

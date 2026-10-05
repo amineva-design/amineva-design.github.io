@@ -17,8 +17,8 @@ const resume = resumeHref(s, lang);
 
 <Base title={tx.aboutTitle} description={L(about, 'text')} lang={lang}>
   <section class="container about">
-    <p class="about__label">{tx.aboutLabel}</p>
-    <h1 class="about__headline">{L(about, 'headline')}</h1>
+    <p class="about__label" data-reveal="fade">{tx.aboutLabel}</p>
+    <h1 class="about__headline" data-reveal="lines">{L(about, 'headline')}</h1>
 
     <div class="about__grid">
       <div class="rich about__text" set:html={richText(L(about, 'text'))} />
@@ -27,7 +27,7 @@ const resume = resumeHref(s, lang);
           about.photos.map(
             (p, i) =>
               p && (
-                <figure class:list={['ph', `ph--${i}`]}>
+                <figure class:list={['ph', `ph--${i}`]} data-reveal="img" data-drag={tx.cursorDrag} style={`rotate: ${[-2, 3, -1.5][i % 3]}deg`}>
                   <Image src={p} alt="" widths={[360, 720]} sizes="(max-width: 720px) 50vw, 25vw" loading={i < 2 ? 'eager' : 'lazy'} />
                 </figure>
               )
@@ -51,7 +51,7 @@ const resume = resumeHref(s, lang);
         </div>
         <ol class="timeline">
           {about.experience.map((e) => (
-            <li>
+            <li data-reveal="fade">
               <span class="label">{L(e, 'period')}</span>
               <div>
                 <h3>{L(e, 'company')}</h3>
@@ -68,7 +68,7 @@ const resume = resumeHref(s, lang);
   <section class="container block cards">
     {
       about.skills.length > 0 && (
-        <div class="card">
+        <div class="card" data-reveal="fade">
           <h2>{tx.skills}</h2>
           <div class="skills">
             {about.skills.map((g) => (
@@ -87,7 +87,7 @@ const resume = resumeHref(s, lang);
     }
     {
       about.tools.length > 0 && (
-        <div class="card card--dark">
+        <div class="card card--dark" data-reveal="fade">
           <h2>{tx.tools}</h2>
           <dl class="tools">
             {about.tools.map((tool) => (
@@ -108,7 +108,7 @@ const resume = resumeHref(s, lang);
     }
     {
       about.softSkills.length > 0 && (
-        <div class="card card--green">
+        <div class="card card--green" data-reveal="fade">
           <h2>{tx.softSkills}</h2>
           <dl class="soft">
             {about.softSkills.map((item) => (
