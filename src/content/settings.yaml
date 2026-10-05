@@ -16,12 +16,12 @@ socials:
   - label: Behance
     labelEn: Behance
     url: https://www.behance.net/rra
-  - label: Telegram-канал
-    labelEn: Telegram channel
-    url: https://t.me/arousaldesign
   - label: Pinterest
     labelEn: Pinterest
     url: https://ru.pinterest.com/Arousal_Design/
+  - label: LinkedIn
+    labelEn: LinkedIn
+    url: https://www.linkedin.com/in/regina-amineva-471175441/
 footerImage: ../assets/site/footer-cat.webp
 nameEn: Regina Amineva
 roleEn: Product UX/UI Designer
