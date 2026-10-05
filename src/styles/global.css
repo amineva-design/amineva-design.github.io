@@ -142,11 +142,9 @@ p {
   border-color: var(--paper);
 }
 
-/* Ссылка-действие: подчёркивание + стрелка. Подчёркивание при наведении становится зелёным, стрелка сдвигается */
+/* Ссылка-действие: текст с подчёркиванием, при наведении подчёркивание зелёное */
 .link-arrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  display: inline-block;
   font-family: var(--display);
   font-weight: 600;
   text-decoration: none;
@@ -154,14 +152,8 @@ p {
   padding-bottom: 4px;
   transition: border-color 0.3s;
 }
-.link-arrow__icon {
-  transition: transform 0.4s var(--ease);
-}
 .link-arrow:hover {
   border-color: var(--accent);
-}
-.link-arrow:hover .link-arrow__icon {
-  transform: translateX(6px);
 }
 
 /* Текст из админки */

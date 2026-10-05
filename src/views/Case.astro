@@ -171,7 +171,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
         <nav class="container next" aria-label={tx.nextCase}>
           <a href={href(lang, `/cases/${next.id}`)} class="next__link" data-cursor={tx.cursorView}>
             <span class="label">{tx.nextCase}</span>
-            <span class="next__title">{L(next.data, 'title')} →</span>
+            <span class="next__title">{L(next.data, 'title')}</span>
             {L(next.data, 'summary') && <span class="next__summary">{L(next.data, 'summary')}</span>}
           </a>
           {next.data.cardImage && (

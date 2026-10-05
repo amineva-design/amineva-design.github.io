@@ -72,7 +72,7 @@ const lastName = rest.join(' ');
         <p class="about__headline" data-reveal="lines">{L(about, 'text')}</p>
         {L(about, 'hobbies') && <p class="about__hobbies" data-reveal="fade">{L(about, 'hobbies')}</p>}
         <a class="link-arrow about__more" href={href(lang, '/about')}>
-          <span>{tx.aboutMore}</span><span class="link-arrow__icon" aria-hidden="true">→</span>
+          {tx.aboutMore}
         </a>
       </div>
       <div class="about__photos">
