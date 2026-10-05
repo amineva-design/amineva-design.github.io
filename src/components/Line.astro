@@ -1,0 +1,41 @@
+---
+// Оранжевые hand-drawn линии с Тильды. Толщина штриха не зависит от размера (vector-effect).
+const lines = {
+  oval: {
+    viewBox: '0 0 91.3 38.64',
+    d: 'M58.89 38C12.89 39 -12.2717 20.1134 7.2979 7.7785C22.604 -1.8691 80.6871 -3.8218 89.2979 14.7785C100.6557 39.3125 39.39 33 39.39 33',
+  },
+  zigzag: {
+    viewBox: '0 0 76.43 10.81',
+    d: 'M0.9009 2.8328C0.9009 2.8328 76.3881 -1.5078 75.52 2.8328C74.6519 7.1735 -3.7604 5.3693 11.02 7.04C34.0955 9.6483 55.0822 9.9097 55.0822 9.9097',
+  },
+  double: {
+    viewBox: '0 0 65 7',
+    d: 'M1.0001 2.604C1.0001 2.604 41.1471 -0.3258 62.3781 1.7337M8.3764 5.9999C8.3764 5.9999 38.579 2.097 64 5.9999',
+  },
+  curve: {
+    viewBox: '0 0 220.53 126.67',
+    d: 'M219.5298 125.6692C219.5298 125.6692 65.0792 52.4897 146.9298 27.4026C207.17 8.9391 6.4024 114.1472 52.3298 50.8692C82.0696 9.8945 110.777 0.7529 93.3965 1.0026C42.7506 1.7303 0.9965 15.6692 0.9965 15.6692',
+  },
+} as const;
+
+interface Props {
+  name: keyof typeof lines;
+  class?: string;
+  width?: number;
+}
+const { name, class: cls, width = 1.5 } = Astro.props;
+const l = lines[name];
+---
+
+<svg class:list={['line', cls]} viewBox={l.viewBox} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path d={l.d} fill="none" stroke="var(--accent)" stroke-width={width} vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+<style>
+  .line {
+    display: block;
+    overflow: visible;
+    pointer-events: none;
+  }
+</style>

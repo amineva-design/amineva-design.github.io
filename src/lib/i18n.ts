@@ -7,14 +7,17 @@ const SHORT = /(^|[\s(«"„—–-])(в|во|с|со|к|ко|и|а|о|об|у|�
 // Неразрывный пробел после предлогов и перед тире
 export function typo(s: string) {
   if (!s) return s;
-  return s.replace(SHORT, '$1$2\u00a0').replace(SHORT, '$1$2\u00a0').replace(/ (—|–) /g, '\u00a0$1 ');
+  return numbers(s.replace(SHORT, '$1$2\u00a0').replace(SHORT, '$1$2\u00a0').replace(/ (—|–) /g, '\u00a0$1 '));
 }
+
+// Число и единица не разрываются: «1200 ₽», «3 месяца» → без переноса
+const numbers = (s: string) => s.replace(/(\d) (₽|%|руб|мес|лет|год)/g, '$1\u00a0$2');
 
 // Берёт английскую версию поля (keyEn), если она заполнена, иначе русскую.
 export function loc<T extends Record<string, any>>(obj: T, key: string, lang: Lang): string {
   if (lang === 'en') {
     const en = obj[`${key}En`];
-    if (typeof en === 'string' && en.trim()) return en;
+    if (typeof en === 'string' && en.trim()) return numbers(en);
   }
   return typo((obj[key] as string) ?? '');
 }
@@ -42,7 +45,9 @@ export const ui = {
     skip: 'К содержимому',
     mainNav: 'Основная навигация',
     langSwitch: 'Язык сайта',
-    heroNote: ['Давай знакомиться,', 'меня зовут'],
+    heroNote: ['Давай знакомиться!', 'Меня зовут,'],
+    photoPlay: 'Поиграй со шрифтами',
+    photoFrames: ['Может, ты уже выйдешь за рамки?', 'Которые создал сам'],
     seeCases: 'Смотреть кейсы',
     casesTitle: 'Кейсы',
     caseAria: (t: string) => `Кейс «${t}»`,
@@ -91,7 +96,9 @@ export const ui = {
     skip: 'Skip to content',
     mainNav: 'Main navigation',
     langSwitch: 'Site language',
-    heroNote: ['Nice to meet you,', 'my name is'],
+    heroNote: ['Nice to meet you!', 'My name is'],
+    photoPlay: 'Play with the fonts',
+    photoFrames: ['Maybe it’s time to step outside the frame?', 'The one you built yourself'],
     seeCases: 'See my work',
     casesTitle: 'Case studies',
     caseAria: (t: string) => `Case study: ${t}`,

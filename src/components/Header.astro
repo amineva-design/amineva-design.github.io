@@ -1,5 +1,6 @@
 ---
 import LangSwitch from './LangSwitch.astro';
+import Line from './Line.astro';
 import { getSettings, resumeHref } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -18,13 +19,20 @@ const nav = [
 ];
 ---
 
-<header class:list={['header', theme === 'dark' && 'dark']}>
+<header class:list={['header', 'caps', theme === 'dark' && 'dark']}>
   <div class="container header__bar">
-    <a class="header__name" href={href(lang, '/')}>{loc(s, 'name', lang)}</a>
+    <div class="header__left">
+      {
+        resume && (
+          <a class="header__resume" href={resume} target="_blank" rel="noopener">
+            {tx.resume}
+            <Line name="double" class="header__resume-line" />
+          </a>
+        )
+      }
+    </div>
 
-    <nav class="header__nav" aria-label={tx.mainNav}>
-      {nav.map((i) => <a href={i.href}>{i.label}</a>)}
-    </nav>
+    <a class="header__role" href={href(lang, '/')}>{loc(s, 'role', lang)}</a>
 
     <div class="header__right">
       {
@@ -35,18 +43,12 @@ const nav = [
           </span>
         )
       }
-      {
-        resume && (
-          <a class="header__resume" href={resume} target="_blank" rel="noopener">
-            {tx.resume} ↗
-          </a>
-        )
-      }
       <LangSwitch lang={lang} />
       <details class="header__menu">
         <summary aria-label={tx.menu}><span></span><span></span></summary>
         <div class="header__sheet">
           {s.openToWork && <span class="header__sheet-status"><span class="dot" aria-hidden="true" />{tx.openToWork}</span>}
+          <a href={href(lang, '/')}>{tx.home}</a>
           {nav.map((i) => <a href={i.href}>{i.label}</a>)}
           {resume && <a href={resume} target="_blank" rel="noopener">{tx.resume} ↗</a>}
         </div>
@@ -66,8 +68,6 @@ const nav = [
   .header {
     position: relative;
     z-index: 10;
-    font-size: var(--fs-small);
-    font-weight: 600;
   }
   .header__bar {
     display: grid;
@@ -80,34 +80,29 @@ const nav = [
   .header a {
     text-decoration: none;
   }
-  .header__name {
-    letter-spacing: 0.01em;
-  }
-  .header__nav {
-    display: flex;
-    gap: 28px;
-  }
-  .header__nav a,
   .header__resume {
     position: relative;
-    padding: 6px 0;
+    display: inline-block;
+    padding: 8px 0;
   }
-  .header__nav a::after,
-  .header__resume::after {
-    content: '';
+  .header__resume :global(.header__resume-line) {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: -6%;
     bottom: 0;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0);
+    width: 112%;
+    height: 8px;
+    transition: transform 0.4s var(--ease);
     transform-origin: left;
-    transition: transform 0.3s var(--ease);
   }
-  .header__nav a:hover::after,
-  .header__resume:hover::after {
-    transform: scaleX(1);
+  .header__resume:hover :global(.header__resume-line) {
+    transform: scaleX(1.08);
+  }
+  .header__role {
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .header__role:hover {
+    color: var(--accent);
   }
   .header__right {
     display: flex;
@@ -119,23 +114,21 @@ const nav = [
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: var(--muted);
-    font-weight: 500;
   }
   .dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #3ecf6e;
-    box-shadow: 0 0 0 0 rgba(62, 207, 110, 0.6);
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.6);
     animation: pulse 2.4s infinite;
   }
   @keyframes pulse {
     70% {
-      box-shadow: 0 0 0 8px rgba(62, 207, 110, 0);
+      box-shadow: 0 0 0 8px rgba(255, 152, 0, 0);
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(62, 207, 110, 0);
+      box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
     }
   }
 
@@ -173,7 +166,7 @@ const nav = [
     position: absolute;
     right: -6px;
     top: 52px;
-    min-width: 220px;
+    min-width: 230px;
     display: grid;
     padding: 8px;
     border-radius: 16px;
@@ -184,7 +177,10 @@ const nav = [
   .header__sheet a {
     padding: 12px 14px;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 15px;
+  }
+  .header__sheet a:hover {
+    background: var(--paper);
   }
   .header__sheet-status {
     display: flex;
@@ -192,18 +188,14 @@ const nav = [
     gap: 8px;
     padding: 10px 14px 6px;
     color: #6b6b66;
-    font-weight: 500;
-  }
-  .header__sheet a:hover {
-    background: var(--paper);
   }
 
   @media (max-width: 900px) {
     .header__bar {
       grid-template-columns: 1fr auto;
     }
-    .header__nav,
-    .header__resume {
+    .header__role,
+    .header__status {
       display: none;
     }
     .header__menu {
@@ -211,11 +203,6 @@ const nav = [
     }
     .header__right {
       gap: 14px;
-    }
-  }
-  @media (max-width: 480px) {
-    .header__status {
-      display: none;
     }
   }
 </style>
