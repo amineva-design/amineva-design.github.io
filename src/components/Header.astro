@@ -65,9 +65,11 @@ const nav = [
 </script>
 
 <style>
+  /* линия на всю ширину экрана */
   .header {
     position: relative;
     z-index: 10;
+    border-bottom: 1px solid var(--line);
   }
   .header__bar {
     display: grid;
@@ -75,7 +77,6 @@ const nav = [
     align-items: center;
     gap: 16px;
     min-height: 64px;
-    border-bottom: 1px solid var(--line);
   }
   .header a {
     text-decoration: none;

@@ -57,7 +57,10 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
-    <div class="footer__bottom">
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-row">
       <span>© {year} {loc(s, 'name', lang)} · <a href={href(lang, '/privacy')}>{tx.privacy}</a></span>
       <a href="#main">{tx.toTop}</a>
     </div>
@@ -73,8 +76,7 @@ const year = new Date().getFullYear();
     justify-content: space-between;
     align-items: flex-end;
     gap: 32px;
-    padding-bottom: clamp(40px, 6vw, 80px);
-    border-bottom: 1px solid var(--line);
+    padding-bottom: clamp(24px, 3vw, 40px);
   }
   .footer__title {
     font-size: clamp(48px, 8vw, 120px);
@@ -130,13 +132,17 @@ const year = new Date().getFullYear();
   .footer ul a:hover {
     color: var(--accent);
   }
+  /* линия на всю ширину экрана */
   .footer__bottom {
-    display: flex;
-    justify-content: space-between;
-    padding-block: 24px 32px;
     border-top: 1px solid var(--line);
     font-size: var(--fs-small);
     color: var(--muted);
+  }
+  .footer__bottom-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 24px 32px;
   }
   .footer__bottom a {
     text-decoration: none;
