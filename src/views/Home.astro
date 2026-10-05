@@ -50,8 +50,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
         <p class="caps" data-reveal="lines">{L(s, 'intro')}</p>
       </div>
 
-      <p class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</p>
-
       <p class="hero__location caps" data-reveal="fade" set:html={inline(L(s, 'location'))} />
     </div>
   </section>
@@ -70,10 +68,13 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   <section class="about-teaser">
     <div class="container about">
       <p class="about__label" data-reveal="fade">{tx.aboutLabel}</p>
-      <h2 class="about__headline" data-reveal="lines">{L(about, 'headline')}</h2>
+      <div class="about__head">
+        <h2 class="about__headline" data-reveal="lines">{L(about, 'headline')}</h2>
+        <a class="btn btn--ghost about__more" href={href(lang, '/about')}>{tx.aboutMore}</a>
+      </div>
 
       {about.photos[0] && (
-        <figure class="about__ph about__ph--portrait" data-reveal="img" data-drag={tx.cursorDrag} style="rotate: -2deg">
+        <figure class="about__ph about__ph--portrait">
           <Image src={about.photos[0]} alt="" widths={[400, 800]} sizes="(max-width: 900px) 60vw, 26vw" loading="lazy" />
         </figure>
       )}
@@ -82,12 +83,11 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
       <div class="about__text">
         <p class="caps" data-reveal="lines">{L(about, 'text')}</p>
-        <a class="link-arrow caps" href={href(lang, '/about')}>{tx.aboutMore}</a>
       </div>
 
       {about.photos[1] && (
         <figure class="about__book">
-          <div class="about__ph about__ph--book" data-reveal="img" data-drag={tx.cursorDrag} style="rotate: 3deg">
+          <div class="about__ph about__ph--book">
             <Image src={about.photos[1]} alt="" widths={[320, 640]} sizes="(max-width: 900px) 45vw, 16vw" loading="lazy" />
           </div>
           {L(about, 'hobbies') && <figcaption class="about__hobbies caps">{L(about, 'hobbies')}</figcaption>}
@@ -95,7 +95,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       )}
 
       {about.photos[2] && (
-        <figure class="about__ph about__ph--plane" data-reveal="img" data-drag={tx.cursorDrag} style="rotate: -1.5deg">
+        <figure class="about__ph about__ph--plane">
           <Image src={about.photos[2]} alt="" widths={[400, 800]} sizes="(max-width: 900px) 60vw, 26vw" loading="lazy" />
         </figure>
       )}
@@ -117,8 +117,8 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     z-index: 0;
     left: 50%;
     bottom: 0;
-    width: min(58vw, 820px);
-    height: calc(100% - 24px);
+    width: min(52vw, 740px);
+    height: 90%;
     transform: translateX(-50%);
   }
   .hero__grid {
@@ -137,7 +137,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   .hero__greeting {
     grid-column: 1 / 8;
     font-family: var(--display);
-    font-size: var(--fs-hero);
+    font-size: clamp(56px, 8.4vw, 132px);
     font-weight: 700;
     line-height: 0.95;
     letter-spacing: -0.04em;
@@ -205,9 +205,9 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
 
   .hero__intro {
-    grid-column: 1 / 6;
+    grid-column: 1 / 5;
     grid-row: 3;
-    align-self: end;
+    align-self: center;
     display: grid;
     gap: 14px;
     max-width: 420px;
@@ -220,24 +220,14 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
 
   /* «Выйди за рамки»: подпись начинается на фото и вылезает за сетку до края экрана */
-  .hero__escape {
-    grid-column: 8 / 13;
-    grid-row: 4;
-    justify-self: end;
-    align-self: end;
-    position: relative;
-    right: calc(-1 * var(--gutter) + 8px);
-    bottom: 18px;
-    color: #fff;
-    white-space: nowrap;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
-    pointer-events: none;
-  }
+
 
   .hero__location {
-    grid-column: 1 / 8;
+    grid-column: 8 / 13;
     grid-row: 4;
     align-self: end;
+    justify-self: end;
+    text-align: right;
   }
 
   @media (max-width: 900px) {
@@ -260,13 +250,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       max-width: none;
     }
   
-    .hero__escape {
-      grid-column: 1 / -1;
-      grid-row: auto;
-      bottom: 0;
-      font-size: 11px;
-      text-align: right;
-    }
+
     .hero {
       display: flex;
       flex-direction: column;
@@ -336,9 +320,22 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     color: var(--accent);
     margin-bottom: clamp(20px, 2.4vw, 36px);
   }
-  .about__headline {
+  .about__head {
     grid-column: 1 / 8;
     grid-row: 2;
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+  }
+  .about__more {
+    font-size: 14px;
+  }
+  .about__more:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .about__headline {
     font-size: clamp(30px, 3vw, 44px);
     max-width: 720px;
   }
@@ -419,7 +416,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       row-gap: 24px;
     }
     .about__label,
-    .about__headline {
+    .about__head {
       grid-column: 1 / -1;
       grid-row: auto;
     }

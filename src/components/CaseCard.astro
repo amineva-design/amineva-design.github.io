@@ -14,7 +14,7 @@ const tx = t(lang);
 const href = link(lang, `/cases/${entry.id}`);
 const title = loc(c, 'title', lang);
 const summary = loc(c, 'summary', lang);
-const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 432px';
+const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 900px';
 const eager = index === 0;
 ---
 
@@ -53,44 +53,28 @@ const eager = index === 0;
   <div class="case__media" transition:name={`case-${entry.id}`}>
     {
       c.cardImage && (
-        <Image src={c.cardImage} alt="" widths={[480, 864]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
+        <Image src={c.cardImage} alt="" widths={[640, 1000, 1600]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
       )
     }
   </div>
 
-  {
-    c.cardVideo ? (
-      <div class="case__media case__media--second">
-        <iframe
-          src={`${c.cardVideo}${c.cardVideo.includes('?') ? '&' : '?'}muted=true&autoplay=true&loop=true&autopause=false&controls=false`}
-          title={tx.videoTitle(title)}
-          loading="lazy"
-          allow="autoplay; fullscreen"
-          tabindex="-1"
-        />
-      </div>
-    ) : (
-      c.cardImage2 && (
-        <div class="case__media case__media--second">
-          <Image src={c.cardImage2} alt="" widths={[480, 864]} sizes={sizes} loading="lazy" />
-        </div>
-      )
-    )
-  }
 </a>
 
 <style>
+  /* кейс — один цельный блок: текст слева, картинка справа, без зазора */
   .case {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--gap);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    border: 1px solid var(--line);
+    background: var(--card);
     text-decoration: none;
   }
   .case__info,
   .case__media {
-    aspect-ratio: 1;
-    border-radius: var(--radius);
     overflow: hidden;
+  }
+  .case__media {
+    aspect-ratio: 2 / 1;
   }
   .case__info {
     display: flex;
@@ -175,25 +159,24 @@ const eager = index === 0;
   .case:hover .case__arrow svg {
     transform: translate(2px, -2px);
   }
-  .case:hover .case__info {
-    box-shadow: 0 10px 40px rgba(20, 20, 18, 0.08);
-  }
+
 
   @media (max-width: 1024px) {
     .case {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
     }
-    .case__media--second {
-      display: none;
+    .case__media {
+      aspect-ratio: auto;
+      min-height: 100%;
     }
   }
   @media (max-width: 640px) {
     .case {
       grid-template-columns: 1fr;
     }
-    .case__info {
-      aspect-ratio: auto;
-      min-height: 0;
+    .case__media {
+      order: -1;
+      aspect-ratio: 16 / 10;
     }
     .case__summary {
       margin-top: 10px;

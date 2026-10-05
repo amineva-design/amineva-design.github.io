@@ -39,6 +39,16 @@
       active = false;
       root.classList.remove('is-active', 'is-drag');
     });
+    // при прокрутке курсор стоит на месте, а под ним уже другой блок — прячем плашку
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!active) return;
+        active = false;
+        root.classList.remove('is-active', 'is-drag');
+      },
+      { passive: true }
+    );
     document.addEventListener('astro:before-swap', () => {
       active = false;
       root.classList.remove('is-active', 'is-drag');
@@ -56,37 +66,27 @@
   }
   .cursor__label {
     position: absolute;
-    display: grid;
-    place-items: center;
-    width: 96px;
-    height: 96px;
-    margin: -48px 0 0 -48px;
-    border-radius: 50%;
-    background: var(--ink);
-    color: #fff;
-    font-family: var(--display);
+    left: 14px;
+    top: 14px;
+    padding: 8px 12px;
+    background: var(--accent);
+    color: var(--ink);
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
     font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    white-space: nowrap;
     text-transform: uppercase;
     transform: scale(0);
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: top left;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .cursor.is-active .cursor__label {
     transform: scale(1);
   }
-  .cursor.is-drag .cursor__label {
-    width: 72px;
-    height: 72px;
-    margin: -36px 0 0 -36px;
-    font-size: 11px;
-  }
+
 
   /* системный курсор прячем только там, где показывается круг */
-  :global(html.has-cursor [data-cursor]),
-  :global(html.has-cursor [data-cursor] *),
-  :global(html.has-cursor [data-drag]),
-  :global(html.has-cursor [data-drag] *) {
-    cursor: none;
-  }
+  /* системный курсор остаётся — плашка «Смотреть» едет рядом с ним */
 </style>

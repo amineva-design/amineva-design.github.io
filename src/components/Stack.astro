@@ -1,4 +1,6 @@
 ---
+// Стек: редакционный список — номер, категория, инструменты крупно через «/».
+// При наведении строка заливается фирменным цветом.
 import { getAbout } from '../lib/content';
 import { loc, t, type Lang } from '../lib/i18n';
 
@@ -9,38 +11,39 @@ const { lang } = Astro.props;
 const tx = t(lang);
 const about = await getAbout();
 const L = (o: Record<string, any>, k: string) => loc(o, k, lang);
-const languages = L(about, 'languages');
+const rows = [
+  ...about.tools.map((tool) => ({
+    name: L(tool, 'name'),
+    items: L(tool, 'details')
+      .split(',')
+      .map((x) => x.trim())
+      .filter(Boolean),
+  })),
+  ...(L(about, 'languages') ? [{ name: tx.languages, items: [L(about, 'languages')] }] : []),
+];
 ---
 
 <section class="stack" id="stack">
   <div class="container">
     <h2 class="stack__title" data-reveal="fade">{tx.stack}</h2>
-    <ul class="stack__grid">
+    <ol class="stack__rows">
       {
-        about.tools.map((tool) => (
-          <li class="stack__card" data-reveal="fade">
-            <h3>{L(tool, 'name')}</h3>
-            <ul class="chips">
-              {L(tool, 'details')
-                .split(',')
-                .map((x) => x.trim())
-                .filter(Boolean)
-                .map((x) => (
-                  <li>{x}</li>
-                ))}
-            </ul>
+        rows.map((row, i) => (
+          <li class="stack__row" data-reveal="fade">
+            <span class="stack__num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="stack__name">{row.name}</span>
+            <span class="stack__items">
+              {row.items.map((item, j) => (
+                <>
+                  {j > 0 && <span class="stack__slash">/</span>}
+                  <span class="stack__item">{item}</span>
+                </>
+              ))}
+            </span>
           </li>
         ))
       }
-      {
-        languages && (
-          <li class="stack__card stack__card--dark" data-reveal="fade">
-            <h3>{tx.languages}</h3>
-            <p class="stack__lang">{languages}</p>
-          </li>
-        )
-      }
-    </ul>
+    </ol>
   </div>
 </section>
 
@@ -52,48 +55,78 @@ const languages = L(about, 'languages');
     font-size: var(--fs-h2);
     margin-bottom: clamp(24px, 3vw, 48px);
   }
-  .stack__grid {
+  .stack__rows {
     list-style: none;
     margin: 0;
     padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .stack__row {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 2.4fr);
     gap: var(--gap);
+    align-items: baseline;
+    padding: clamp(16px, 1.8vw, 26px) 12px;
+    border-top: 1px solid var(--line);
+    isolation: isolate;
   }
-  .stack__card {
-    display: grid;
-    align-content: start;
-    gap: 16px;
-    padding: clamp(20px, 2vw, 28px);
-    border-radius: var(--radius);
-    background: var(--card);
+  .stack__row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease);
   }
-  .stack__card h3 {
-    font-size: 20px;
+  .stack__row:hover::before {
+    transform: scaleX(1);
   }
-  .chips {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .stack__num {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+  .stack__name {
+    font-family: var(--display);
+    font-size: var(--fs-caps);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .stack__items {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-  }
-  .chips li {
-    padding: 6px 12px;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    font-size: 14px;
-    line-height: 1.3;
-  }
-  .stack__card--dark {
-    background: var(--ink);
-    color: var(--paper);
-  }
-  .stack__lang {
+    align-items: baseline;
+    gap: 0 0.4em;
     font-family: var(--display);
-    font-size: clamp(24px, 2.4vw, 32px);
+    font-size: clamp(24px, 2.6vw, 40px);
+    font-weight: 600;
     line-height: 1.15;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+  }
+  .stack__slash {
+    color: var(--accent);
+    font-weight: 400;
+    transition: color 0.3s;
+  }
+  .stack__row:hover .stack__slash,
+  .stack__row:hover .stack__num {
+    color: var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .stack__row {
+      grid-template-columns: 36px minmax(0, 1fr);
+      row-gap: 8px;
+      padding-inline: 0;
+    }
+    .stack__items {
+      grid-column: 1 / -1;
+      font-size: 22px;
+    }
   }
 </style>

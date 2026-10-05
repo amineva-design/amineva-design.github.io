@@ -27,7 +27,7 @@ const resume = resumeHref(s, lang);
           about.photos.map(
             (p, i) =>
               p && (
-                <figure class:list={['ph', `ph--${i}`]} data-reveal="img" data-drag={tx.cursorDrag} style={`rotate: ${[-2, 3, -1.5][i % 3]}deg`}>
+                <figure class:list={['ph', `ph--${i}`]}>
                   <Image src={p} alt="" widths={[360, 720]} sizes="(max-width: 720px) 50vw, 25vw" loading={i < 2 ? 'eager' : 'lazy'} />
                 </figure>
               )
