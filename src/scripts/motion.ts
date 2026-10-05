@@ -93,14 +93,14 @@ function reveal() {
     );
   });
 
-  // Фото: проявляются снизу вверх, внутри картинка чуть «отъезжает»
+  // Фото: проявляются сверху вниз, внутри картинка чуть «отъезжает»
   gsap.utils.toArray<HTMLElement>('[data-reveal="img"]').forEach((el) => {
     const img = el.querySelector('img');
     gsap.set(el, { autoAlpha: 1 });
     const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
     tl.fromTo(
       el,
-      { clipPath: `inset(100% 0% 0% 0% round ${radius()})` },
+      { clipPath: `inset(0% 0% 100% 0% round ${radius()})` },
       // после появления снимаем маску, иначе она обрезает тень у фото в коллаже
       { clipPath: `inset(0% 0% 0% 0% round ${radius()})`, duration: 1.2, ease: 'power3.inOut', clearProps: 'clipPath' }
     );
