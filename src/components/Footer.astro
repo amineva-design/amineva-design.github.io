@@ -134,19 +134,35 @@ const year = new Date().getFullYear();
   .footer__hand--right {
     right: 0;
   }
-  /* «>» и мигающий курсор — только на телефоне, где подпись стоит строкой кода над руками */
-  .footer__prompt,
-  .footer__caret {
-    display: none;
-  }
+  /* подпись между руками — зелёная строка кода, как «Привет! Давай знакомиться» в первом экране */
   .footer__hands-text {
     position: relative;
     z-index: 1;
-    max-width: 22ch;
+    max-width: 24ch;
     text-align: center;
-    font-size: clamp(15px, 1.3vw, 19px);
-    line-height: 1.4;
-    color: var(--paper);
+    color: var(--accent);
+    font-family: var(--display);
+    font-size: var(--fs-caps);
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .footer__prompt {
+    margin-right: 0.35em;
+  }
+  .footer__caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 2px;
+    margin-left: 4px;
+    background: currentColor;
+    animation: footer-blink 1s steps(1) infinite;
+  }
+  @keyframes footer-blink {
+    50% {
+      opacity: 0;
+    }
   }
   @media (max-width: 720px) {
     .footer__hand {
@@ -166,30 +182,6 @@ const year = new Date().getFullYear();
       max-width: none;
       margin: 0 var(--gutter) 20px;
       text-align: left;
-      color: var(--accent);
-      font-family: var(--display);
-      font-size: var(--fs-caps);
-      font-weight: 600;
-      line-height: 1.4;
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-    }
-    .footer__prompt {
-      display: inline;
-      margin-right: 0.35em;
-    }
-    .footer__caret {
-      display: inline-block;
-      width: 0.55em;
-      height: 2px;
-      margin-left: 4px;
-      background: currentColor;
-      animation: footer-blink 1s steps(1) infinite;
-    }
-    @keyframes footer-blink {
-      50% {
-        opacity: 0;
-      }
     }
   }
 
