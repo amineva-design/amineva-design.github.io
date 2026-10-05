@@ -88,9 +88,9 @@ tools:
     nameEn: Design
     detailsEn: Figma, Photoshop, Illustrator, After Effects
   - name: Нейросети
-    details: Claude, Midjourney, Recraft, Lovable, Higgsfield, SYNTX
+    details: Claude, Midjourney, Recraft, Higgsfield, SYNTX
     nameEn: AI
-    detailsEn: Claude, Midjourney, Recraft, Lovable, Higgsfield, SYNTX
+    detailsEn: Claude, Midjourney, Recraft, Higgsfield, SYNTX
   - name: Сайты и аналитика
     details: Tilda, Vercel, Git, Яндекс Метрика
     nameEn: Web & analytics
