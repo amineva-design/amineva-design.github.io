@@ -46,7 +46,7 @@ const eager = index === 0;
         <span class="label">{tx.year}</span>
         <span>{c.year}</span>
       </div>
-      <span class="case__arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="case__view" aria-hidden="true">{tx.cursorView}</span>
     </div>
   </div>
 
@@ -61,6 +61,27 @@ const eager = index === 0;
 </a>
 
 <style>
+  /* На телефоне вместо курсора-плашки — такая же зелёная плашка «Смотреть» прямо в карточке.
+     На компьютере её роль играет курсор, поэтому там плашки нет */
+  .case__view {
+    margin-left: auto;
+    align-self: flex-end;
+    padding: 8px 12px;
+    background: var(--accent);
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .case__view {
+      display: none;
+    }
+  }
   /* кейс — один цельный блок: текст слева, картинка справа, без зазора */
   .case {
     display: grid;
@@ -124,28 +145,8 @@ const eager = index === 0;
   .case__meta > div:nth-child(2) {
     white-space: nowrap;
   }
-  .case__arrow {
-    margin-left: auto;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1.5px solid var(--ink);
-    color: var(--ink);
-    transition: transform 0.35s var(--ease);
-  }
   @media (hover: hover) and (pointer: fine) {
-    .case__arrow {
-      display: none;
-    }
-  }
-  .case__arrow svg {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.35s var(--ease);
-  }
-  .case__media {
+    .case__media {
     background: #e4e4e2;
   }
   .case__media :global(img),
@@ -175,9 +176,6 @@ const eager = index === 0;
   }
   .case:hover .case__media :global(img) {
     transform: scale(1.04);
-  }
-  .case:hover .case__arrow svg {
-    transform: translate(2px, -2px);
   }
 
 

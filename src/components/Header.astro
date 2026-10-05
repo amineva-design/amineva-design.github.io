@@ -28,6 +28,14 @@ const nav = [
           </a>
         )
       }
+      {
+        s.openToWork && (
+          <span class="header__status header__status--left">
+            <span class="dot" aria-hidden="true" />
+            {tx.openToWork}
+          </span>
+        )
+      }
     </div>
 
     <a class="header__role" href={href(lang, '/')}>{loc(s, 'role', lang)}</a>
@@ -45,7 +53,6 @@ const nav = [
       <details class="header__menu">
         <summary aria-label={tx.menu}><span></span><span></span></summary>
         <div class="header__sheet">
-          {s.openToWork && <span class="header__sheet-status"><span class="dot" aria-hidden="true" />{tx.openToWork}</span>}
           <a href={href(lang, '/')}>{tx.home}</a>
           {nav.map((i) => <a href={i.href}>{i.label}</a>)}
           {resume && <a href={resume} target="_blank" rel="noopener">{tx.resume}</a>}
@@ -105,6 +112,9 @@ const nav = [
     display: inline-flex;
     align-items: center;
     gap: 8px;
+  }
+  .header__status--left {
+    display: none;
   }
   .dot {
     width: 7px;
@@ -173,21 +183,19 @@ const nav = [
   .header__sheet a:hover {
     background: var(--paper);
   }
-  .header__sheet-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 14px 6px;
-    color: #6b6b66;
-  }
 
   @media (max-width: 900px) {
     .header__bar {
       grid-template-columns: 1fr auto;
     }
+    /* на телефоне слева «Ищу работу», резюме — в меню */
     .header__role,
+    .header__resume,
     .header__status {
       display: none;
+    }
+    .header__status--left {
+      display: inline-flex;
     }
     .header__menu {
       display: block;

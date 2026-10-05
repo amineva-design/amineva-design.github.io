@@ -20,7 +20,7 @@ const year = new Date().getFullYear();
   <!-- руки как на фреске «Сотворение Адама», из символов; между ними — статус -->
   <div class="footer__hands">
     <div class="footer__hand footer__hand--left"><AsciiPortrait src={handLeft} alt="" align="left" /></div>
-    <p class="footer__hands-text">{loc(s, 'statusText', lang)}</p>
+    <p class="footer__hands-text"><span class="footer__prompt" aria-hidden="true">&gt;</span> {loc(s, 'statusText', lang)}<span class="footer__caret" aria-hidden="true"></span></p>
     <div class="footer__hand footer__hand--right"><AsciiPortrait src={handRight} alt="" align="right" /></div>
   </div>
 
@@ -134,6 +134,11 @@ const year = new Date().getFullYear();
   .footer__hand--right {
     right: 0;
   }
+  /* «>» и мигающий курсор — только на телефоне, где подпись стоит строкой кода над руками */
+  .footer__prompt,
+  .footer__caret {
+    display: none;
+  }
   .footer__hands-text {
     position: relative;
     z-index: 1;
@@ -149,15 +154,42 @@ const year = new Date().getFullYear();
     }
     .footer__hands {
       height: auto;
-      padding-top: 34vw;
+      padding-bottom: 34vw;
+      place-items: start;
     }
     .footer__hand {
+      top: auto;
+      bottom: 0;
       height: 32vw;
-      bottom: auto;
     }
     .footer__hands-text {
-      max-width: 24ch;
-      font-size: 14px;
+      max-width: none;
+      margin: 0 var(--gutter) 20px;
+      text-align: left;
+      color: var(--accent);
+      font-family: var(--display);
+      font-size: var(--fs-caps);
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+    .footer__prompt {
+      display: inline;
+      margin-right: 0.35em;
+    }
+    .footer__caret {
+      display: inline-block;
+      width: 0.55em;
+      height: 2px;
+      margin-left: 4px;
+      background: currentColor;
+      animation: footer-blink 1s steps(1) infinite;
+    }
+    @keyframes footer-blink {
+      50% {
+        opacity: 0;
+      }
     }
   }
 

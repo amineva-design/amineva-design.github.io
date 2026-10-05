@@ -25,6 +25,8 @@ const locMatch = L(s, 'location').match(/^(.*?)\s*~~(.+?)~~\s*(.*)$/);
 const locPrefix = locMatch ? locMatch[1] : L(s, 'location');
 const locPhrases = locMatch ? [locMatch[2], locMatch[3]].filter(Boolean) : [''];
 const role = L(s, 'role');
+// на телефоне роль в две строки: «Продуктовый / UX/UI дизайнер»
+const [roleFirst, ...roleRest] = role.split(' ');
 const [firstName, ...rest] = name.split(' ');
 const lastName = rest.join(' ');
 ---
@@ -41,7 +43,7 @@ const lastName = rest.join(' ');
       <div class="hero__name">
         <p class="hero__code caps" aria-hidden="true" data-reveal="fade"><span class="hero__prompt">&gt;</span> {tx.heroCode}<span class="hero__caret"></span></p>
         <p class="hero__fullname" aria-hidden="true" data-reveal="lines">{firstName}<br />{lastName}</p>
-        <p class="hero__role caps">{role}</p>
+        <p class="hero__role caps">{roleFirst}<br />{roleRest.join(' ')}</p>
       </div>
 
       <div class="hero__intro">
@@ -219,37 +221,37 @@ const lastName = rest.join(' ');
       z-index: 1;
       padding-inline: var(--gutter);
     }
-    /* имя и роль лежат поверх портрета — в пустом месте над ноутбуком, левее девушки */
+    /* первый экран — как обложка: имя и роль сверху, под ними портрет до низа экрана.
+       Описание и город — уже при прокрутке */
     .hero__name {
-      position: absolute;
-      top: 24px;
-      left: 0;
-      right: 0;
+      order: 1;
       align-items: flex-start;
     }
     .hero__fullname {
       font-size: 12.5vw;
     }
     .hero__role {
-      display: inline-flex;
+      display: block;
+      line-height: 1.35;
       margin-top: 10px;
     }
     .hero {
-      --ascii-h: 96vw;
+      /* высота экрана минус шапка, отступ сверху и блок с именем (2 строки имени + 2 строки роли) */
+      --ascii-h: max(92vw, calc(100svh - 65px - 24px - 23.75vw - 70px));
     }
     .hero__ascii {
-      order: 1;
+      order: 2;
       position: relative;
       right: auto;
       bottom: auto;
       width: 100%;
       height: var(--ascii-h);
-      margin-top: 32px;
+      margin-top: 8px;
     }
     .hero__intro {
       order: 3;
       max-width: 520px;
-      margin-top: 24px;
+      margin-top: 40px;
     }
     .hero__intro p {
       font-size: 12px;
