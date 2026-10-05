@@ -133,6 +133,11 @@ const eager = index === 0;
     color: var(--ink);
     transition: transform 0.35s var(--ease);
   }
+  @media (hover: hover) and (pointer: fine) {
+    .case__arrow {
+      display: none;
+    }
+  }
   .case__arrow svg {
     width: 16px;
     height: 16px;
