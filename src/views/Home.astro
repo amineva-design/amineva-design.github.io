@@ -200,7 +200,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     align-self: end;
     aspect-ratio: 3 / 4;
     overflow: hidden;
-    border-radius: 4px;
+    border-radius: var(--radius);
     background: #2a2a26;
   }
 
@@ -225,7 +225,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   .hero__frame {
     aspect-ratio: 5 / 4;
     overflow: hidden;
-    border-radius: 4px;
+    border-radius: var(--radius);
     background: #2a2a26;
   }
   /* «Выйди за рамки»: подпись начинается на фото и вылезает за сетку до края экрана */
@@ -342,6 +342,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   .about__ph {
     margin: 0;
     overflow: hidden;
+    border-radius: var(--radius);
     background: #e4e4e2;
   }
   .about__ph :global(img) {

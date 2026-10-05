@@ -52,6 +52,9 @@ function screenLength(path: SVGPathElement) {
   return len;
 }
 
+// Единое скругление сайта (--radius) — маска появления фото тоже скруглённая
+const radius = () => getComputedStyle(root).getPropertyValue('--radius').trim() || '20px';
+
 function reveal() {
   // Заголовки и крупный текст: строки выезжают из-под маски
   gsap.utils.toArray<HTMLElement>('[data-reveal="lines"]').forEach((el) => {
@@ -89,9 +92,9 @@ function reveal() {
     const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
     tl.fromTo(
       el,
-      { clipPath: 'inset(100% 0% 0% 0%)' },
+      { clipPath: `inset(100% 0% 0% 0% round ${radius()})` },
       // после появления снимаем маску, иначе она обрезает тень у фото в коллаже
-      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'power3.inOut', clearProps: 'clipPath' }
+      { clipPath: `inset(0% 0% 0% 0% round ${radius()})`, duration: 1.2, ease: 'power3.inOut', clearProps: 'clipPath' }
     );
     if (img) tl.fromTo(img, { scale: 1.15 }, { scale: 1, duration: 1.6, ease: 'power3.out' }, 0);
   });

@@ -172,14 +172,14 @@ const nav = [
     min-width: 230px;
     display: grid;
     padding: 8px;
-    border-radius: 16px;
+    border-radius: var(--radius);
     background: var(--card);
     color: var(--ink);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
   }
   .header__sheet a {
     padding: 12px 14px;
-    border-radius: 10px;
+    border-radius: calc(var(--radius) - 8px);
     font-size: 15px;
   }
   .header__sheet a:hover {

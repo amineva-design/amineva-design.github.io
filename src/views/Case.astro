@@ -380,7 +380,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
   .block--pair :global(img) {
     width: 100%;
     height: auto;
-    border-radius: 16px;
+    border-radius: var(--radius);
     background: #e4e4e2;
   }
   .block--image.is-wide {
@@ -399,7 +399,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
   .video {
     position: relative;
     aspect-ratio: 16 / 9;
-    border-radius: 16px;
+    border-radius: var(--radius);
     overflow: hidden;
     background: var(--ink);
   }
