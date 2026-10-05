@@ -99,13 +99,13 @@ export default config({
             itemLabel: (props) => `${props.fields.value.value} — ${props.fields.label.value}`,
           }
         ),
-        cardImage: caseImage('Картинка карточки', 'Обложка на главной, пропорции 16:10. На сайте показывается ч/б, цветная при наведении'),
+        cardImage: caseImage('Обложка на главной', 'Обложка на главной, пропорции 16:10. На сайте показывается ч/б, цветная при наведении'),
         cardImage2: caseImage('Картинка карточки 2', 'Сейчас не используется'),
         cardVideo: fields.url({
           label: 'Видео вместо картинки 2',
           description: 'Ссылка на Kinescope (embed). Если заполнено — показывается вместо картинки 2',
         }),
-        heroImage: caseImage('Обложка кейса', 'Большая картинка в начале страницы кейса'),
+        heroImage: caseImage('Обложка внутри кейса', 'Большая картинка в начале страницы кейса'),
         blocks: fields.blocks(
           {
             section: {
