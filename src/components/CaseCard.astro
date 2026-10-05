@@ -130,20 +130,7 @@ const eager = index === 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s var(--ease), filter 0.7s var(--ease);
-  }
-  /* обложки ч/б, чтобы разноцветные кейсы не спорили; при наведении на любую часть карточки — цвет.
-     На устройствах без наведения (телефон) — сразу в цвете */
-  @media (hover: hover) and (pointer: fine) {
-    .case__media :global(img),
-    .case__media iframe {
-      filter: grayscale(1);
-    }
-    .case:hover .case__media :global(img),
-    .case:hover .case__media iframe,
-    .case:focus-visible .case__media :global(img) {
-      filter: grayscale(0);
-    }
+    transition: transform 0.6s var(--ease);
   }
   .case__media iframe {
     border: 0;
