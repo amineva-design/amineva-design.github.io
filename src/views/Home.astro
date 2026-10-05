@@ -38,7 +38,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
           {tx.heroNote[0]}<br />{tx.heroNote[1]}
         </p>
         <p class="hero__fullname" aria-hidden="true">{firstName}<br />{lastName}</p>
-        <p class="hero__role caps"><span class="dot-accent" aria-hidden="true"></span>{role}</p>
+        <p class="hero__role caps">{role}</p>
       </div>
 
       {
@@ -52,7 +52,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       }
 
       <div class="hero__intro">
-        <span class="dot-accent hero__intro-dot" aria-hidden="true"></span>
         <p class="caps">{L(s, 'intro')}</p>
       </div>
 
@@ -191,13 +190,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     gap: 8px;
     margin-top: 16px;
   }
-  .dot-accent {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex: none;
-  }
   .hero__photo {
     position: relative;
     margin: 0;
@@ -247,9 +239,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   .hero__intro p {
     font-size: var(--fs-caps);
     line-height: 1.35;
-  }
-  .hero__intro-dot {
-    margin-left: 40%;
   }
   .hero__photo--big {
     grid-column: 8 / 13;
@@ -327,9 +316,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     }
     .hero__intro {
       grid-column: 1 / -1;
-    }
-    .hero__intro-dot {
-      margin-left: 0;
     }
   }
 
