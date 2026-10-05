@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Marquee from '../components/Marquee.astro';
-import { inline, richText } from '../lib/content';
+import { richText } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
@@ -38,7 +38,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
         <span class="label">{c.year}</span>
       </div>
       <h1 class="intro__title">{title}</h1>
-      {L(c, 'lead') && <p class="intro__lead" set:html={inline(L(c, 'lead'))} />}
+      {L(c, 'lead') && <p class="intro__lead">{L(c, 'lead')}</p>}
 
       {
         facts.length > 0 && (
@@ -101,7 +101,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
               case 'section':
                 return (
                   <section class="block block--text" id={id}>
-                    {b.value.heading && <h2 set:html={inline(L(b.value, 'heading'))} />}
+                    {b.value.heading && <h2>{L(b.value, 'heading')}</h2>}
                     {b.value.text && <div class="rich" set:html={richText(L(b.value, 'text'))} />}
                   </section>
                 );

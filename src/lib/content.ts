@@ -38,12 +38,11 @@ export function telegramHref(handle: string) {
 const escape = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-// Мини-разметка для текстов из админки: **жирный**, ~~зачёркнутый~~, _акцентный шрифт_.
+// Мини-разметка для текстов из админки: **жирный**, ~~зачёркнутый~~.
 export function inline(s: string) {
   return escape(s)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/~~(.+?)~~/g, '<s>$1</s>')
-    .replace(/(^|[\s\u00a0(«"—])_([^_\n]+?)_(?=$|[\s\u00a0.,!?:;»")—])/g, '$1<em class="accent">$2</em>');
+    .replace(/~~(.+?)~~/g, '<s>$1</s>');
 }
 
 // Пустая строка — новый абзац, строки с «- » — список.

@@ -1,7 +1,5 @@
 @import '@fontsource-variable/arimo';
 @import '@fontsource-variable/onest';
-@import '@fontsource-variable/eb-garamond/wght.css';
-@import '@fontsource-variable/eb-garamond/wght-italic.css';
 
 :root {
   --ink: #1a1a17;
@@ -15,7 +13,6 @@
 
   --display: 'Arimo Variable', 'Helvetica Neue', Arial, sans-serif;
   --text: 'Onest Variable', system-ui, sans-serif;
-  --serif: 'EB Garamond Variable', Georgia, serif;
 
   --gutter: clamp(16px, 3.4vw, 48px);
   --gap: clamp(12px, 1.7vw, 24px);
@@ -195,23 +192,6 @@ s::after {
   height: 75%;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 76.43 10.81' preserveAspectRatio='none'%3E%3Cpath d='M0.9009 2.8328C0.9009 2.8328 76.3881 -1.5078 75.52 2.8328C74.6519 7.1735 -3.7604 5.3693 11.02 7.04C34.0955 9.6483 55.0822 9.9097 55.0822 9.9097' fill='none' stroke='%23ff9800' stroke-width='1.5' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   pointer-events: none;
-}
-
-/* Акцентный шрифт: в админке _слово_ → курсивный Garamond */
-.accent {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  text-transform: none;
-}
-
-/* В заголовках у Garamond меньше высота строчных, чем у Arimo, — выравниваем на глаз */
-h1 .accent,
-h2 .accent,
-h3 .accent {
-  font-size: 1.12em;
-  line-height: 0.9;
 }
 
 /* Мелкий капс в духе исходного сайта */
