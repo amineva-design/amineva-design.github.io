@@ -72,7 +72,6 @@ const pages = defineCollection({
       // settings
       ...tx('name', 'role', 'greeting', 'intro', 'location', 'statusText'),
       openToWork: z.boolean().default(true),
-      heroPhoto: img,
       heroPhoto2: img,
       email: text,
       telegram: text,

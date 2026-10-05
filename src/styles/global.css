@@ -17,7 +17,7 @@
 
   --gutter: clamp(16px, 3.4vw, 48px);
   --gap: clamp(12px, 1.7vw, 24px);
-  --radius: 20px;
+  --radius: 0px;
   --max: 1440px;
 
   --fs-body: 17px;
@@ -108,7 +108,7 @@ p {
   gap: 8px;
   min-height: 48px;
   padding: 0 22px;
-  border-radius: 999px;
+  border-radius: var(--radius);
   border: 1px solid currentColor;
   font: 600 15px/1 var(--text);
   white-space: nowrap;
@@ -207,7 +207,6 @@ s .line--strike {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 .visually-hidden {

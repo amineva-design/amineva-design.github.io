@@ -197,8 +197,7 @@ export default config({
         ...tr('location', 'Где живу', { description: '~~текст~~ — зачёркнутый' }),
         openToWork: fields.checkbox({ label: 'Ищу работу (зелёная точка в шапке)', defaultValue: true }),
         ...tr('statusText', 'Текст статуса', { defaultValue: 'Открыта к full-time и контрактной работе' }),
-        heroPhoto: siteImage('Фото на главной (маленькое)'),
-        heroPhoto2: siteImage('Фото на главной (большое)'),
+        heroPhoto2: siteImage('Фото на главной'),
         email: fields.text({ label: 'E-mail' }),
         telegram: fields.text({ label: 'Telegram', description: 'Без @' }),
         resumeFile: fields.file({
