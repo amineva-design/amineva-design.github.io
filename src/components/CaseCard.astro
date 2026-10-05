@@ -46,7 +46,6 @@ const eager = index === 0;
         <span class="label">{tx.year}</span>
         <span>{c.year}</span>
       </div>
-      <span class="case__view" aria-hidden="true">{tx.cursorView}</span>
     </div>
   </div>
 
@@ -61,27 +60,6 @@ const eager = index === 0;
 </a>
 
 <style>
-  /* На телефоне вместо курсора-плашки — такая же зелёная плашка «Смотреть» прямо в карточке.
-     На компьютере её роль играет курсор, поэтому там плашки нет */
-  .case__view {
-    margin-left: auto;
-    align-self: flex-end;
-    padding: 8px 12px;
-    background: var(--accent);
-    color: var(--ink);
-    font-family: var(--display);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    line-height: 1;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .case__view {
-      display: none;
-    }
-  }
   /* кейс — один цельный блок: текст слева, картинка справа, без зазора */
   .case {
     display: grid;
@@ -143,8 +121,7 @@ const eager = index === 0;
   .case__meta > div:nth-child(2) {
     white-space: nowrap;
   }
-  @media (hover: hover) and (pointer: fine) {
-    .case__media {
+  .case__media {
     background: #e4e4e2;
   }
   .case__media :global(img),
@@ -177,8 +154,9 @@ const eager = index === 0;
   }
 
 
-  @media (max-width: 1024px) {
-    .case__media {
+  /* правила по ширине экрана не пересекаются — так в собранном CSS они не перебивают друг друга */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .case .case__media {
       aspect-ratio: auto;
       min-height: 100%;
     }
@@ -190,11 +168,12 @@ const eager = index === 0;
       grid-template-columns: calc((100% - 11 * var(--gap)) * 5 / 12 + 5 * var(--gap)) minmax(0, 1fr);
     }
   }
+  /* телефон: картинка сверху, под ней текст */
   @media (max-width: 640px) {
     .case {
       grid-template-columns: 1fr;
     }
-    .case__media {
+    .case .case__media {
       order: -1;
       aspect-ratio: 16 / 10;
     }

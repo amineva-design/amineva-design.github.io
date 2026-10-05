@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy": "git checkout main && git pull --ff-only && git merge --ff-only ascii-hero && git push origin main && git checkout ascii-hero"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",
