@@ -25,6 +25,7 @@ const cases = defineCollection({
       cardPosition: z.enum(['center', 'left', 'right']).default('center'),
       cardImage2: img,
       cardVideo: text,
+      coverVideo: text,
       heroImage: img,
       blocks: z
         .array(

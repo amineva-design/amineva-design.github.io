@@ -21,6 +21,7 @@ metrics:
     label: типовых задач SMM закрывают шаблоны
     labelEn: of routine SMM tasks covered by templates
 cardImage: ../../assets/cases/dokrutim/card-1.png
+coverVideo: /video/cases/dokrutim/coverVideo.mp4
 cardVideo: https://kinescope.io/embed/7XNkhEeHeQC4EhrQeGjTTa
 heroImage: ../../assets/cases/dokrutim/hero.png
 blocks:

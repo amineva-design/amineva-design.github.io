@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { href as link, loc, t, type Lang } from '../lib/i18n';
+import { getImage } from 'astro:assets';
+import { href as link, loc, t, withBase, type Lang } from '../lib/i18n';
 
 interface Props {
   entry: CollectionEntry<'cases'>;
@@ -16,13 +17,19 @@ const title = loc(c, 'title', lang);
 const summary = loc(c, 'summary', lang);
 const sizes = '(max-width: 640px) 100vw, 50vw';
 const eager = index === 0;
+// видео на обложке (если загружено): крутится без звука, первый кадр до загрузки — обычная обложка
+const poster = c.coverVideo && c.cardImage ? await getImage({ src: c.cardImage, width: 800, format: 'jpg' }) : null;
 ---
 
 <a class="case" href={href} aria-label={tx.caseAria(title)} data-cursor={tx.cursorView} data-reveal="fade">
   <div class="case__media" transition:name={`case-${entry.id}`} style={`--pos: ${c.cardPosition}`}>
     {
-      c.cardImage && (
-        <Image src={c.cardImage} alt="" widths={[640, 1000, 1400]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
+      c.coverVideo ? (
+        <video src={withBase(c.coverVideo)} poster={poster?.src} autoplay muted loop playsinline preload="metadata" aria-hidden="true" />
+      ) : (
+        c.cardImage && (
+          <Image src={c.cardImage} alt="" widths={[640, 1000, 1400]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
+        )
       )
     }
   </div>
@@ -32,6 +39,16 @@ const eager = index === 0;
     {loc(c, 'direction', lang) && <p class="case__dir">{loc(c, 'direction', lang)}</p>}
   </div>
 </a>
+
+<script>
+  // Видео на обложках запускаем явно: после перехода между страницами браузер сам autoplay не включает
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLVideoElement>('.case__media video').forEach((v) => {
+      v.muted = true;
+      v.play().catch(() => {});
+    });
+  });
+</script>
 
 <style>
   /* карточка кейса: квадратная обложка, под ней название, что делалось и направление */
@@ -48,14 +65,17 @@ const eager = index === 0;
     overflow: hidden;
     background: #e4e4e2;
   }
-  .case__media :global(img) {
+  .case__media :global(img),
+  .case__media video {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: var(--pos, center);
     transition: transform 0.6s var(--ease);
   }
-  .case:hover .case__media :global(img) {
+  .case:hover .case__media :global(img),
+  .case:hover .case__media video {
     transform: scale(1.04);
   }
   .case__info {

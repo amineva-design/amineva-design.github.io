@@ -111,6 +111,12 @@ export default config({
           defaultValue: 'center',
         }),
         cardImage2: caseImage('Картинка карточки 2', 'Сейчас не используется'),
+        coverVideo: fields.file({
+          label: 'Видео на обложку',
+          description: 'Необязательно. MP4 без звука, квадратное, до 5 МБ. Если загружено — на главной вместо обложки крутится видео',
+          directory: 'public/video/cases',
+          publicPath: '/video/cases/',
+        }),
         cardVideo: fields.url({
           label: 'Видео вместо картинки 2',
           description: 'Ссылка на Kinescope (embed). Если заполнено — показывается вместо картинки 2',
