@@ -1,0 +1,123 @@
+---
+// «Цифровой дождь» как в «Матрице»: колонки символов стекают вниз и тают.
+// Лежит фоном первого экрана, приглушён и растворяется к заголовкам, чтобы не мешать читать.
+---
+
+<canvas class="rain" aria-hidden="true" data-rain></canvas>
+
+<script>
+  // хирагана + катакана + цифры, как на референсе
+  const CHARS =
+    'ぁあぃいぅうぇえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもゃやゅゆょよらりるれろわをん' +
+    'ァアィイゥウェエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモャヤュユョヨラリルレロワヲン0123456789';
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rnd = () => CHARS[(Math.random() * CHARS.length) | 0];
+
+  type Stream = { x: number; y: number; speed: number; len: number; chars: string[] };
+
+  function setup(canvas: HTMLCanvasElement) {
+    if ((canvas as any).__rain || reduced) return;
+    (canvas as any).__rain = true;
+    const ctx = canvas.getContext('2d')!;
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3fb56a';
+    const size = 16;
+    let w = 0, h = 0, streams: Stream[] = [];
+    let raf = 0, visible = false, last = 0;
+
+    const spawn = (x: number, fromTop: boolean): Stream => {
+      const len = 8 + ((Math.random() * 18) | 0);
+      return {
+        x,
+        y: fromTop ? -Math.random() * h * 0.6 : Math.random() * h,
+        speed: 0.6 + Math.random() * 1.4,
+        len,
+        chars: Array.from({ length: len }, rnd),
+      };
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // редкие колонки: занята примерно каждая третья позиция
+      const step = size * 1.6;
+      streams = [];
+      for (let x = step / 2; x < w; x += step) {
+        if (Math.random() < 0.34) streams.push(spawn(x + (Math.random() - 0.5) * 6, false));
+      }
+    };
+
+    const draw = (t: number) => {
+      raf = 0;
+      if (!visible) return;
+      if (t - last > 40) {
+        const dt = Math.min(3, (t - last) / 40);
+        last = t;
+        ctx.clearRect(0, 0, w, h);
+        ctx.font = `${size}px "Hiragino Sans", "Noto Sans JP", ui-monospace, sans-serif`;
+        ctx.textAlign = 'center';
+        for (const st of streams) {
+          st.y += st.speed * dt * 2.2;
+          // иногда символы в потоке меняются — «перекодировка»
+          if (Math.random() < 0.15) st.chars[(Math.random() * st.len) | 0] = rnd();
+          for (let k = 0; k < st.len; k++) {
+            const y = st.y - k * size;
+            if (y < -size || y > h + size) continue;
+            const fade = 1 - k / st.len;
+            if (k === 0) {
+              ctx.fillStyle = '#e4f7ea';
+              ctx.globalAlpha = 0.95;
+            } else {
+              ctx.fillStyle = accent;
+              ctx.globalAlpha = 0.15 + 0.75 * fade * fade;
+            }
+            ctx.fillText(st.chars[k], st.x, y);
+          }
+          // поток ушёл вниз целиком — запускаем новый сверху в той же колонке
+          if (st.y - st.len * size > h) Object.assign(st, spawn(st.x, true));
+        }
+        ctx.globalAlpha = 1;
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    new IntersectionObserver((e) => {
+      visible = e[0].isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(draw);
+    }).observe(canvas);
+    let rt = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(resize, 200);
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLCanvasElement>('[data-rain]').forEach(setup);
+  });
+</script>
+
+<style>
+  .rain {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    opacity: 0.6;
+    /* дождь гаснет к верху (заголовки) и к краям, где тексты */
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 30%, #000 70%),
+      linear-gradient(to right, rgba(0, 0, 0, 0.35), #000 30%, #000 70%, rgba(0, 0, 0, 0.35));
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 30%, #000 70%),
+      linear-gradient(to right, rgba(0, 0, 0, 0.35), #000 30%, #000 70%, rgba(0, 0, 0, 0.35));
+    mask-composite: intersect;
+  }
+</style>

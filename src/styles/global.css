@@ -6,7 +6,7 @@
   --ink: #141412;
   --paper: #f2f2f3;
   --card: #ffffff;
-  --accent: #ff2a00;
+  --accent: #3fb56a;
   --muted: #6b6b66;
   --muted-on-dark: #a3a39d;
   --line: rgba(20, 20, 18, 0.12);
@@ -124,8 +124,8 @@ p {
   color: var(--ink);
 }
 .btn--accent:hover {
-  background: #ff5533;
-  border-color: #ff5533;
+  background: #5cc884;
+  border-color: #5cc884;
 }
 .btn--ghost:hover {
   background: var(--paper);

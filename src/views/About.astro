@@ -2,7 +2,8 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { getAbout, getSettings, richText, resumeHref } from '../lib/content';
-import { loc, t, type Lang } from '../lib/i18n';
+import Stack from '../components/Stack.astro';
+import { href, loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
   lang: Lang;
@@ -17,6 +18,7 @@ const resume = resumeHref(s, lang);
 
 <Base title={tx.aboutTitle} description={L(about, 'text')} lang={lang}>
   <section class="container about">
+    <a class="back" href={href(lang, '/')}>{tx.backHome}</a>
     <p class="about__label" data-reveal="fade">{tx.aboutLabel}</p>
     <h1 class="about__headline" data-reveal="lines">{L(about, 'headline')}</h1>
 
@@ -65,63 +67,51 @@ const resume = resumeHref(s, lang);
     )
   }
 
-  <section class="container block cards">
-    {
-      about.skills.length > 0 && (
-        <div class="card" data-reveal="fade">
+  {
+    about.skills.length > 0 && (
+      <section class="container block">
+        <div class="block__head">
           <h2>{tx.skills}</h2>
-          <div class="skills">
-            {about.skills.map((g) => (
-              <div>
-                <h3>{L(g, 'title')}</h3>
-                <ul>
-                  {L(g, 'items').split('\n').filter(Boolean).map((i) => (
-                    <li>{i}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
         </div>
-      )
-    }
-    {
-      about.tools.length > 0 && (
-        <div class="card card--dark" data-reveal="fade">
-          <h2>{tx.tools}</h2>
-          <dl class="tools">
-            {about.tools.map((tool) => (
-              <div>
-                <dt>{L(tool, 'name')}</dt>
-                <dd>{L(tool, 'details')}</dd>
-              </div>
-            ))}
-            {L(about, 'languages') && (
-              <div>
-                <dt>{tx.languages}</dt>
-                <dd>{L(about, 'languages')}</dd>
-              </div>
-            )}
-          </dl>
-        </div>
-      )
-    }
-    {
-      about.softSkills.length > 0 && (
-        <div class="card card--green" data-reveal="fade">
+        <ol class="skills">
+          {about.skills.map((g, i) => (
+            <li class="skills__group" data-reveal="fade">
+              <span class="skills__num">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{L(g, 'title')}</h3>
+              <ul>
+                {L(g, 'items').split('\n').filter(Boolean).map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  <div class="block block--stack">
+    <Stack lang={lang} />
+  </div>
+
+  {
+    about.softSkills.length > 0 && (
+      <section class="container block block--last">
+        <div class="block__head">
           <h2>{tx.softSkills}</h2>
-          <dl class="soft">
-            {about.softSkills.map((item) => (
-              <div>
-                <dt>{L(item, 'title')}</dt>
-                <dd>{L(item, 'text')}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
-      )
-    }
-  </section>
+        <ol class="soft">
+          {about.softSkills.map((item, i) => (
+            <li class="soft__row" data-reveal="fade">
+              <span class="skills__num">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{L(item, 'title')}</h3>
+              <p>{L(item, 'text')}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
 </Base>
 
 <style>
@@ -134,9 +124,20 @@ const resume = resumeHref(s, lang);
     color: var(--accent);
     margin-bottom: 16px;
   }
+  .back {
+    display: inline-block;
+    margin-bottom: clamp(28px, 4vw, 56px);
+    padding: 8px 0;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .back:hover {
+    color: var(--muted);
+  }
   .about__headline {
-    max-width: 1040px;
-    font-size: clamp(40px, 5.4vw, 80px);
+    max-width: 900px;
+    font-size: clamp(32px, 4vw, 56px);
     letter-spacing: -0.035em;
   }
   .about__grid {
@@ -189,8 +190,73 @@ const resume = resumeHref(s, lang);
   .block {
     padding-top: clamp(64px, 9vw, 128px);
   }
-  .block:last-child {
+  .block--last {
     padding-bottom: clamp(64px, 9vw, 128px);
+  }
+  /* стек на этой странице — тот же компонент, что на главной */
+  .block--stack :global(.stack) {
+    padding-bottom: 0;
+  }
+
+  /* навыки: четыре колонки с номерами и списками через тонкие линии */
+  .skills {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  .skills__group {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ink);
+  }
+  .skills__num {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .skills__group h3 {
+    font-size: clamp(20px, 1.7vw, 24px);
+    margin-bottom: 6px;
+  }
+  .skills__group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .skills__group ul li {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  /* soft-скиллы: строки с номером, крупным названием и описанием */
+  .soft {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .soft__row {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: var(--gap);
+    align-items: baseline;
+    padding-block: clamp(18px, 2vw, 28px);
+    border-top: 1px solid var(--line);
+  }
+  .soft__row h3 {
+    font-size: clamp(22px, 2.2vw, 32px);
+  }
+  .soft__row p {
+    color: var(--muted);
+    max-width: 560px;
   }
   .block__head {
     display: flex;
@@ -236,94 +302,37 @@ const resume = resumeHref(s, lang);
     max-width: 680px;
   }
 
-  .cards {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: var(--gap);
-    align-items: start;
-  }
-  .card {
-    padding: clamp(24px, 3vw, 40px);
-    border-radius: var(--radius);
-    background: var(--card);
-  }
-  .cards > .card:first-child {
-    grid-row: span 2;
-  }
-  .card--green {
-    background: #1d5c51;
-    color: #fff;
-  }
-  .soft {
-    margin: 0;
-    display: grid;
-    gap: 18px;
-  }
-  .soft dt {
-    font-weight: 600;
-  }
-  .soft dd {
-    margin: 4px 0 0;
-    color: rgba(255, 255, 255, 0.78);
-  }
-  .card--dark {
-    background: var(--ink);
-    color: var(--paper);
-  }
-  .card h2 {
-    font-size: var(--fs-h3);
-    margin-bottom: 24px;
-  }
-  .skills {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px var(--gap);
-  }
-  .skills h3 {
-    font-family: var(--text);
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-  .skills ul {
-    list-style: none;
-    margin: 8px 0 0;
-    padding: 0;
-    display: grid;
-    gap: 4px;
-    color: var(--muted);
-    font-size: 16px;
-  }
-  .tools {
-    margin: 0;
-    display: grid;
-    gap: 18px;
-  }
-  .tools div {
-    display: grid;
-    grid-template-columns: 112px 1fr;
-    gap: 12px;
-  }
-  .tools dt {
-    font-weight: 600;
-  }
-  .tools dd {
-    margin: 0;
-    color: var(--muted-on-dark);
-  }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @media (max-width: 1024px) {
+    .skills {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 40px;
+    }
+  }
   @media (max-width: 900px) {
     .about__text,
     .about__photos,
     .about__hobbies {
       grid-column: 1 / -1;
     }
-    .cards {
-      grid-template-columns: 1fr;
-    }
-    .cards > .card:first-child {
-      grid-row: auto;
-    }
+  
+  
     .timeline li > .label,
     .timeline li > div {
       grid-column: 1 / -1;
@@ -336,6 +345,13 @@ const resume = resumeHref(s, lang);
     .skills {
       grid-template-columns: 1fr;
     }
+    .soft__row {
+      grid-template-columns: 36px minmax(0, 1fr);
+    }
+    .soft__row p {
+      grid-column: 2;
+    }
+  
     .block__head {
       flex-direction: column;
     }

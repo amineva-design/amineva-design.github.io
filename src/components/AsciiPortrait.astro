@@ -111,7 +111,7 @@ const small = await getImage({ src, width: 900, format: 'webp' });
       last = t;
       const time = t - start;
       ctx.clearRect(0, 0, w, h);
-      const R = 80;
+      const R = 42;
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
           const i = y * cols + x;
@@ -137,8 +137,8 @@ const small = await getImage({ src, width: 900, format: 'webp' });
               idx = 1 + Math.floor(Math.random() * (RAMP.length - 1));
               color = '#fff';
               alpha = 0.5 + 0.5 * f;
-              ox = (dx / (d || 1)) * f * 10;
-              oy = (dy / (d || 1)) * f * 10;
+              ox = (dx / (d || 1)) * f * 6;
+              oy = (dy / (d || 1)) * f * 6;
             } else if (Math.random() < 0.006) {
               // тихое мерцание: символ меняется на соседний по плотности
               idx = Math.max(1, Math.min(RAMP.length - 1, idx + (Math.random() < 0.5 ? -2 : 2)));

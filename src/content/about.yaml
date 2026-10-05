@@ -100,9 +100,9 @@ tools:
     nameEn: Analytics & dev
     details: Яндекс Метрика, Git, Vercel
     detailsEn: Yandex Metrica, Git, Vercel
-  - name: Ещё
+  - name: Другое
     details: Tilda, Miro, Kaiten, Jira
-    nameEn: More
+    nameEn: Other
     detailsEn: Tilda, Miro, Kaiten, Jira
 headlineEn: I’m a product designer who grew out of web and graphic design
 textEn: >-
