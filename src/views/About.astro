@@ -25,7 +25,7 @@ const kitTools = [
 
 <Base title={tx.aboutTitle} description={L(about, 'text')} lang={lang}>
   <section class="container about">
-    <a class="back" href={href(lang, '/')}>{tx.backHome}</a>
+    <a class="back" href={href(lang, '/')}><svg class="back__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 3 5.5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>{tx.backHome}</a>
     <p class="about__label caps" data-reveal="fade">{tx.aboutLabel}</p>
     <h1 class="about__headline" data-reveal="lines">{L(about, 'headline')}</h1>
 
@@ -119,15 +119,12 @@ const kitTools = [
     margin-bottom: 12px;
   }
   .back {
-    display: inline-block;
+    display: inline-flex;
     margin-bottom: clamp(20px, 2.4vw, 32px);
     padding: 8px 0;
     font-size: var(--fs-small);
     font-weight: 600;
     text-decoration: none;
-  }
-  .back:hover {
-    color: var(--muted);
   }
   /* тот же размер, что у заголовков секций на главной («Кейсы», «Стек») */
   .about__headline {

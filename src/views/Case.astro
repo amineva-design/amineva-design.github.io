@@ -34,7 +34,7 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
   <article class="case-page">
     <header class="container intro">
       <div class="intro__top">
-        <a class="back" href={href(lang, '/#cases')}>{tx.allCases}</a>
+        <a class="back" href={href(lang, '/#cases')}><svg class="back__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 3 5.5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>{tx.allCases}</a>
         <span class="label">{c.year}</span>
       </div>
       <h1 class="intro__title" data-reveal="lines">{title}</h1>
@@ -245,9 +245,6 @@ const contentSizes = '(max-width: 900px) 100vw, 912px';
     font-weight: 600;
     text-decoration: none;
     padding: 8px 0;
-  }
-  .back:hover {
-    color: var(--muted);
   }
   .intro__title {
     margin-top: clamp(32px, 5vw, 72px);
