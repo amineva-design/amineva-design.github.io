@@ -27,7 +27,7 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer__cols">
       <div>
-        <p class="label">{tx.contactsLabel}</p>
+        <p class="footer__label">{tx.contactsLabel}</p>
         <ul>
           {s.email && <li><a href={`mailto:${s.email}`}>{s.email}</a></li>}
           {tg && <li><a href={tg} target="_blank" rel="noopener">Tg @{s.telegram.replace(/^@/, '')}</a></li>}
@@ -35,13 +35,13 @@ const year = new Date().getFullYear();
         </ul>
       </div>
       <div>
-        <p class="label">{tx.socialsLabel}</p>
+        <p class="footer__label">{tx.socialsLabel}</p>
         <ul>
           {s.socials.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{loc(l, 'label', lang)}</a></li>)}
         </ul>
       </div>
       <div>
-        <p class="label">{tx.siteLabel}</p>
+        <p class="footer__label">{tx.siteLabel}</p>
         <ul>
           <li><a href={href(lang, '/')}>{tx.home}</a></li>
           <li><a href={href(lang, '/#cases')}>{tx.nav.cases}</a></li>
@@ -61,6 +61,12 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+  /* подпись колонок — прежний стиль, не зависит от общего .label */
+  .footer__label {
+    font-size: var(--fs-label);
+    color: var(--muted);
+    line-height: 1.3;
+  }
   .footer {
     padding-top: clamp(40px, 5vw, 72px);
   }
