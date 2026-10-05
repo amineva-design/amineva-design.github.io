@@ -84,26 +84,22 @@ skills:
       PRDs and interactive prototypes
       Prompt engineering
 tools:
-  - name: Figma
-    details: Auto Layout, Variants, Variables, сетки, стили
-    nameEn: Figma
-    detailsEn: Auto Layout, Variants, Variables, grids, styles
-  - name: Adobe
-    details: Photoshop, Illustrator, After Effects
-    nameEn: Adobe
-    detailsEn: Photoshop, Illustrator, After Effects
-  - name: AI
+  - name: Дизайн
+    details: Figma, Photoshop, Illustrator, After Effects
+    nameEn: Design
+    detailsEn: Figma, Photoshop, Illustrator, After Effects
+  - name: Нейросети
     details: Claude, Midjourney, Recraft, Lovable, Higgsfield, SYNTX
     nameEn: AI
     detailsEn: Claude, Midjourney, Recraft, Lovable, Higgsfield, SYNTX
-  - name: Аналитика и разработка
-    nameEn: Analytics & dev
-    details: Яндекс Метрика, Git, Vercel
-    detailsEn: Yandex Metrica, Git, Vercel
-  - name: Другое
-    details: Tilda, Miro, Kaiten, Jira
-    nameEn: Other
-    detailsEn: Tilda, Miro, Kaiten, Jira
+  - name: Сайты и аналитика
+    details: Tilda, Vercel, Git, Яндекс Метрика
+    nameEn: Web & analytics
+    detailsEn: Tilda, Vercel, Git, Yandex Metrica
+  - name: Командная работа
+    details: Miro, Kaiten, Jira
+    nameEn: Teamwork
+    detailsEn: Miro, Kaiten, Jira
 headlineEn: I’m a product designer who grew out of web and graphic design
 textEn: >-
   I love the mix of analytics, research and visual design — and most of all, the moments when

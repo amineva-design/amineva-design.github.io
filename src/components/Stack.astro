@@ -1,5 +1,5 @@
 ---
-// Стек: редакционный список — номер, категория, инструменты крупно через «/».
+// Стек: редакционный список — категория, инструменты крупно через «/».
 // При наведении строка заливается фирменным цветом.
 import { getAbout } from '../lib/content';
 import { loc, t, type Lang } from '../lib/i18n';
@@ -28,9 +28,8 @@ const rows = [
     <h2 class="stack__title" data-reveal="fade">{tx.stack}</h2>
     <ol class="stack__rows">
       {
-        rows.map((row, i) => (
+        rows.map((row) => (
           <li class="stack__row" data-reveal="fade">
-            <span class="stack__num">{String(i + 1).padStart(2, '0')}</span>
             <span class="stack__name">{row.name}</span>
             <span class="stack__items">
               {row.items.map((item, j) => (
@@ -64,7 +63,7 @@ const rows = [
   .stack__row {
     position: relative;
     display: grid;
-    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 2.4fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
     gap: var(--gap);
     align-items: baseline;
     padding: clamp(16px, 1.8vw, 26px) 12px;
@@ -89,12 +88,6 @@ const rows = [
   .stack__row:hover .stack__items {
     transform: translateX(8px);
   }
-  .stack__num {
-    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    font-size: 13px;
-    color: var(--muted);
-    transition: color 0.3s;
-  }
   .stack__name {
     font-family: var(--display);
     font-size: var(--fs-caps);
@@ -118,18 +111,14 @@ const rows = [
     font-weight: 400;
     transition: color 0.3s;
   }
-  .stack__row:hover .stack__num {
-    color: var(--accent);
-  }
 
   @media (max-width: 720px) {
     .stack__row {
-      grid-template-columns: 36px minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
       row-gap: 8px;
       padding-inline: 0;
     }
     .stack__items {
-      grid-column: 1 / -1;
       font-size: 22px;
     }
   }
