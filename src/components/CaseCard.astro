@@ -66,7 +66,6 @@ const eager = index === 0;
     display: grid;
     /* текст ровно на 5 колонок сетки, картинка начинается с 6-й — как фото в «Обо мне» и инструменты в стеке */
     grid-template-columns: calc((100% - 11 * var(--gap)) * 5 / 12 + 5 * var(--gap)) minmax(0, 1fr);
-    border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--card);

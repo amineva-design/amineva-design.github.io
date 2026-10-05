@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { getAbout, getSettings, richText, resumeHref } from '../lib/content';
-import Stack from '../components/Stack.astro';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
@@ -14,6 +13,26 @@ const L = (o: Record<string, any>, k: string) => loc(o, k, lang);
 const about = await getAbout();
 const s = await getSettings();
 const resume = resumeHref(s, lang);
+
+// Навыки, инструменты и софт-скиллы — один общий блок: слева раздел, справа строки «название + описание»
+const lines = (v: string) => v.split('\n').map((x) => x.trim()).filter(Boolean);
+const kit = [
+  {
+    label: tx.skills,
+    rows: about.skills.map((g) => ({ title: L(g, 'title'), text: lines(L(g, 'items')).join(' · ') })),
+  },
+  {
+    label: tx.tools,
+    rows: [
+      ...about.tools.map((g) => ({ title: L(g, 'name'), text: L(g, 'details').split(',').map((x) => x.trim()).filter(Boolean).join(' / ') })),
+      ...(L(about, 'languages') ? [{ title: tx.languages, text: L(about, 'languages') }] : []),
+    ],
+  },
+  {
+    label: tx.softSkills,
+    rows: about.softSkills.map((g) => ({ title: L(g, 'title'), text: L(g, 'text') })),
+  },
+].filter((g) => g.rows.length > 0);
 ---
 
 <Base title={tx.aboutTitle} description={L(about, 'text')} lang={lang}>
@@ -68,47 +87,26 @@ const resume = resumeHref(s, lang);
   }
 
   {
-    about.skills.length > 0 && (
-      <section class="container block">
-        <div class="block__head">
-          <h2>{tx.skills}</h2>
-        </div>
-        <ol class="skills">
-          {about.skills.map((g, i) => (
-            <li class="skills__group" data-reveal="fade">
-              <span class="skills__num">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{L(g, 'title')}</h3>
-              <ul>
-                {L(g, 'items').split('\n').filter(Boolean).map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
-      </section>
-    )
-  }
-
-  <div class="block block--stack">
-    <Stack lang={lang} />
-  </div>
-
-  {
-    about.softSkills.length > 0 && (
+    kit.length > 0 && (
       <section class="container block block--last">
         <div class="block__head">
-          <h2>{tx.softSkills}</h2>
+          <h2>{tx.kit}</h2>
         </div>
-        <ol class="soft">
-          {about.softSkills.map((item, i) => (
-            <li class="soft__row" data-reveal="fade">
-              <span class="skills__num">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{L(item, 'title')}</h3>
-              <p>{L(item, 'text')}</p>
-            </li>
+        <div class="kit">
+          {kit.map((g) => (
+            <div class="kit__group">
+              <p class="kit__label label">{g.label}</p>
+              <ul class="kit__rows">
+                {g.rows.map((r) => (
+                  <li class="kit__row" data-reveal="fade">
+                    <h3>{r.title}</h3>
+                    <p>{r.text}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ol>
+        </div>
       </section>
     )
   }
@@ -190,71 +188,58 @@ const resume = resumeHref(s, lang);
   .block--last {
     padding-bottom: clamp(64px, 9vw, 128px);
   }
-  /* стек на этой странице — тот же компонент, что на главной */
-  .block--stack :global(.stack) {
-    padding-bottom: 0;
-  }
 
-  /* навыки: четыре колонки с номерами и списками через тонкие линии */
-  .skills {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--gap);
-  }
-  .skills__group {
-    display: grid;
-    align-content: start;
-    gap: 10px;
-    padding-top: 16px;
+  /* Навыки и инструменты: таблица на 12 колонках — раздел слева (до 6-й колонки), строки справа */
+  .kit {
     border-top: 1px solid var(--ink);
   }
-  .skills__num {
-    font-family: var(--display);
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .skills__group h3 {
-    font-size: clamp(20px, 1.7vw, 24px);
-    margin-bottom: 6px;
-  }
-  .skills__group ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .skills__group ul li {
-    padding: 10px 0;
-    border-top: 1px solid var(--line);
-    font-size: 15px;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-  }
-
-  /* soft-скиллы: строки с номером, крупным названием и описанием */
-  .soft {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .kit__group {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
     border-bottom: 1px solid var(--line);
   }
-  .soft__row {
+  /* подпись раздела едет вместе со строками, пока раздел на экране */
+  .kit__label {
+    grid-column: 1 / 6;
+    align-self: start;
+    position: sticky;
+    top: 24px;
+    padding-top: clamp(18px, 1.8vw, 24px);
+  }
+  .kit__rows {
+    grid-column: 6 / 13;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .kit__row {
     display: grid;
-    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.4fr);
-    gap: var(--gap);
-    align-items: baseline;
-    padding-block: clamp(18px, 2vw, 28px);
+    gap: 6px;
+    padding-block: clamp(18px, 1.8vw, 24px);
+  }
+  .kit__row + .kit__row {
     border-top: 1px solid var(--line);
   }
-  .soft__row h3 {
-    font-size: clamp(22px, 2.2vw, 32px);
+  .kit__row h3 {
+    font-size: clamp(20px, 1.8vw, 26px);
+    line-height: 1.2;
   }
-  .soft__row p {
+  .kit__row p {
     color: var(--muted);
-    max-width: 560px;
+    max-width: 620px;
   }
+  @media (max-width: 900px) {
+    .kit__label,
+    .kit__rows {
+      grid-column: 1 / -1;
+    }
+    .kit__label {
+      position: static;
+      padding-bottom: 4px;
+    }
+  }
+
   .block__head {
     display: flex;
     justify-content: space-between;
@@ -279,12 +264,12 @@ const resume = resumeHref(s, lang);
     border-bottom: 1px solid var(--line);
   }
   .timeline li > .label {
-    grid-column: 1 / 4;
+    grid-column: 1 / 6;
     font-size: 15px;
     padding-top: 6px;
   }
   .timeline li > div {
-    grid-column: 4 / 11;
+    grid-column: 6 / 13;
   }
   .timeline h3 {
     font-size: var(--fs-h3);
@@ -316,12 +301,6 @@ const resume = resumeHref(s, lang);
 
 
 
-  @media (max-width: 1024px) {
-    .skills {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      row-gap: 40px;
-    }
-  }
   @media (max-width: 900px) {
     .about__text,
     .about__photos,
@@ -339,16 +318,6 @@ const resume = resumeHref(s, lang);
     }
   }
   @media (max-width: 560px) {
-    .skills {
-      grid-template-columns: 1fr;
-    }
-    .soft__row {
-      grid-template-columns: 36px minmax(0, 1fr);
-    }
-    .soft__row p {
-      grid-column: 2;
-    }
-  
     .block__head {
       flex-direction: column;
     }
