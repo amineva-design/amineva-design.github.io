@@ -28,7 +28,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     <div class="container hero__grid">
       <h1 class="visually-hidden">{name} — {role}</h1>
 
-      <p class="hero__greeting" aria-hidden="true" data-reveal="chars">
+      <p class="hero__greeting" aria-hidden="true" data-reveal="fade">
         {greeting.map((ch) => <span class="g">{ch === ' ' ? '\u00a0' : ch}</span>)}
       </p>
 
@@ -45,8 +45,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
         s.heroPhoto && (
           <figure class="hero__photo hero__photo--small" data-reveal="img">
             <Image src={s.heroPhoto} alt={name} widths={[360, 720]} sizes="(max-width: 720px) 45vw, 22vw" loading="eager" />
-            <span class="hero__num caps">.: 001</span>
-            <figcaption class="hero__cap caps">{tx.photoPlay}</figcaption>
           </figure>
         )
       }
@@ -61,7 +59,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
             <div class="hero__frame" data-reveal="img">
               <Image src={s.heroPhoto2} alt="" widths={[600, 960, 1280]} sizes="(max-width: 720px) 100vw, 40vw" loading="eager" fetchpriority="high" />
             </div>
-            <span class="hero__num caps">.: 002</span>
             <figcaption class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</figcaption>
           </figure>
         )
@@ -206,21 +203,9 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     border-radius: 4px;
     background: #2a2a26;
   }
-  .hero__num,
-  .hero__cap {
-    position: absolute;
-    left: 16px;
-    color: #fff;
-    font-size: 11px;
-    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
-    pointer-events: none;
-  }
-  .hero__num {
-    top: 14px;
-  }
-  .hero__cap {
-    bottom: 14px;
-  }
+
+
+
   .hero__intro {
     grid-column: 4 / 8;
     grid-row: 3;
@@ -253,9 +238,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
     pointer-events: none;
   }
-  .hero__photo--big .hero__num {
-    z-index: 1;
-  }
+
   .hero__location {
     grid-column: 1 / 8;
     grid-row: 4;

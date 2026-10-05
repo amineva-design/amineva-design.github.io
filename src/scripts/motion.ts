@@ -35,6 +35,23 @@ document.addEventListener('click', (e) => {
   lenis.scrollTo(target, { offset: -24, duration: 1.2 });
 });
 
+// У линий штрих не масштабируется (vector-effect), поэтому пунктир считается в экранных пикселях —
+// длину пути измеряем на экране, а не в координатах SVG
+function screenLength(path: SVGPathElement) {
+  const m = path.getScreenCTM();
+  const total = path.getTotalLength();
+  if (!m || !total) return 1000;
+  let len = 0;
+  let prev: DOMPoint | null = null;
+  const steps = 120;
+  for (let i = 0; i <= steps; i++) {
+    const p = path.getPointAtLength((total * i) / steps).matrixTransform(m);
+    if (prev) len += Math.hypot(p.x - prev.x, p.y - prev.y);
+    prev = p;
+  }
+  return len;
+}
+
 function reveal() {
   // Заголовки и крупный текст: строки выезжают из-под маски
   gsap.utils.toArray<HTMLElement>('[data-reveal="lines"]').forEach((el) => {
@@ -47,19 +64,6 @@ function reveal() {
       ease: 'power3.out',
       stagger: 0.08,
       scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    });
-  });
-
-  // «Привет!»: буквы поднимаются по очереди
-  gsap.utils.toArray<HTMLElement>('[data-reveal="chars"]').forEach((el) => {
-    gsap.set(el, { autoAlpha: 1 });
-    gsap.from(el.querySelectorAll('.g'), {
-      yPercent: 60,
-      autoAlpha: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.05,
-      delay: 0.1,
     });
   });
 
@@ -95,9 +99,10 @@ function reveal() {
   // Hand-drawn линии рисуются сами, когда появляются на экране
   gsap.utils.toArray<SVGPathElement>('.line path').forEach((path) => {
     const svg = path.closest('svg')!;
+    const len = screenLength(path) + 2;
     gsap.fromTo(
       path,
-      { strokeDasharray: 1, strokeDashoffset: 1 },
+      { strokeDasharray: len, strokeDashoffset: len },
       {
         strokeDashoffset: 0,
         duration: svg.classList.contains('line--strike') ? 0.8 : 1.6,
