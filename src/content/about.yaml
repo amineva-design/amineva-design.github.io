@@ -1,121 +1,121 @@
 headline: Я продуктовый дизайнер, который вырос из веба и графического дизайна
+headlineEn: I’m a product designer who grew out of web and graphic design
 text: >-
-  Мне нравится сочетание аналитики, исследований и визуального дизайна, а больше всего — моменты,
-  когда удаётся сделать сложное простым и понятным.
+  Мне нравится сочетание аналитики, исследований и визуального дизайна, а больше
+  всего — моменты, когда удаётся сделать сложное простым и понятным.
+textEn: >-
+  I love the mix of analytics, research and visual design — and most of all, the
+  moments when something complex becomes simple and clear.
 hobbies: Помимо дизайна люблю искусство, кино, чтение и путешествия
+hobbiesEn: Outside of design I love art, film, books and travel
+languages: Английский — B2
+languagesEn: English — B2 (upper-intermediate)
 photos:
-  - ../assets/site/about-book-tall.jpg
-  - ../assets/site/about-plane-tall.jpg
+  - ../assets/site/photos/0.jpg
+  - ../assets/site/photos/1.jpg
 experience:
   - period: апрель — июнь 2026
-    company: СпецНовострой, Докрутим
-    role: Продуктовый дизайнер (growth / маркетинг), проект
-    text: >-
-      Проектирование SEO-страниц, создание дизайн-системы и пакета креативов для РСЯ и YouTube.
-      Внедрение лид-магнитов, A/B-тесты. Увеличила приход лидов в 2 раза. Работала с маркетингом,
-      разработкой и продажами.
     periodEn: April — June 2026
+    company: СпецНовострой, Докрутим
     companyEn: SpetsNovostroy, Dokrutim
+    role: Продуктовый дизайнер (growth / маркетинг), проект
     roleEn: Product Designer (growth / marketing), project-based
+    text: >-
+      Проектирование SEO-страниц, создание дизайн-системы и пакета креативов для
+      РСЯ и YouTube. Внедрение лид-магнитов, A/B-тесты. Увеличила приход лидов в
+      2 раза. Работала с маркетингом, разработкой и продажами.
     textEn: >-
-      Designed SEO landing pages, a design system and ad creative packs for Yandex Ads and YouTube.
-      Introduced lead magnets and ran A/B tests. Doubled the inflow of leads. Worked closely with
-      marketing, development and sales.
+      Designed SEO landing pages, a design system and ad creative packs for
+      Yandex Ads and YouTube. Introduced lead magnets and ran A/B tests. Doubled
+      the inflow of leads. Worked closely with marketing, development and sales.
   - period: май 2024 — июнь 2026
-    company: Казанский федеральный университет
-    role: Графический дизайнер
-    text: >-
-      Графические материалы для соцсетей вуза: карточки, афиши, инфографика, обложки для видео,
-      ретушь фотографий, презентации.
     periodEn: May 2024 — June 2026
+    company: Казанский федеральный университет
     companyEn: Kazan Federal University
+    role: Графический дизайнер
     roleEn: Graphic Designer
-    textEn: >-
-      Graphics for the university’s social media: post cards, posters, infographics, video covers,
-      photo retouching and presentations.
-  - period: 2023 — 2025
-    company: Фриланс
-    role: Дизайнер
     text: >-
-      Интернет-магазины, детские проекты, корпоративные сайты, ритейл, туризм: логотипы, брендинг,
-      дизайн и вёрстка сайтов.
-    periodEn: 2023 — 2025
-    companyEn: Freelance
-    roleEn: Designer
+      Графические материалы для соцсетей вуза: карточки, афиши, инфографика,
+      обложки для видео, ретушь фотографий, презентации.
     textEn: >-
-      E-commerce, kids’ projects, corporate websites, retail and travel: logos, branding, website
-      design and build.
+      Graphics for the university’s social media: post cards, posters,
+      infographics, video covers, photo retouching and presentations.
+  - period: 2023 — 2025
+    periodEn: 2023 — 2025
+    company: Фриланс
+    companyEn: Freelance
+    role: Дизайнер
+    roleEn: Designer
+    text: >-
+      Интернет-магазины, детские проекты, корпоративные сайты, ритейл, туризм:
+      логотипы, брендинг, дизайн и вёрстка сайтов.
+    textEn: >-
+      E-commerce, kids’ projects, corporate websites, retail and travel: logos,
+      branding, website design and build.
 skills:
   - title: UX-исследования
+    titleEn: UX research
     items: |-
       Анализ рынка и конкурентов
       Исследование пользователей (интервью, аналитика)
       JTBD, CJM, формирование гипотез
-    titleEn: UX research
     itemsEn: |-
       Market and competitor analysis
       User research (interviews, analytics)
       JTBD, CJM, hypothesis framing
   - title: Проектирование
+    titleEn: Interaction design
     items: |-
       Сценарии и User Flow
       Мобильные и веб-интерфейсы по гайдлайнам HIG и Material
       Понимание бизнес-логики
-    titleEn: Interaction design
     itemsEn: |-
       User scenarios and user flows
       Mobile and web interfaces following HIG and Material
       Understanding of business logic
   - title: Дизайн-системы
+    titleEn: Design systems
     items: |-
       Развиваю библиотеки компонентов
       Работаю по правилам системы и слежу за единым стилем
-    titleEn: Design systems
     itemsEn: |-
       Evolving component libraries
       Working within system rules and keeping the style consistent
   - title: Вайб-дизайн
+    titleEn: Vibe design
     items: |-
       PRD и интерактивные прототипы
       Промпт-инжиниринг
-    titleEn: Vibe design
     itemsEn: |-
       PRDs and interactive prototypes
       Prompt engineering
-tools:
-  - name: Дизайн
-    details: Figma, Photoshop, Illustrator, After Effects
-    nameEn: Design
-    detailsEn: Figma, Photoshop, Illustrator, After Effects
-  - name: Нейросети
-    details: Claude, Midjourney, Recraft, Higgsfield, SYNTX
-    nameEn: AI
-    detailsEn: Claude, Midjourney, Recraft, Higgsfield, SYNTX
-  - name: Сайты и аналитика
-    details: Tilda, Vercel, Git, Яндекс Метрика
-    nameEn: Web & analytics
-    detailsEn: Tilda, Vercel, Git, Yandex Metrica
-  - name: Командная работа
-    details: Miro, Kaiten, Jira
-    nameEn: Teamwork
-    detailsEn: Miro, Kaiten, Jira
-headlineEn: I’m a product designer who grew out of web and graphic design
-textEn: >-
-  I love the mix of analytics, research and visual design — and most of all, the moments when
-  something complex becomes simple and clear.
-hobbiesEn: Outside of design I love art, film, books and travel
-languages: Английский — B2
-languagesEn: English — B2 (upper-intermediate)
 softSkills:
   - title: Коммуникация
     titleEn: Communication
     text: >-
-      Умею договариваться с коллегами и клиентами, аргументировать решения и работать с обратной
-      связью
+      Умею договариваться с коллегами и клиентами, аргументировать решения и
+      работать с обратной связью
     textEn: >-
-      I find common ground with colleagues and clients, back up my decisions with arguments and work
-      well with feedback
+      I find common ground with colleagues and clients, back up my decisions
+      with arguments and work well with feedback
   - title: Ответственность
     titleEn: Ownership
     text: Соблюдаю сроки, предупреждаю о рисках заранее, довожу проекты до конца
     textEn: I meet deadlines, flag risks early and see projects through to the end
+tools:
+  - name: Дизайн
+    nameEn: Design
+    details: Figma, Photoshop, Illustrator, After Effects
+    detailsEn: Figma, Photoshop, Illustrator, After Effects
+  - name: Нейросети
+    nameEn: AI
+    details: Claude, Midjourney, Recraft, Higgsfield, SYNTX
+    detailsEn: Claude, Midjourney, Recraft, Higgsfield, SYNTX
+  - name: Сайты и аналитика
+    nameEn: Web & analytics
+    details: Tilda, Vercel, Git, Яндекс Метрика
+    detailsEn: Tilda, Vercel, Git, Yandex Metrica
+  - name: Командная работа
+    nameEn: Teamwork
+    details: Miro, Kaiten, Jira
+    detailsEn: Miro, Kaiten, Jira
