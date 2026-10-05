@@ -1,0 +1,82 @@
+---
+// Три факта под первым экраном с пометками «от руки» (обвести / зачеркнуть / подчеркнуть волной)
+import { getSettings, inline } from '../lib/content';
+import { loc, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const s = await getSettings();
+
+const icons: Record<string, string> = {
+  pin: '<path d="M14.5 3.5 20.5 9.5M16 5 9.5 9.8l4.7 4.7L19 8M11.8 12.2 4 20" />',
+  location: '<path d="M12 21s-7-6.3-7-11.5A7 7 0 0 1 19 9.5C19 14.7 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" />',
+  team: '<circle cx="10" cy="8" r="3.5" /><path d="M3.5 20c.6-3.9 3.2-6 6.5-6s5.9 2.1 6.5 6M19 7v6M16 10h6" />',
+  star: '<path d="M12 3.5 14.6 9l6 .7-4.5 4.1 1.2 5.9L12 16.8l-5.3 2.9 1.2-5.9-4.5-4.1 6-.7Z" />',
+};
+---
+
+{
+  s.facts.length > 0 && (
+    <section class="facts">
+      <ul class="container facts__list">
+        {s.facts.map((f) => (
+          <li class="fact" data-reveal="fade">
+            <svg class="fact__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[f.icon] ?? icons.pin} />
+            <p class="fact__text" set:html={inline(loc(f, 'text', lang))} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .facts {
+    padding-block: clamp(56px, 7vw, 104px) clamp(24px, 3vw, 40px);
+  }
+  .facts__list {
+    list-style: none;
+    margin-block: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  .fact {
+    display: grid;
+    gap: clamp(16px, 2vw, 28px);
+    align-content: start;
+  }
+  .fact__icon {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fact__text {
+    max-width: 340px;
+    font-family: var(--display);
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: #9a9a95;
+  }
+  /* выделенные слова — тёмные */
+  .fact__text :global(strong),
+  .fact__text :global(s),
+  .fact__text :global(.mark) {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  @media (max-width: 720px) {
+    .facts__list {
+      grid-template-columns: 1fr;
+      row-gap: 40px;
+    }
+  }
+</style>

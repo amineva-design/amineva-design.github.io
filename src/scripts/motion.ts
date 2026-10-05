@@ -117,6 +117,22 @@ function reveal() {
   });
 }
 
+// Каракули вокруг головы: группы рисуются и стираются по очереди
+function scribbles() {
+  document.querySelectorAll<SVGSVGElement>('[data-scribbles]').forEach((svg) => {
+    const groups = [...svg.querySelectorAll<SVGGElement>('g')];
+    const tl = gsap.timeline({ repeat: -1, delay: 1.2 });
+    groups.forEach((g) => {
+      const paths = g.querySelectorAll('path');
+      tl.set(groups, { autoAlpha: 0 })
+        .set(g, { autoAlpha: 1 })
+        .fromTo(paths, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out', stagger: 0.07 })
+        .to({}, { duration: 1.6 })
+        .to(paths, { strokeDashoffset: -1, duration: 0.5, ease: 'power2.in', stagger: 0.04 });
+    });
+  });
+}
+
 // Коллаж: фото можно потаскать мышкой, при отпускании они остаются на новом месте
 function collage() {
   if (!finePointer) return;
@@ -155,6 +171,7 @@ function init() {
   }
   ctx = gsap.context(() => {
     reveal();
+    scribbles();
     collage();
   });
   // Пересчитать позиции, когда догрузятся шрифты и картинки
