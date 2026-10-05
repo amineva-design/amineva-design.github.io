@@ -20,7 +20,7 @@
     (canvas as any).__rain = true;
     const ctx = canvas.getContext('2d')!;
     const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3fb56a';
-    const size = 16;
+    const size = 11;
     let w = 0, h = 0, streams: Stream[] = [];
     let raf = 0, visible = false, last = 0;
 
@@ -68,11 +68,11 @@
             if (y < -size || y > h + size) continue;
             const fade = 1 - k / st.len;
             if (k === 0) {
-              ctx.fillStyle = '#e4f7ea';
-              ctx.globalAlpha = 0.95;
+              ctx.fillStyle = '#cfeedd';
+              ctx.globalAlpha = 0.7;
             } else {
               ctx.fillStyle = accent;
-              ctx.globalAlpha = 0.15 + 0.75 * fade * fade;
+              ctx.globalAlpha = 0.1 + 0.55 * fade * fade;
             }
             ctx.fillText(st.chars[k], st.x, y);
           }
@@ -109,7 +109,8 @@
     height: 100%;
     display: block;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.45;
+    filter: blur(0.5px);
     /* дождь гаснет к верху (заголовки) и к краям, где тексты */
     -webkit-mask-image:
       linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 30%, #000 70%),
