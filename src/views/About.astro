@@ -14,25 +14,16 @@ const about = await getAbout();
 const s = await getSettings();
 const resume = resumeHref(s, lang);
 
-// Навыки, инструменты и софт-скиллы — один общий блок: слева раздел, справа строки «название + описание»
+// Навыки, инструменты и софт-скиллы — один блок из трёх разделов карточек разного цвета:
+// навыки — белые со списком, инструменты — тёмные с тегами, софт-скиллы — светло-зелёные с текстом
 const lines = (v: string) => v.split('\n').map((x) => x.trim()).filter(Boolean);
-const kit = [
-  {
-    label: tx.skills,
-    rows: about.skills.map((g) => ({ title: L(g, 'title'), text: lines(L(g, 'items')).join(' · ') })),
-  },
-  {
-    label: tx.tools,
-    rows: [
-      ...about.tools.map((g) => ({ title: L(g, 'name'), text: L(g, 'details').split(',').map((x) => x.trim()).filter(Boolean).join(' / ') })),
-      ...(L(about, 'languages') ? [{ title: tx.languages, text: L(about, 'languages') }] : []),
-    ],
-  },
-  {
-    label: tx.softSkills,
-    rows: about.softSkills.map((g) => ({ title: L(g, 'title'), text: L(g, 'text') })),
-  },
-].filter((g) => g.rows.length > 0);
+const tags = (v: string) => v.split(',').map((x) => x.trim()).filter(Boolean);
+const kitSkills = about.skills.map((g) => ({ title: L(g, 'title'), items: lines(L(g, 'items')) }));
+const kitTools = [
+  ...about.tools.map((g) => ({ title: L(g, 'name'), tags: tags(L(g, 'details')) })),
+  ...(L(about, 'languages') ? [{ title: tx.languages, tags: [L(about, 'languages')] }] : []),
+];
+const kitSoft = about.softSkills.map((g) => ({ title: L(g, 'title'), text: L(g, 'text') }));
 ---
 
 <Base title={tx.aboutTitle} description={L(about, 'text')} lang={lang}>
@@ -86,30 +77,57 @@ const kit = [
     )
   }
 
-  {
-    kit.length > 0 && (
-      <section class="container block block--last">
-        <div class="block__head">
-          <h2>{tx.kit}</h2>
-        </div>
-        <div class="kit">
-          {kit.map((g) => (
-            <div class="kit__group">
-              <p class="kit__label label">{g.label}</p>
-              <ul class="kit__rows">
-                {g.rows.map((r) => (
-                  <li class="kit__row" data-reveal="fade">
-                    <h3>{r.title}</h3>
-                    <p>{r.text}</p>
-                  </li>
-                ))}
+  <section class="container block block--last">
+    <div class="block__head">
+      <h2>{tx.kit}</h2>
+    </div>
+
+    {kitSkills.length > 0 && (
+      <div class="kit">
+        <p class="kit__label label">{tx.skills}</p>
+        <ul class="kit__grid kit__grid--skills">
+          {kitSkills.map((c) => (
+            <li class="card card--light" data-reveal="fade">
+              <h3>{c.title}</h3>
+              <ul class="card__list">
+                {c.items.map((i) => <li>{i}</li>)}
               </ul>
-            </div>
+            </li>
           ))}
-        </div>
-      </section>
-    )
-  }
+        </ul>
+      </div>
+    )}
+
+    {kitTools.length > 0 && (
+      <div class="kit">
+        <p class="kit__label label">{tx.tools}</p>
+        <ul class="kit__grid kit__grid--tools">
+          {kitTools.map((c) => (
+            <li class="card card--dark" data-reveal="fade">
+              <h3>{c.title}</h3>
+              <ul class="card__tags">
+                {c.tags.map((t) => <li>{t}</li>)}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {kitSoft.length > 0 && (
+      <div class="kit">
+        <p class="kit__label label">{tx.softSkills}</p>
+        <ul class="kit__grid kit__grid--soft">
+          {kitSoft.map((c) => (
+            <li class="card card--green" data-reveal="fade">
+              <h3>{c.title}</h3>
+              <p>{c.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
 </Base>
 
 <style>
@@ -189,54 +207,123 @@ const kit = [
     padding-bottom: clamp(64px, 9vw, 128px);
   }
 
-  /* Навыки и инструменты: таблица на 12 колонках — раздел слева (до 6-й колонки), строки справа */
-  .kit {
-    border-top: 1px solid var(--ink);
+  /* Навыки и инструменты: карточки со скруглением, без линий. Три раздела — три цвета */
+  .kit + .kit {
+    margin-top: clamp(40px, 5vw, 64px);
   }
-  .kit__group {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gap);
-    border-bottom: 1px solid var(--line);
-  }
-  /* подпись раздела едет вместе со строками, пока раздел на экране */
   .kit__label {
-    grid-column: 1 / 6;
-    align-self: start;
-    position: sticky;
-    top: 24px;
-    padding-top: clamp(18px, 1.8vw, 24px);
+    margin-bottom: 16px;
   }
-  .kit__rows {
-    grid-column: 6 / 13;
+  .kit__grid {
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  .kit__row {
     display: grid;
-    gap: 6px;
-    padding-block: clamp(18px, 1.8vw, 24px);
+    gap: var(--gap);
   }
-  .kit__row + .kit__row {
-    border-top: 1px solid var(--line);
+  .kit__grid--skills {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .kit__row h3 {
-    font-size: clamp(20px, 1.8vw, 26px);
+  /* инструменты: по 3 в ряд, а неполный последний ряд растягивается на всю ширину — без дыр */
+  .kit__grid--tools {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .kit__grid--tools > li {
+    grid-column: span 2;
+  }
+  .kit__grid--tools > li:nth-child(3n + 1):nth-last-child(2),
+  .kit__grid--tools > li:nth-child(3n + 1):nth-last-child(2) ~ li {
+    grid-column: span 3;
+  }
+  .kit__grid--tools > li:nth-child(3n + 1):last-child {
+    grid-column: span 6;
+  }
+  /* софт-скиллы делят ширину поровну, сколько бы их ни было */
+  .kit__grid--soft {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .card {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    padding: clamp(22px, 2.2vw, 32px);
+    border-radius: var(--radius);
+  }
+  .card h3 {
+    font-size: clamp(20px, 1.7vw, 24px);
     line-height: 1.2;
   }
-  .kit__row p {
-    color: var(--muted);
-    max-width: 620px;
+  .card--light {
+    background: var(--card);
   }
-  @media (max-width: 900px) {
-    .kit__label,
-    .kit__rows {
+  .card--dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .card--green {
+    background: color-mix(in srgb, var(--accent) 16%, var(--paper));
+  }
+  .card--green p {
+    color: color-mix(in srgb, var(--ink) 75%, transparent);
+  }
+  .card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .card__list li {
+    position: relative;
+    padding-left: 18px;
+  }
+  .card__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .card__tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .card__tags li {
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+    color: #bfe8cd;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  @media (max-width: 1024px) {
+    .kit__grid--skills,
+    .kit__grid--tools {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .kit__grid--tools > li,
+    .kit__grid--tools > li:nth-child(3n + 1):nth-last-child(2),
+    .kit__grid--tools > li:nth-child(3n + 1):nth-last-child(2) ~ li,
+    .kit__grid--tools > li:nth-child(3n + 1):last-child {
+      grid-column: auto;
+    }
+    .kit__grid--tools > li:nth-child(odd):last-child {
       grid-column: 1 / -1;
     }
-    .kit__label {
-      position: static;
-      padding-bottom: 4px;
+  }
+  @media (max-width: 640px) {
+    .kit__grid--skills,
+    .kit__grid--tools {
+      grid-template-columns: 1fr;
     }
   }
 
