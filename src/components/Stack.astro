@@ -76,13 +76,18 @@ const rows = [
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.45s var(--ease);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    opacity: 0;
+    transition: opacity 0.6s ease;
   }
   .stack__row:hover::before {
-    transform: scaleX(1);
+    opacity: 1;
+  }
+  .stack__items {
+    transition: transform 0.6s var(--ease);
+  }
+  .stack__row:hover .stack__items {
+    transform: translateX(8px);
   }
   .stack__num {
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
@@ -113,9 +118,8 @@ const rows = [
     font-weight: 400;
     transition: color 0.3s;
   }
-  .stack__row:hover .stack__slash,
   .stack__row:hover .stack__num {
-    color: var(--ink);
+    color: var(--accent);
   }
 
   @media (max-width: 720px) {

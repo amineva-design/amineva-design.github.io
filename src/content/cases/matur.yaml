@@ -19,7 +19,7 @@ metrics:
   - value: '3'
     label: адаптива — мобильный, планшет, десктоп
     labelEn: breakpoints — mobile, tablet, desktop
-cardImage: ../../assets/cases/matur/card-1.png
+cardImage: ../../assets/cases/matur/card.webp
 cardImage2: ../../assets/cases/matur/card-2.webp
 heroImage: ../../assets/cases/matur/hero.png
 blocks:

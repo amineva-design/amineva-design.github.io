@@ -1,0 +1,67 @@
+---
+// Печатающийся текст: префикс стоит, фразы по очереди печатаются и стираются.
+interface Props {
+  prefix: string;
+  phrases: string[];
+  class?: string;
+}
+const { prefix, phrases, class: cls } = Astro.props;
+---
+
+<p class:list={['tw', cls]} aria-label={`${prefix} ${phrases.join(', ')}`}>
+  <span aria-hidden="true">{prefix}&nbsp;</span><span class="tw__text" aria-hidden="true" data-typewriter data-phrases={JSON.stringify(phrases)}>{phrases[0]}</span><span class="tw__caret" aria-hidden="true"></span>
+</p>
+
+<script>
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  async function run(el: HTMLElement) {
+    if ((el as any).__tw || reduced) return;
+    (el as any).__tw = true;
+    const phrases: string[] = JSON.parse(el.dataset.phrases || '[]');
+    let i = 0;
+    await wait(1800);
+    while (el.isConnected) {
+      // стираем текущую фразу
+      for (let n = el.textContent!.length; n >= 0; n--) {
+        el.textContent = el.textContent!.slice(0, n);
+        await wait(35);
+      }
+      await wait(350);
+      i = (i + 1) % phrases.length;
+      const next = phrases[i];
+      // печатаем следующую
+      for (let n = 1; n <= next.length; n++) {
+        el.textContent = next.slice(0, n);
+        await wait(70 + Math.random() * 50);
+      }
+      await wait(2200);
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-typewriter]').forEach(run);
+  });
+</script>
+
+<style>
+  .tw {
+    margin: 0;
+  }
+  .tw__caret {
+    display: inline-block;
+    width: 0.08em;
+    min-width: 2px;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: var(--accent);
+    animation: tw-blink 1s steps(1) infinite;
+  }
+  @keyframes tw-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

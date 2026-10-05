@@ -1,6 +1,5 @@
 ---
 import LangSwitch from './LangSwitch.astro';
-import Line from './Line.astro';
 import { getSettings, resumeHref } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -26,7 +25,6 @@ const nav = [
         resume && (
           <a class="header__resume" href={resume} target="_blank" rel="noopener">
             {tx.resume}
-            <Line name="double" class="header__resume-line" />
           </a>
         )
       }
@@ -88,18 +86,8 @@ const nav = [
     display: inline-block;
     padding: 8px 0;
   }
-  .header__resume :global(.header__resume-line) {
-    position: absolute;
-    left: -6%;
-    bottom: 0;
-    width: 112%;
-    height: 8px;
-    transition: transform 0.4s var(--ease);
-    transform-origin: left;
-  }
-  .header__resume:hover :global(.header__resume-line) {
-    transform: scaleX(1.08);
-  }
+
+
   .header__role {
     text-align: center;
     transition: color 0.2s;
