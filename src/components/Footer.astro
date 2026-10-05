@@ -20,7 +20,7 @@ const year = new Date().getFullYear();
   <!-- руки как на фреске «Сотворение Адама», из символов; между ними — статус -->
   <div class="footer__hands">
     <div class="footer__hand footer__hand--left"><AsciiPortrait src={handLeft} alt="" align="left" /></div>
-    <p class="footer__hands-text"><span class="footer__prompt" aria-hidden="true">&gt;</span> {loc(s, 'statusText', lang)}<span class="footer__caret" aria-hidden="true"></span></p>
+    <p class="footer__hands-text"><span class="footer__prompt" aria-hidden="true">&gt;</span> {loc(s, 'statusText', lang).replace(/-/g, '\u2011')}<span class="footer__caret" aria-hidden="true"></span></p>
     <div class="footer__hand footer__hand--right"><AsciiPortrait src={handRight} alt="" align="right" /></div>
   </div>
 
@@ -138,7 +138,7 @@ const year = new Date().getFullYear();
   .footer__hands-text {
     position: relative;
     z-index: 1;
-    max-width: 24ch;
+    max-width: 30ch;
     text-align: center;
     color: var(--accent);
     font-family: var(--display);
