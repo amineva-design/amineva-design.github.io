@@ -70,9 +70,7 @@ const pages = defineCollection({
     const img = image().nullish();
     return z.object({
       // settings
-      ...tx('name', 'role', 'greeting', 'intro', 'statusText'),
-      portrait: img,
-      facts: z.array(z.object({ icon: z.string().default('pin'), ...tx('text') })).default([]),
+      ...tx('name', 'role', 'greeting', 'intro', 'location', 'statusText'),
       openToWork: z.boolean().default(true),
       heroPhoto2: img,
       email: text,

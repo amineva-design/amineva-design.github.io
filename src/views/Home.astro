@@ -4,9 +4,6 @@ import Base from '../layouts/Base.astro';
 import CaseCard from '../components/CaseCard.astro';
 import Stack from '../components/Stack.astro';
 import Line from '../components/Line.astro';
-import Scribbles from '../components/Scribbles.astro';
-import Badge from '../components/Badge.astro';
-import Facts from '../components/Facts.astro';
 import { getSettings, getAbout, getCases, inline } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -23,39 +20,45 @@ const name = L(s, 'name');
 const role = L(s, 'role');
 const [firstName, ...rest] = name.split(' ');
 const lastName = rest.join(' ');
+const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет!'))];
 ---
 
 <Base theme="dark" lang={lang}>
   <section class="hero dark">
-    <div class="container hero__stage">
-      <p class="hero__note caps" data-reveal="fade">
-        <Line name="oval" class="hero__oval" />
-        {tx.heroNote[0]}<br />{tx.heroNote[1]}
+    <div class="container hero__grid">
+      <h1 class="visually-hidden">{name} — {role}</h1>
+
+      <p class="hero__greeting" aria-hidden="true" data-reveal="fade">
+        {greeting.map((ch) => <span class="g">{ch === ' ' ? '\u00a0' : ch}</span>)}
       </p>
 
-      <h1 class="hero__name">
-        <span class="hero__first" data-reveal="fade">{firstName}</span>
-        <span class="hero__last" data-reveal="fade">{lastName}</span>
-        <span class="visually-hidden"> — {role}</span>
-      </h1>
+      <div class="hero__name">
+        <p class="hero__note caps" data-reveal="fade">
+          <Line name="oval" class="hero__oval" />
+          {tx.heroNote[0]}<br />{tx.heroNote[1]}
+        </p>
+        <p class="hero__fullname" aria-hidden="true" data-reveal="lines">{firstName}<br />{lastName}</p>
+        <p class="hero__role caps">{role}</p>
+      </div>
+
+      <div class="hero__intro">
+        <p class="caps" data-reveal="lines">{L(s, 'intro')}</p>
+      </div>
 
       {
-        s.portrait && (
-          <figure class="hero__portrait" data-reveal="fade">
-            <Image src={s.portrait} alt={name} widths={[480, 800, 1200]} sizes="(max-width: 900px) 80vw, 40vw" loading="eager" fetchpriority="high" />
-            <Scribbles />
+        s.heroPhoto2 && (
+          <figure class="hero__photo hero__photo--big">
+            <div class="hero__frame" data-reveal="img">
+              <Image src={s.heroPhoto2} alt={name} widths={[600, 960, 1280]} sizes="(max-width: 720px) 100vw, 40vw" loading="eager" fetchpriority="high" />
+            </div>
+            <figcaption class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</figcaption>
           </figure>
         )
       }
 
-      {s.openToWork && <Badge text={tx.badge} class="hero__badge" />}
-
-      <p class="hero__intro caps" data-reveal="lines">{L(s, 'intro')}</p>
-      <p class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</p>
+      <p class="hero__location caps" data-reveal="fade" set:html={inline(L(s, 'location'))} />
     </div>
   </section>
-
-  <Facts lang={lang} />
 
   <section class="cases" id="cases">
     <div class="container">
@@ -105,42 +108,49 @@ const lastName = rest.join(' ');
 </Base>
 
 <style>
-  /* ——— Hero: огромное имя, портрет без фона поверх букв, каракули и бейдж ——— */
+  /* ——— Hero ——— */
   .hero {
-    overflow: hidden;
+    padding-bottom: clamp(32px, 4vw, 56px);
+    margin-top: -1px;
   }
-  .hero__stage {
-    position: relative;
-    min-height: min(calc(100svh - 65px), 960px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-block: clamp(48px, 6vw, 88px) clamp(96px, 12vw, 160px);
+  .hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: clamp(24px, 3vw, 40px);
+    padding-top: clamp(32px, 4vw, 56px);
+  }
+  .hero__greeting {
+    grid-column: 1 / 8;
+    font-family: var(--display);
+    font-size: var(--fs-hero);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+  .g {
+    display: inline-block;
+    font-variation-settings: 'wght' 700;
+    transition: font-variation-settings 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .g:hover {
+    font-variation-settings: 'wght' 400;
+    transform: translateY(-0.04em);
   }
   .hero__name {
-    position: relative;
-    z-index: 1;
+    grid-column: 8 / 13;
+    grid-row: 1 / 3;
     display: flex;
     flex-direction: column;
-    font-family: var(--display);
-    font-size: clamp(64px, 15.5vw, 280px);
-    font-weight: 700;
-    line-height: 0.86;
-    letter-spacing: -0.045em;
-    text-transform: uppercase;
-  }
-  .hero__name span {
-    display: block;
-  }
-  .hero__last {
+    align-items: flex-end;
     text-align: right;
   }
   .hero__note {
-    position: absolute;
-    z-index: 3;
-    top: clamp(40px, 7vw, 110px);
-    right: calc(var(--gutter) + 4%);
+    position: relative;
+    margin: clamp(8px, 2vw, 32px) clamp(40px, 8vw, 140px) clamp(16px, 2vw, 28px) 0;
     padding: 18px 26px 22px;
+    text-align: left;
   }
   .hero__note :global(.hero__oval) {
     position: absolute;
@@ -148,98 +158,117 @@ const lastName = rest.join(' ');
     width: calc(100% + 32px);
     height: calc(100% + 20px);
   }
-  .hero__portrait {
-    position: absolute;
-    z-index: 2;
-    left: 50%;
-    top: 14%;
-    bottom: 0;
+  .hero__fullname {
+    font-family: var(--display);
+    font-size: clamp(56px, 8.4vw, 132px);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+  /* роль в hero показываем только на телефоне — на десктопе она в шапке */
+  .hero__role {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .hero__photo {
+    position: relative;
     margin: 0;
-    transform: translateX(-50%);
   }
-  .hero__portrait :global(img) {
-    display: block;
-    width: auto;
+  .hero__photo :global(img) {
+    width: 100%;
     height: 100%;
-    max-width: none;
-    filter: grayscale(1) contrast(1.05);
-    -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 98%);
-    mask-image: linear-gradient(to bottom, #000 70%, transparent 98%);
+    object-fit: cover;
+    filter: grayscale(1);
+    transition: filter 0.8s var(--ease), transform 0.8s var(--ease);
   }
-  .hero__portrait :global(.scribbles) {
-    left: 4%;
-    top: -6%;
-    width: 92%;
+  .hero__photo:hover :global(img) {
+    filter: grayscale(0);
   }
-  .hero :global(.hero__badge) {
-    position: absolute;
-    z-index: 3;
-    right: calc(var(--gutter) + 18%);
-    bottom: clamp(120px, 16vw, 230px);
-  }
+
+
+
+
   .hero__intro {
-    position: absolute;
-    z-index: 3;
-    left: var(--gutter);
-    bottom: clamp(32px, 4vw, 56px);
-    max-width: 330px;
+    grid-column: 1 / 6;
+    grid-row: 3;
+    align-self: end;
+    display: grid;
+    gap: 14px;
+    max-width: 420px;
   }
-  /* «Выйди за рамки»: подпись вылезает за сетку до края экрана */
+  .hero__intro p {
+    font-size: var(--fs-caps);
+    line-height: 1.35;
+  }
+  .hero__photo--big {
+    grid-column: 8 / 13;
+    grid-row: 3 / 5;
+  }
+  .hero__frame {
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: #2a2a26;
+  }
+  /* «Выйди за рамки»: подпись начинается на фото и вылезает за сетку до края экрана */
   .hero__escape {
     position: absolute;
-    z-index: 3;
-    right: 8px;
-    bottom: clamp(32px, 4vw, 56px);
-    text-align: right;
+    right: calc(-1 * var(--gutter) + 8px);
+    bottom: 18px;
+    color: #fff;
     white-space: nowrap;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+  .hero__location {
+    grid-column: 1 / 8;
+    grid-row: 4;
+    align-self: end;
   }
 
   @media (max-width: 900px) {
-    .hero__stage {
-      min-height: 0;
-      padding-block: 40px 32px;
+    .hero__grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
     }
-    .hero__note {
-      position: relative;
-      top: auto;
-      right: auto;
-      align-self: flex-end;
-      margin: 0 8px 28px 0;
+    .hero__greeting {
+      grid-column: 1 / -1;
     }
     .hero__name {
-      font-size: 17vw;
+      grid-column: 1 / -1;
+      grid-row: auto;
     }
-    .hero__portrait {
-      position: relative;
-      left: auto;
-      top: auto;
-      width: 78%;
-      margin: -8vw auto 0;
-      transform: none;
-    }
-    .hero__portrait :global(img) {
-      width: 100%;
-      height: auto;
-    }
-    .hero :global(.hero__badge) {
-      right: var(--gutter);
-      bottom: 34%;
-      width: 96px;
+    .hero__role {
+      display: inline-flex;
     }
     .hero__intro {
-      position: relative;
-      left: auto;
-      bottom: auto;
+      grid-column: 1 / -1;
+      grid-row: auto;
       max-width: none;
-      margin-top: 24px;
+    }
+    .hero__photo--big {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      margin-bottom: 28px;
     }
     .hero__escape {
-      position: relative;
-      right: auto;
-      bottom: auto;
-      align-self: flex-end;
-      margin: 16px -8px 0 0;
+      bottom: -24px;
       font-size: 11px;
+      text-align: right;
+    }
+    .hero__location {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+  }
+  @media (max-width: 560px) {
+    .hero__note {
+      margin-right: 8px;
+    }
+    .hero__intro {
+      grid-column: 1 / -1;
     }
   }
 
@@ -278,7 +307,7 @@ const lastName = rest.join(' ');
     grid-row: 1;
     font-family: var(--display);
     font-size: var(--fs-h3);
-    color: var(--green);
+    color: var(--accent);
     margin-bottom: clamp(20px, 2.4vw, 36px);
   }
   .about__headline {

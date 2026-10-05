@@ -3,14 +3,13 @@
 @import 'lenis/dist/lenis.css';
 
 :root {
-  --ink: #131313;
-  --paper: #fafafa;
+  --ink: #141412;
+  --paper: #f2f2f3;
   --card: #ffffff;
-  --accent: #daa537;
-  --green: #1d584d;
+  --accent: #ff9800;
   --muted: #6b6b66;
   --muted-on-dark: #a3a39d;
-  --line: rgba(19, 19, 19, 0.12);
+  --line: rgba(20, 20, 18, 0.12);
   --line-on-dark: rgba(242, 242, 243, 0.16);
 
   --display: 'Arimo Variable', 'Helvetica Neue', Arial, sans-serif;
@@ -125,8 +124,8 @@ p {
   color: var(--ink);
 }
 .btn--accent:hover {
-  background: #e6b752;
-  border-color: #e6b752;
+  background: #ffad33;
+  border-color: #ffad33;
 }
 .btn--ghost:hover {
   background: var(--paper);
@@ -195,29 +194,6 @@ s .line--strike {
   pointer-events: none;
 }
 
-/* {{обвести}} и ==подчеркнуть волной== */
-.mark {
-  position: relative;
-  white-space: nowrap;
-}
-.mark .line {
-  position: absolute;
-  overflow: visible;
-  pointer-events: none;
-}
-.mark--circle .line {
-  left: -0.35em;
-  top: -0.3em;
-  width: calc(100% + 0.7em);
-  height: calc(100% + 0.6em);
-}
-.mark--wave .line {
-  left: -2%;
-  bottom: -0.32em;
-  width: 104%;
-  height: 0.4em;
-}
-
 /* Мелкий капс в духе исходного сайта */
 .caps {
   font-family: var(--display);
@@ -273,16 +249,16 @@ html.motion [data-reveal] {
   touch-action: none;
   user-select: none;
   transition: rotate 0.5s var(--ease), box-shadow 0.5s var(--ease), scale 0.5s var(--ease);
-  box-shadow: 0 10px 30px rgba(19, 19, 19, 0.12);
+  box-shadow: 0 10px 30px rgba(20, 20, 18, 0.12);
 }
 [data-drag]:hover {
   rotate: 0deg !important;
   scale: 1.02;
-  box-shadow: 0 20px 50px rgba(19, 19, 19, 0.2);
+  box-shadow: 0 20px 50px rgba(20, 20, 18, 0.2);
 }
 [data-drag].is-dragging {
   scale: 1.05;
-  box-shadow: 0 30px 60px rgba(19, 19, 19, 0.25);
+  box-shadow: 0 30px 60px rgba(20, 20, 18, 0.25);
 }
 @media (hover: none) {
   [data-drag] {

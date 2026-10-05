@@ -44,27 +44,11 @@ const STRIKE =
   '<path d="M0.9009 2.8328C0.9009 2.8328 76.3881 -1.5078 75.52 2.8328C74.6519 7.1735 -3.7604 5.3693 11.02 7.04C34.0955 9.6483 55.0822 9.9097 55.0822 9.9097" ' +
   'fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>';
 
-const svg = (cls: string, viewBox: string, d: string) =>
-  `<svg class="line ${cls}" viewBox="${viewBox}" preserveAspectRatio="none" aria-hidden="true">` +
-  `<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
-const CIRCLE = svg(
-  'line--circle',
-  '0 0 40 40',
-  'M22 3C10 2 3 10 4 21C5 32 15 38 25 36C34 34 38 25 36 15C34 7 26 2 15 6'
-);
-const WAVE = svg(
-  'line--wave',
-  '0 0 120 12',
-  'M1 7C8 1 14 1 20 7S32 13 40 7 52 1 60 7 72 13 80 7 92 1 100 7 112 13 119 6'
-);
-
 // Мини-разметка для текстов из админки: **жирный**, ~~зачёркнутый~~.
 export function inline(s: string) {
   return escape(s)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/~~(.+?)~~/g, `<s>$1${STRIKE}</s>`)
-    .replace(/\{\{(.+?)\}\}/g, `<span class="mark mark--circle">$1${CIRCLE}</span>`)
-    .replace(/==(.+?)==/g, `<span class="mark mark--wave">$1${WAVE}</span>`);
+    .replace(/~~(.+?)~~/g, `<s>$1${STRIKE}</s>`);
 }
 
 // Пустая строка — новый абзац, строки с «- » — список.

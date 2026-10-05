@@ -194,32 +194,10 @@ export default config({
         ...tr('role', 'Роль', { description: 'Например: Продуктовый дизайнер' }),
         ...tr('greeting', 'Приветствие', { defaultValue: 'Привет!' }),
         ...tr('intro', 'О себе в двух строках', { multiline: true }),
+        ...tr('location', 'Где живу', { description: '~~текст~~ — зачёркнутый' }),
         openToWork: fields.checkbox({ label: 'Ищу работу (зелёная точка в шапке)', defaultValue: true }),
         ...tr('statusText', 'Текст статуса', { defaultValue: 'Открыта к full-time и контрактной работе' }),
-        portrait: siteImage(
-          'Портрет без фона (PNG)',
-          'Вырезанное фото с прозрачным фоном — стоит поверх имени на главной'
-        ),
-        heroPhoto2: siteImage('Фото для превью ссылки', 'Показывается, когда ссылкой делятся в мессенджерах'),
-        facts: fields.array(
-          fields.object({
-            icon: fields.select({
-              label: 'Иконка',
-              options: [
-                { label: 'Кнопка-булавка', value: 'pin' },
-                { label: 'Метка на карте', value: 'location' },
-                { label: 'Человек с плюсом', value: 'team' },
-                { label: 'Звезда', value: 'star' },
-              ],
-              defaultValue: 'pin',
-            }),
-            ...tr('text', 'Текст', {
-              description:
-                'Обычный текст — серый. **слово** — чёрный, {{слово}} — обвести, ~~слово~~ — зачеркнуть, ==слово== — подчеркнуть волной',
-            }),
-          }),
-          { label: 'Факты под первым экраном', itemLabel: (props) => props.fields.text.value }
-        ),
+        heroPhoto2: siteImage('Фото на главной'),
         email: fields.text({ label: 'E-mail' }),
         telegram: fields.text({ label: 'Telegram', description: 'Без @' }),
         resumeFile: fields.file({
