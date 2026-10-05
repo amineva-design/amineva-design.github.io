@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import CaseCard from '../components/CaseCard.astro';
 import Stack from '../components/Stack.astro';
 import Line from '../components/Line.astro';
+import CursorBlur from '../components/CursorBlur.astro';
 import { getSettings, getAbout, getCases, inline } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -25,11 +26,12 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
 <Base theme="dark" lang={lang}>
   <section class="hero dark">
+    <CursorBlur />
     <div class="container hero__grid">
       <h1 class="visually-hidden">{name} — {role}</h1>
 
       <p class="hero__greeting" aria-hidden="true">
-        {greeting.map((ch, i) => <span class:list={['g', i === 0 && 'g--blur']}>{ch === ' ' ? '\u00a0' : ch}</span>)}
+        {greeting.map((ch) => <span class="g">{ch === ' ' ? '\u00a0' : ch}</span>)}
       </p>
 
       <div class="hero__name">
@@ -113,6 +115,8 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 <style>
   /* ——— Hero ——— */
   .hero {
+    position: relative;
+    overflow: hidden;
     padding-bottom: clamp(32px, 4vw, 56px);
     margin-top: -1px;
   }
@@ -140,21 +144,6 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
   .g:hover {
     font-variation-settings: 'wght' 400;
     transform: translateY(-0.04em);
-  }
-  .g--blur {
-    animation: focus 4.5s ease-in-out infinite;
-  }
-  @keyframes focus {
-    0%,
-    100% {
-      filter: blur(10px);
-      opacity: 0.85;
-    }
-    45%,
-    60% {
-      filter: blur(0);
-      opacity: 1;
-    }
   }
   .hero__name {
     grid-column: 8 / 13;

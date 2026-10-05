@@ -1,0 +1,81 @@
+---
+// Размытая «линза» за курсором, как на прежнем сайте: 7 слоёв backdrop-filter от 1 до 7px.
+// Работает только на десктопе с мышью и внутри родительской секции.
+---
+
+<div class="cursor-blur" aria-hidden="true" data-cursor-blur>
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<script>
+  const lens = document.querySelector<HTMLElement>('[data-cursor-blur]');
+  const area = lens?.parentElement;
+  const canUse = () =>
+    window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1025px)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (lens && area) {
+    let mx = 0, my = 0, px = 0, py = 0, raf = 0, inside = false;
+
+    const tick = () => {
+      px += (mx - px) * 0.07;
+      py += (my - py) * 0.07;
+      lens.style.transform = `translate(${px}px, ${py}px) translate(-50%, -50%)`;
+      raf = Math.abs(mx - px) + Math.abs(my - py) > 0.3 || inside ? requestAnimationFrame(tick) : 0;
+    };
+
+    area.addEventListener('pointermove', (e) => {
+      if (!canUse()) return;
+      const r = area.getBoundingClientRect();
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
+      if (!inside) {
+        inside = true;
+        if (!lens.classList.contains('is-on')) {
+          px = mx;
+          py = my;
+        }
+        lens.classList.add('is-on');
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+    area.addEventListener('pointerleave', () => {
+      inside = false;
+      lens.classList.remove('is-on');
+    });
+  }
+</script>
+
+<style>
+  .cursor-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+    will-change: transform;
+  }
+  .cursor-blur.is-on {
+    opacity: 1;
+  }
+  .cursor-blur span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-mask: radial-gradient(circle, #fff 20%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+    mask: radial-gradient(circle, #fff 20%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+  }
+  .cursor-blur span:nth-child(1) { width: 100%; height: 100%; -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px); }
+  .cursor-blur span:nth-child(2) { width: 95%; height: 95%; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+  .cursor-blur span:nth-child(3) { width: 90%; height: 90%; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .cursor-blur span:nth-child(4) { width: 85%; height: 85%; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .cursor-blur span:nth-child(5) { width: 80%; height: 80%; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
+  .cursor-blur span:nth-child(6) { width: 50%; height: 50%; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .cursor-blur span:nth-child(7) { width: 40%; height: 40%; -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); }
+</style>
