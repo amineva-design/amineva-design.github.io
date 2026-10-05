@@ -77,6 +77,7 @@ const pages = defineCollection({
       heroPhoto2: img,
       email: text,
       telegram: text,
+      metrikaId: text,
       resumeFile: text,
       resumeUrl: text,
       resumeFileEn: text,

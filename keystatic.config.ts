@@ -216,6 +216,7 @@ export default config({
         heroPhoto2: siteImage('Фото на главной'),
         email: fields.text({ label: 'E-mail' }),
         telegram: fields.text({ label: 'Telegram', description: 'Без @' }),
+        metrikaId: fields.text({ label: 'Яндекс Метрика — номер счётчика', description: 'Только цифры. Пусто — статистика не собирается' }),
         resumeFile: fields.file({
           label: 'Резюме (PDF)',
           directory: 'public/files',
