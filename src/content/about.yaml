@@ -111,3 +111,16 @@ textEn: >-
 hobbiesEn: Outside of design I love art, film, books and travel
 languages: Английский — B2
 languagesEn: English — B2 (upper-intermediate)
+softSkills:
+  - title: Коммуникация
+    titleEn: Communication
+    text: >-
+      Умею договариваться с коллегами и клиентами, аргументировать решения и работать с обратной
+      связью
+    textEn: >-
+      I find common ground with colleagues and clients, back up my decisions with arguments and work
+      well with feedback
+  - title: Ответственность
+    titleEn: Ownership
+    text: Соблюдаю сроки, предупреждаю о рисках заранее, довожу проекты до конца
+    textEn: I meet deadlines, flag risks early and see projects through to the end

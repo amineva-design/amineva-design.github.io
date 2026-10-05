@@ -106,6 +106,21 @@ const resume = resumeHref(s, lang);
         </div>
       )
     }
+    {
+      about.softSkills.length > 0 && (
+        <div class="card card--green">
+          <h2>{tx.softSkills}</h2>
+          <dl class="soft">
+            {about.softSkills.map((item) => (
+              <div>
+                <dt>{L(item, 'title')}</dt>
+                <dd>{L(item, 'text')}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )
+    }
   </section>
 </Base>
 
@@ -232,6 +247,25 @@ const resume = resumeHref(s, lang);
     border-radius: var(--radius);
     background: var(--card);
   }
+  .cards > .card:first-child {
+    grid-row: span 2;
+  }
+  .card--green {
+    background: #1d5c51;
+    color: #fff;
+  }
+  .soft {
+    margin: 0;
+    display: grid;
+    gap: 18px;
+  }
+  .soft dt {
+    font-weight: 600;
+  }
+  .soft dd {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+  }
   .card--dark {
     background: var(--ink);
     color: var(--paper);
@@ -286,6 +320,9 @@ const resume = resumeHref(s, lang);
     }
     .cards {
       grid-template-columns: 1fr;
+    }
+    .cards > .card:first-child {
+      grid-row: auto;
     }
     .timeline li > .label,
     .timeline li > div {

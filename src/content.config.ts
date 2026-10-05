@@ -90,6 +90,7 @@ const pages = defineCollection({
       experience: z.array(z.object({ ...tx('period', 'company', 'role', 'text') })).default([]),
       skills: z.array(z.object({ ...tx('title', 'items') })).default([]),
       tools: z.array(z.object({ ...tx('name', 'details') })).default([]),
+      softSkills: z.array(z.object({ ...tx('title', 'text') })).default([]),
     });
   },
 });

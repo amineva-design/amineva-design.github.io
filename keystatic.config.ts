@@ -257,6 +257,13 @@ export default config({
           }),
           { label: 'Навыки', itemLabel: (props) => props.fields.title.value }
         ),
+        softSkills: fields.array(
+          fields.object({
+            ...tr('title', 'Название', { description: 'Например: Коммуникация' }),
+            ...tr('text', 'Описание', { multiline: true }),
+          }),
+          { label: 'Soft-скиллы', itemLabel: (props) => props.fields.title.value }
+        ),
         tools: fields.array(
           fields.object({
             ...tr('name', 'Инструмент'),
