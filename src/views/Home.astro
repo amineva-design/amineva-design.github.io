@@ -4,6 +4,8 @@ import Base from '../layouts/Base.astro';
 import CaseCard from '../components/CaseCard.astro';
 import Stack from '../components/Stack.astro';
 import Line from '../components/Line.astro';
+import AsciiPortrait from '../components/AsciiPortrait.astro';
+import portraitDark from '../assets/site/portrait-dark.webp';
 import { getSettings, getAbout, getCases, inline } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -48,8 +50,8 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       {
         s.heroPhoto2 && (
           <figure class="hero__photo hero__photo--big">
-            <div class="hero__frame" data-reveal="img">
-              <Image src={s.heroPhoto2} alt={name} widths={[600, 960, 1280]} sizes="(max-width: 720px) 100vw, 40vw" loading="eager" fetchpriority="high" />
+            <div class="hero__frame hero__frame--ascii">
+              <AsciiPortrait src={portraitDark} alt={name} crop={[0.3, 0.04, 0.42, 0.92]} />
             </div>
             <figcaption class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</figcaption>
           </figure>
@@ -211,6 +213,10 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     overflow: hidden;
     border-radius: var(--radius);
     background: #2a2a26;
+  }
+  .hero__frame.hero__frame--ascii {
+    aspect-ratio: 4 / 5;
+    background: transparent;
   }
   /* «Выйди за рамки»: подпись начинается на фото и вылезает за сетку до края экрана */
   .hero__escape {

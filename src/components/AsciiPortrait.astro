@@ -1,0 +1,199 @@
+---
+// ASCII-портрет на canvas: фото → сетка символов по яркости.
+// Символы проявляются при загрузке, тихо мерцают, а рядом с курсором вспыхивают и рассыпаются.
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  // кадрирование исходника в долях: x, y, ширина, высота
+  crop?: [number, number, number, number];
+  class?: string;
+}
+const { src, alt, crop = [0, 0, 1, 1], class: cls } = Astro.props;
+const small = await getImage({ src, width: 900, format: 'webp' });
+---
+
+<div class:list={['ascii', cls]} data-ascii data-src={small.src} data-crop={crop.join(',')} role="img" aria-label={alt}>
+  <canvas></canvas>
+</div>
+
+<script>
+  const RAMP = ' .`:-=+*cuoeaxkdbhq0OZ8%$&#@';
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setup(root: HTMLElement) {
+    if ((root as any).__ascii) return;
+    (root as any).__ascii = true;
+    const canvas = root.querySelector('canvas')!;
+    const ctx = canvas.getContext('2d')!;
+    const crop = root.dataset.crop!.split(',').map(Number);
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff9800';
+    const img = new Image();
+    img.src = root.dataset.src!;
+
+    let cols = 0, rows = 0, cw = 7, ch = 11, w = 0, h = 0;
+    let levels: Float32Array = new Float32Array(0);
+    let reveal: Float32Array = new Float32Array(0);
+    let start = 0, raf = 0, visible = false, last = 0;
+    let mx = -9999, my = -9999;
+
+    const sample = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = root.clientWidth;
+      h = root.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cw = w < 500 ? 5 : 6;
+      ch = Math.round(cw * 1.55);
+      cols = Math.floor(w / cw);
+      rows = Math.floor(h / ch);
+
+      // уменьшаем кадр до размера сетки и читаем яркость каждой клетки
+      const off = document.createElement('canvas');
+      off.width = cols;
+      off.height = rows;
+      const o = off.getContext('2d', { willReadFrequently: true })!;
+      const sx = crop[0] * img.naturalWidth, sy = crop[1] * img.naturalHeight;
+      const sw = crop[2] * img.naturalWidth, sh = crop[3] * img.naturalHeight;
+      // вписываем кадр в сетку с сохранением пропорций (cover)
+      const k = Math.max(cols / sw, (rows * (ch / cw)) / sh);
+      const dw = sw * k, dh = (sh * k) / (ch / cw);
+      o.drawImage(img, sx, sy, sw, sh, (cols - dw) / 2, (rows - dh) / 2, dw, dh);
+      const data = o.getImageData(0, 0, cols, rows).data;
+      levels = new Float32Array(cols * rows);
+      reveal = new Float32Array(cols * rows);
+      const lum = new Float32Array(cols * rows);
+      for (let i = 0; i < cols * rows; i++) {
+        lum[i] = (0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2]) / 255;
+      }
+      // выравнивание гистограммы по самому человеку (без тёмного фона): иначе кожа целиком
+      // уходит в самый плотный символ и пропадают черты лица
+      const BG = 0.13;
+      const fg = Array.from(lum).filter((l) => l > BG).sort((a, b) => a - b);
+      const rank = (l: number) => {
+        let lo = 0, hi = fg.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >> 1;
+          if (fg[mid] < l) lo = mid + 1;
+          else hi = mid;
+        }
+        return fg.length ? lo / fg.length : 0;
+      };
+      for (let i = 0; i < cols * rows; i++) {
+        const l = lum[i];
+        levels[i] = l <= BG ? 0 : Math.pow(rank(l), 1.35);
+        const row = Math.floor(i / cols);
+        reveal[i] = (row / rows) * 900 + Math.random() * 700;
+      }
+      ctx.font = `${Math.round(ch * 0.92)}px ui-monospace, "SF Mono", Menlo, monospace`;
+      ctx.textBaseline = 'top';
+    };
+
+    const draw = (t: number) => {
+      raf = 0;
+      if (!visible) return;
+      // ~30 кадров в секунду достаточно и бережёт батарею
+      if (t - last < 33) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+      last = t;
+      const time = t - start;
+      ctx.clearRect(0, 0, w, h);
+      const R = 80;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const i = y * cols + x;
+          const v = levels[i];
+          if (v < 0.07) continue;
+          const px = x * cw, py = y * ch;
+          let idx = Math.round(v * (RAMP.length - 1));
+          let color = accent;
+          let alpha = 0.45 + 0.55 * v;
+          let ox = 0, oy = 0;
+
+          if (!reduced && time < reveal[i]) {
+            // ещё не проявился: пусто или случайный символ перед проявлением
+            if (time < reveal[i] - 180) continue;
+            idx = 1 + Math.floor(Math.random() * (RAMP.length - 1));
+            alpha *= 0.6;
+          } else if (!reduced) {
+            const dx = px - mx, dy = py - my;
+            const d = Math.hypot(dx, dy);
+            if (d < R) {
+              // у курсора: белые символы перемешиваются и разлетаются
+              const f = 1 - d / R;
+              idx = 1 + Math.floor(Math.random() * (RAMP.length - 1));
+              color = '#fff';
+              alpha = 0.5 + 0.5 * f;
+              ox = (dx / (d || 1)) * f * 10;
+              oy = (dy / (d || 1)) * f * 10;
+            } else if (Math.random() < 0.006) {
+              // тихое мерцание: символ меняется на соседний по плотности
+              idx = Math.max(1, Math.min(RAMP.length - 1, idx + (Math.random() < 0.5 ? -2 : 2)));
+            }
+          }
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = color;
+          ctx.fillText(RAMP[idx], px + ox, py + oy);
+        }
+      }
+      ctx.globalAlpha = 1;
+      if (!reduced) raf = requestAnimationFrame(draw);
+    };
+
+    const kick = () => {
+      if (!raf && visible) raf = requestAnimationFrame(draw);
+    };
+
+    img.onload = () => {
+      sample();
+      start = performance.now();
+      new IntersectionObserver((e) => {
+        visible = e[0].isIntersecting;
+        kick();
+      }).observe(root);
+      let rt = 0;
+      window.addEventListener('resize', () => {
+        clearTimeout(rt);
+        rt = window.setTimeout(() => {
+          sample();
+          if (reduced) draw(performance.now() + 1e6);
+          kick();
+        }, 150);
+      });
+    };
+
+    root.addEventListener('pointermove', (e) => {
+      const r = root.getBoundingClientRect();
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
+      kick();
+    });
+    root.addEventListener('pointerleave', () => {
+      mx = my = -9999;
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-ascii]').forEach(setup);
+  });
+</script>
+
+<style>
+  .ascii {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .ascii canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+</style>
