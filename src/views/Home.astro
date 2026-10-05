@@ -5,7 +5,7 @@ import CaseCard from '../components/CaseCard.astro';
 import Stack from '../components/Stack.astro';
 import Line from '../components/Line.astro';
 import AsciiPortrait from '../components/AsciiPortrait.astro';
-import portraitDark from '../assets/site/portrait-dark.webp';
+import portraitAscii from '../assets/site/portrait-ascii.png';
 import { getSettings, getAbout, getCases, inline } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -27,6 +27,9 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 
 <Base theme="dark" lang={lang}>
   <section class="hero dark">
+    <div class="hero__ascii">
+      <AsciiPortrait src={portraitAscii} alt={name} />
+    </div>
     <div class="container hero__grid">
       <h1 class="visually-hidden">{name} — {role}</h1>
 
@@ -47,16 +50,7 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
         <p class="caps" data-reveal="lines">{L(s, 'intro')}</p>
       </div>
 
-      {
-        s.heroPhoto2 && (
-          <figure class="hero__photo hero__photo--big">
-            <div class="hero__frame hero__frame--ascii">
-              <AsciiPortrait src={portraitDark} alt={name} crop={[0.3, 0.04, 0.42, 0.92]} />
-            </div>
-            <figcaption class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</figcaption>
-          </figure>
-        )
-      }
+      <p class="hero__escape caps" data-reveal="fade">{tx.photoFrames[0]}<br />{tx.photoFrames[1]}</p>
 
       <p class="hero__location caps" data-reveal="fade" set:html={inline(L(s, 'location'))} />
     </div>
@@ -112,8 +106,26 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
 <style>
   /* ——— Hero ——— */
   .hero {
+    position: relative;
+    overflow: hidden;
     padding-bottom: clamp(32px, 4vw, 56px);
     margin-top: -1px;
+  }
+  /* ASCII-портрет по центру первого экрана, под текстами */
+  .hero__ascii {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: 0;
+    width: min(58vw, 820px);
+    height: calc(100% - 24px);
+    transform: translateX(-50%);
+  }
+  .hero__grid {
+    position: relative;
+    z-index: 1;
+    min-height: min(calc(100svh - 65px - clamp(32px, 4vw, 56px)), 940px);
+    grid-template-rows: auto auto 1fr auto;
   }
   .hero__grid {
     display: grid;
@@ -204,23 +216,16 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
     font-size: var(--fs-caps);
     line-height: 1.35;
   }
-  .hero__photo--big {
-    grid-column: 8 / 13;
-    grid-row: 3 / 5;
-  }
-  .hero__frame {
-    aspect-ratio: 5 / 4;
-    overflow: hidden;
-    border-radius: var(--radius);
-    background: #2a2a26;
-  }
-  .hero__frame.hero__frame--ascii {
-    aspect-ratio: 4 / 5;
-    background: transparent;
-  }
+
+
+
   /* «Выйди за рамки»: подпись начинается на фото и вылезает за сетку до края экрана */
   .hero__escape {
-    position: absolute;
+    grid-column: 8 / 13;
+    grid-row: 4;
+    justify-self: end;
+    align-self: end;
+    position: relative;
     right: calc(-1 * var(--gutter) + 8px);
     bottom: 18px;
     color: #fff;
@@ -254,15 +259,30 @@ const greeting = [...(L(s, 'greeting') || (lang === 'en' ? 'Hi!' : 'Привет
       grid-row: auto;
       max-width: none;
     }
-    .hero__photo--big {
+  
+    .hero__escape {
       grid-column: 1 / -1;
       grid-row: auto;
-      margin-bottom: 28px;
-    }
-    .hero__escape {
-      bottom: -24px;
+      bottom: 0;
       font-size: 11px;
       text-align: right;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero__grid {
+      min-height: 0;
+      grid-template-rows: none;
+    }
+    .hero__ascii {
+      position: relative;
+      order: 2;
+      left: auto;
+      width: 100%;
+      height: 108vw;
+      transform: none;
+      margin-top: 8px;
     }
     .hero__location {
       grid-column: 1 / -1;

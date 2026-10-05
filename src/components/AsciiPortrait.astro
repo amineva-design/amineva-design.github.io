@@ -48,7 +48,7 @@ const small = await getImage({ src, width: 900, format: 'webp' });
       canvas.style.width = w + 'px';
       canvas.style.height = h + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cw = w < 500 ? 5 : 6;
+      cw = w < 500 ? 5 : 7;
       ch = Math.round(cw * 1.55);
       cols = Math.floor(w / cw);
       rows = Math.floor(h / ch);
@@ -60,21 +60,23 @@ const small = await getImage({ src, width: 900, format: 'webp' });
       const o = off.getContext('2d', { willReadFrequently: true })!;
       const sx = crop[0] * img.naturalWidth, sy = crop[1] * img.naturalHeight;
       const sw = crop[2] * img.naturalWidth, sh = crop[3] * img.naturalHeight;
-      // вписываем кадр в сетку с сохранением пропорций (cover)
-      const k = Math.max(cols / sw, (rows * (ch / cw)) / sh);
+      // вписываем фигуру целиком (contain), по центру и прижатой к низу
+      const k = Math.min(cols / sw, (rows * (ch / cw)) / sh);
       const dw = sw * k, dh = (sh * k) / (ch / cw);
-      o.drawImage(img, sx, sy, sw, sh, (cols - dw) / 2, (rows - dh) / 2, dw, dh);
+      o.drawImage(img, sx, sy, sw, sh, (cols - dw) / 2, rows - dh, dw, dh);
       const data = o.getImageData(0, 0, cols, rows).data;
       levels = new Float32Array(cols * rows);
       reveal = new Float32Array(cols * rows);
       const lum = new Float32Array(cols * rows);
+      const fgMask = new Uint8Array(cols * rows);
       for (let i = 0; i < cols * rows; i++) {
         lum[i] = (0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2]) / 255;
+        // портрет вырезан из фона: прозрачные пиксели — пустота
+        fgMask[i] = data[i * 4 + 3] > 110 ? 1 : 0;
       }
-      // выравнивание гистограммы по самому человеку (без тёмного фона): иначе кожа целиком
-      // уходит в самый плотный символ и пропадают черты лица
-      const BG = 0.13;
-      const fg = Array.from(lum).filter((l) => l > BG).sort((a, b) => a - b);
+      // выравнивание гистограммы по самому человеку: иначе кожа целиком уходит
+      // в самый плотный символ и пропадают черты лица
+      const fg = Array.from(lum).filter((_, i) => fgMask[i]).sort((a, b) => a - b);
       const rank = (l: number) => {
         let lo = 0, hi = fg.length;
         while (lo < hi) {
@@ -85,8 +87,7 @@ const small = await getImage({ src, width: 900, format: 'webp' });
         return fg.length ? lo / fg.length : 0;
       };
       for (let i = 0; i < cols * rows; i++) {
-        const l = lum[i];
-        levels[i] = l <= BG ? 0 : Math.pow(rank(l), 1.35);
+        levels[i] = fgMask[i] ? 0.08 + 0.92 * Math.pow(rank(lum[i]), 1.15) : 0;
         const row = Math.floor(i / cols);
         reveal[i] = (row / rows) * 900 + Math.random() * 700;
       }
@@ -110,11 +111,11 @@ const small = await getImage({ src, width: 900, format: 'webp' });
         for (let x = 0; x < cols; x++) {
           const i = y * cols + x;
           const v = levels[i];
-          if (v < 0.07) continue;
+          if (v <= 0) continue;
           const px = x * cw, py = y * ch;
           let idx = Math.round(v * (RAMP.length - 1));
           let color = accent;
-          let alpha = 0.45 + 0.55 * v;
+          let alpha = 0.12 + 0.88 * v * v;
           let ox = 0, oy = 0;
 
           if (!reduced && time < reveal[i]) {
