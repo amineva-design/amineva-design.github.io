@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getPrivacy, richText } from '../lib/content';
-import { loc, type Lang } from '../lib/i18n';
+import { href, loc, t, type Lang } from '../lib/i18n';
 
 interface Props {
   lang: Lang;
@@ -13,6 +13,7 @@ const title = loc(p, 'title', lang);
 
 <Base title={title} lang={lang}>
   <article class="container privacy">
+    <a class="back" href={href(lang, '/')}><svg class="back__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 3 5.5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>{t(lang).backHome}</a>
     <h1>{title}</h1>
     <div class="rich privacy__text" set:html={richText(loc(p, 'text', lang))} />
   </article>
@@ -20,7 +21,18 @@ const title = loc(p, 'title', lang);
 
 <style>
   .privacy {
-    padding-block: clamp(40px, 6vw, 88px) clamp(64px, 9vw, 128px);
+    padding-block: clamp(24px, 3vw, 40px) clamp(64px, 9vw, 128px);
+  }
+  /* «На главную» — как на странице «Обо мне» */
+  .back {
+    margin-bottom: clamp(20px, 2.4vw, 32px);
+    padding: 8px 0;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .privacy h1 {
+    margin-top: 0;
   }
   .privacy h1 {
     max-width: 900px;
