@@ -84,8 +84,11 @@ const poster = c.coverVideo && c.cardImage ? await getImage({ src: c.cardImage, 
   .case:hover .case__media video {
     transform: scale(1.04);
   }
+  /* карточки в ряду одной высоты — теги прижаты к низу, чтобы стояли на одной линии */
   .case__info {
-    display: grid;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     padding: clamp(20px, 2.2vw, 32px);
   }
@@ -100,8 +103,8 @@ const poster = c.coverVideo && c.cardImage ? await getImage({ src: c.cardImage, 
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 6px 0 0;
-    padding: 0;
+    margin: auto 0 0;
+    padding: 6px 0 0;
     list-style: none;
   }
   .case__tags li {
