@@ -72,7 +72,7 @@ const lastName = rest.join(' ');
       <h2 class="about__label section-title" data-reveal="fade">{tx.aboutLabel}</h2>
       <div class="about__head">
         <p class="about__headline" data-reveal="lines">{L(about, 'text')}</p>
-        {L(about, 'hobbies') && <p class="about__hobbies" data-reveal="fade">{L(about, 'hobbies')}</p>}
+        {L(about, 'hobbies') && <p class="about__hobbies about__hobbies--desk" data-reveal="fade">{L(about, 'hobbies')}</p>}
         <ActionButton class="about__more" href={href(lang, '/about')} label={tx.aboutMore} />
       </div>
       <div class="about__photos">
@@ -82,6 +82,7 @@ const lastName = rest.join(' ');
           </figure>
         ))}
       </div>
+      {L(about, 'hobbies') && <p class="about__hobbies about__hobbies--mob">{L(about, 'hobbies')}</p>}
     </div>
   </section>
 </Base>
@@ -343,7 +344,19 @@ const lastName = rest.join(' ');
     height: 100%;
     object-fit: cover;
   }
+  /* «Помимо дизайна люблю…» — на десктопе в тексте слева, на телефоне под фотографиями */
+  .about__hobbies--mob {
+    display: none;
+  }
   @media (max-width: 900px) {
+    .about__hobbies--desk {
+      display: none;
+    }
+    .about__hobbies--mob {
+      display: block;
+      grid-column: 1 / -1;
+      margin-top: 16px;
+    }
     .about__head,
     .about__photos {
       grid-column: 1 / -1;

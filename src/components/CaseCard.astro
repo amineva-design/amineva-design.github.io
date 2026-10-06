@@ -15,6 +15,8 @@ const tx = t(lang);
 const href = link(lang, `/cases/${entry.id}`);
 const title = loc(c, 'title', lang);
 const summary = loc(c, 'summary', lang);
+// «Направление» через запятую → теги-пилюли
+const tags = loc(c, 'direction', lang).split(',').map((x) => x.trim()).filter(Boolean);
 const sizes = '(max-width: 640px) 100vw, 50vw';
 const eager = index === 0;
 // видео на обложке (если загружено): крутится без звука, первый кадр до загрузки — обычная обложка
@@ -36,7 +38,11 @@ const poster = c.coverVideo && c.cardImage ? await getImage({ src: c.cardImage, 
   <div class="case__info">
     <h3 class="case__title">{title}</h3>
     {summary && <p class="case__summary">{summary}</p>}
-    {loc(c, 'direction', lang) && <p class="case__dir">{loc(c, 'direction', lang)}</p>}
+    {tags.length > 0 && (
+      <ul class="case__tags">
+        {tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    )}
   </div>
 </a>
 
@@ -90,9 +96,20 @@ const poster = c.coverVideo && c.cardImage ? await getImage({ src: c.cardImage, 
     font-size: 16px;
     line-height: 1.5;
   }
-  .case__dir {
-    margin-top: 4px;
-    font-size: var(--fs-small);
-    color: var(--muted);
+  .case__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .case__tags li {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 13px;
+    line-height: 1.2;
+    color: var(--ink);
   }
 </style>

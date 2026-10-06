@@ -2,7 +2,7 @@ title: Докрутим
 published: true
 order: 1
 year: '2026'
-direction: B2C, хоумстейджинг
+direction: B2C, Хоумстейджинг, Редизайн сайта
 summary: Редизайн сервиса по обустройству квартир. Пересобрала UX/UI и архитектуру сайта под бизнес-задачи
 lead: >-
   Пересобрала UX/UI и архитектуру сайта под бизнес-задачи, разработала брендбук и набор рекламных
@@ -201,7 +201,7 @@ blocks:
 
         - A unified template system covers about 70% of routine SMM tasks and saves time on content
 titleEn: Dokrutim
-directionEn: B2C, home staging
+directionEn: B2C, Home staging, Website redesign
 summaryEn: >-
   Redesign of an apartment furnishing service. Rebuilt the UX/UI and site architecture around
   business goals
