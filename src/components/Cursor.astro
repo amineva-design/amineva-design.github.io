@@ -16,17 +16,16 @@
     document.documentElement.classList.add('has-cursor');
     const text = root.querySelector<HTMLElement>('[data-cursor-text]')!;
     let active = false;
+    let lastX = -1, lastY = -1, settle = 0;
 
     const move = (e: PointerEvent) => {
       root.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
     };
 
-    window.addEventListener('pointermove', (e) => {
-      if (e.pointerType === 'touch') return;
-      move(e);
-      const t = e.target as HTMLElement;
-      const labelled = t.closest<HTMLElement>('[data-cursor]');
-      const drag = t.closest<HTMLElement>('[data-drag]');
+    // показать/спрятать плашку в зависимости от того, что под курсором
+    const update = (t: HTMLElement | null) => {
+      const labelled = t?.closest<HTMLElement>('[data-cursor]');
+      const drag = t?.closest<HTMLElement>('[data-drag]');
       const next = !!(labelled || drag);
       if (next) text.textContent = labelled?.dataset.cursor || drag?.dataset.drag || '';
       if (next !== active) {
@@ -34,21 +33,34 @@
         root.classList.toggle('is-active', active);
         root.classList.toggle('is-drag', !labelled && !!drag);
       }
+    };
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      move(e);
+      lastX = e.clientX;
+      lastY = e.clientY;
+      update(e.target as HTMLElement);
     });
+    // во время прокрутки плашку прячем, а когда прокрутка остановилась — проверяем, что теперь под курсором
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (active) {
+          active = false;
+          root.classList.remove('is-active', 'is-drag');
+        }
+        clearTimeout(settle);
+        settle = window.setTimeout(() => {
+          if (lastX >= 0) update(document.elementFromPoint(lastX, lastY) as HTMLElement | null);
+        }, 160);
+      },
+      { passive: true }
+    );
     document.addEventListener('pointerleave', () => {
       active = false;
       root.classList.remove('is-active', 'is-drag');
     });
-    // при прокрутке курсор стоит на месте, а под ним уже другой блок — прячем плашку
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (!active) return;
-        active = false;
-        root.classList.remove('is-active', 'is-drag');
-      },
-      { passive: true }
-    );
     document.addEventListener('astro:before-swap', () => {
       active = false;
       root.classList.remove('is-active', 'is-drag');

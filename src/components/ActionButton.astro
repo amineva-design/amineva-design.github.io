@@ -1,0 +1,86 @@
+---
+// Кнопка-действие с анимацией: справа квадрат с «+»; при наведении он поворачивается и исчезает,
+// текст уезжает вправо, а слева с поворотом появляется такой же квадрат. Острые углы, фирменный зелёный.
+interface Props {
+  href: string;
+  label: string;
+  class?: string;
+}
+const { href, label, class: cls } = Astro.props;
+const plus = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1v10M1 6h10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>';
+---
+
+<a class:list={['abtn', cls]} href={href}>
+  <span class="abtn__sq abtn__sq--in" aria-hidden="true" set:html={plus} />
+  <span class="abtn__label">{label}</span>
+  <span class="abtn__sq abtn__sq--out" aria-hidden="true" set:html={plus} />
+</a>
+
+<style>
+  .abtn {
+    --size: 44px;
+    --gap: 6px;
+    --ease: cubic-bezier(0.77, 0, 0.175, 1);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap);
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .abtn__label,
+  .abtn__sq {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--size);
+    background: var(--accent);
+    transition: transform 0.7s var(--ease);
+  }
+  .abtn__label {
+    padding-inline: 18px;
+    /* в покое текст прижат влево — на месте левого квадрата */
+    transform: translateX(calc(-1 * (var(--size) + var(--gap))));
+  }
+  .abtn__sq {
+    width: var(--size);
+    flex: none;
+  }
+  .abtn__sq :global(svg) {
+    width: 12px;
+    height: 12px;
+  }
+  .abtn__sq--in {
+    transform-origin: left center;
+    transform: rotate(-45deg) scale(0);
+  }
+  .abtn__sq--out {
+    position: absolute;
+    right: 0;
+    transform-origin: right center;
+  }
+  .abtn:hover .abtn__sq--in,
+  .abtn:focus-visible .abtn__sq--in {
+    transform: none;
+  }
+  .abtn:hover .abtn__label,
+  .abtn:focus-visible .abtn__label {
+    transform: none;
+  }
+  .abtn:hover .abtn__sq--out,
+  .abtn:focus-visible .abtn__sq--out {
+    transform: rotate(-45deg) scale(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .abtn__label,
+    .abtn__sq {
+      transition: none;
+    }
+  }
+</style>
