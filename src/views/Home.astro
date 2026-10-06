@@ -362,7 +362,16 @@ const lastName = rest.join(' ');
       grid-column: 1 / -1;
     }
     .about__photos {
-      margin-top: 40px;
+      margin-top: 24px;
+    }
+    /* на телефоне фраза плотнее: меньше кегль и межстрочный, строки заполняют ширину */
+    .about__head {
+      gap: 16px;
+    }
+    .about__headline {
+      font-size: 20px;
+      line-height: 1.25;
+      text-wrap: wrap;
     }
   }
 </style>
