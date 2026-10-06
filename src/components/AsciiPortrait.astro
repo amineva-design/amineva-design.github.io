@@ -11,13 +11,19 @@ interface Props {
   crop?: [number, number, number, number];
   // куда прижать изображение внутри холста
   align?: 'bottom' | 'left' | 'right';
+  // готовая картинка того же портрета из символов (scripts/ascii-fallback.py): видна до старта
+  // анимации и в записях Вебвизора — он не записывает то, что рисуется на canvas
+  fallback?: ImageMetadata;
   class?: string;
 }
-const { src, alt, crop = [0, 0, 1, 1], align = 'bottom', class: cls } = Astro.props;
+const { src, alt, crop = [0, 0, 1, 1], align = 'bottom', fallback, class: cls } = Astro.props;
 const small = await getImage({ src, width: 900, format: 'webp' });
+const still = fallback ? await getImage({ src: fallback, width: 1200, format: 'webp', quality: 80 }) : null;
+const stillPos = { bottom: 'center bottom', left: 'left center', right: 'right center' }[align];
 ---
 
 <div class:list={['ascii', cls]} data-ascii data-src={small.src} data-crop={crop.join(',')} data-align={align} role="img" aria-label={alt}>
+  {still && <img class="ascii__still" src={still.src} alt="" aria-hidden="true" style={`object-position: ${stillPos}`} />}
   <canvas></canvas>
 </div>
 
@@ -37,6 +43,9 @@ const small = await getImage({ src, width: 900, format: 'webp' });
 
     let cols = 0, rows = 0, cw = 7, ch = 11, w = 0, h = 0;
     let levels: Float32Array = new Float32Array(0);
+    // клетки фигуры (с запасом в одну клетку): canvas закрашивает их фоном, чтобы спрятать картинку-подложку
+    let cover: Uint8Array = new Uint8Array(0);
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#141412';
     let reveal: Float32Array = new Float32Array(0);
     let start = 0, raf = 0, visible = false, last = 0;
     let mx = -9999, my = -9999;
@@ -96,6 +105,16 @@ const small = await getImage({ src, width: 900, format: 'webp' });
         const row = Math.floor(i / cols);
         reveal[i] = (row / rows) * 900 + Math.random() * 700;
       }
+      cover = new Uint8Array(cols * rows);
+      for (let y = 0; y < rows; y++)
+        for (let x = 0; x < cols; x++) {
+          if (levels[y * cols + x] <= 0) continue;
+          for (let dy = -1; dy <= 1; dy++)
+            for (let dx = -1; dx <= 1; dx++) {
+              const yy = y + dy, xx = x + dx;
+              if (yy >= 0 && yy < rows && xx >= 0 && xx < cols) cover[yy * cols + xx] = 1;
+            }
+        }
       ctx.font = `${Math.round(ch * 0.92)}px ui-monospace, "SF Mono", Menlo, monospace`;
       ctx.textBaseline = 'top';
     };
@@ -111,6 +130,11 @@ const small = await getImage({ src, width: 900, format: 'webp' });
       last = t;
       const time = t - start;
       ctx.clearRect(0, 0, w, h);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = bg;
+      for (let i = 0; i < cover.length; i++) {
+        if (cover[i]) ctx.fillRect((i % cols) * cw - 1, Math.floor(i / cols) * ch - 1, cw + 2, ch + 2);
+      }
       const R = 42;
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
@@ -201,5 +225,13 @@ const small = await getImage({ src, width: 900, format: 'webp' });
     position: absolute;
     inset: 0;
     display: block;
+  }
+  .ascii__still {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
   }
 </style>

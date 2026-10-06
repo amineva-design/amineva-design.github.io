@@ -2,6 +2,8 @@
 import AsciiPortrait from './AsciiPortrait.astro';
 import handLeft from '../assets/site/hand-left.png';
 import handRight from '../assets/site/hand-right.png';
+import handLeftStill from '../assets/site/hand-left-fallback.png';
+import handRightStill from '../assets/site/hand-right-fallback.png';
 import { getSettings, resumeHref, telegramHref } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -19,9 +21,9 @@ const year = new Date().getFullYear();
 <footer class="footer dark" id="contacts">
   <!-- руки как на фреске «Сотворение Адама», из символов; между ними — статус -->
   <div class="footer__hands">
-    <div class="footer__hand footer__hand--left"><AsciiPortrait src={handLeft} alt="" align="left" /></div>
+    <div class="footer__hand footer__hand--left"><AsciiPortrait src={handLeft} alt="" align="left" fallback={handLeftStill} /></div>
     <p class="footer__hands-text">{loc(s, 'statusText', lang).replace(/-/g, '\u2011')}<span class="footer__caret" aria-hidden="true"></span></p>
-    <div class="footer__hand footer__hand--right"><AsciiPortrait src={handRight} alt="" align="right" /></div>
+    <div class="footer__hand footer__hand--right"><AsciiPortrait src={handRight} alt="" align="right" fallback={handRightStill} /></div>
   </div>
 
   <div class="container">

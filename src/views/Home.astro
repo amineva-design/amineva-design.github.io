@@ -7,6 +7,7 @@ import AsciiPortrait from '../components/AsciiPortrait.astro';
 import Typewriter from '../components/Typewriter.astro';
 import MatrixRain from '../components/MatrixRain.astro';
 import portraitAscii from '../assets/site/portrait-ascii.png';
+import portraitAsciiStill from '../assets/site/portrait-ascii-fallback.png';
 import { getSettings, getAbout, getCases, inline } from '../lib/content';
 import { href, loc, t, type Lang } from '../lib/i18n';
 
@@ -35,7 +36,7 @@ const lastName = rest.join(' ');
   <section class="hero dark">
     <MatrixRain />
     <div class="hero__ascii">
-      <AsciiPortrait src={portraitAscii} alt={name} align="right" />
+      <AsciiPortrait src={portraitAscii} alt={name} align="right" fallback={portraitAsciiStill} />
     </div>
     <div class="container hero__grid">
       <h1 class="visually-hidden">{name} — {role}</h1>
