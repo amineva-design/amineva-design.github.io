@@ -8,8 +8,8 @@ textEn: >-
   moments when something complex becomes simple and clear.
 hobbies: Помимо дизайна люблю искусство, кино, чтение и путешествия
 hobbiesEn: Outside of design I love art, film, books and travel
-languages: Английский — B2
-languagesEn: English — B2 (upper-intermediate)
+languages: Английский B2
+languagesEn: English B2
 photos:
   - ../assets/site/photos/portrait.jpg
   - ../assets/site/photos/1.jpg
@@ -113,8 +113,8 @@ tools:
     detailsEn: Claude, Midjourney, Recraft, Higgsfield, SYNTX
   - name: Сайты и аналитика
     nameEn: Web & analytics
-    details: Tilda, Vercel, Git, Яндекс Метрика
-    detailsEn: Tilda, Vercel, Git, Yandex Metrica
+    details: Яндекс Метрика, Maze, Pathway, Vercel, Git, Tilda
+    detailsEn: Yandex Metrica, Maze, Pathway, Vercel, Git, Tilda
   - name: Командная работа
     nameEn: Teamwork
     details: Miro, Kaiten, Jira

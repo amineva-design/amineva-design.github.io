@@ -25,9 +25,11 @@ export async function getCases() {
 }
 
 export function resumeHref(
-  s: { resumeFile: string; resumeUrl: string; resumeFileEn: string; resumeUrlEn: string },
+  s: { resumeFile: string; resumeUrl: string; resumeFileEn: string; resumeUrlEn: string; showResume?: boolean },
   lang: 'ru' | 'en' = 'ru'
 ) {
+  // резюме можно скрыть галочкой в админке — ссылки пропадут везде, файл останется
+  if (s.showResume === false) return '';
   const ru = s.resumeFile || s.resumeUrl || '';
   return withBase(lang === 'en' ? s.resumeFileEn || s.resumeUrlEn || ru : ru);
 }

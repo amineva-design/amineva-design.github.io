@@ -22,10 +22,13 @@ const nav = [
   <div class="container header__bar">
     <div class="header__left">
       {
-        resume && (
+        resume ? (
           <a class="header__resume" href={resume} target="_blank" rel="noopener">
             {tx.resume}
           </a>
+        ) : (
+          // резюме скрыто — слева роль (ведёт на главную), середина шапки пустая
+          <a class="header__role header__role--left" href={href(lang, '/')}>{loc(s, 'role', lang)}</a>
         )
       }
       {
@@ -38,7 +41,7 @@ const nav = [
       }
     </div>
 
-    <a class="header__role" href={href(lang, '/')}>{loc(s, 'role', lang)}</a>
+    {resume ? <a class="header__role" href={href(lang, '/')}>{loc(s, 'role', lang)}</a> : <span aria-hidden="true" />}
 
     <div class="header__right">
       {
@@ -97,7 +100,11 @@ const nav = [
 
   .header__role {
     text-align: center;
+    text-decoration: none;
     transition: color 0.2s;
+  }
+  .header__role--left {
+    text-align: left;
   }
   .header__role:hover {
     color: var(--accent);

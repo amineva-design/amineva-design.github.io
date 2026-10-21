@@ -212,6 +212,7 @@ export default config({
         ...tr('intro', 'О себе в двух строках', { multiline: true }),
         ...tr('location', 'Где живу', { description: '~~текст~~ — зачёркнутый' }),
         openToWork: fields.checkbox({ label: 'Ищу работу (зелёная точка в шапке)', defaultValue: true }),
+        showResume: fields.checkbox({ label: 'Показывать резюме', description: 'Ссылки на резюме в шапке, меню, подвале и на странице «Обо мне». Файл при этом не удаляется', defaultValue: true }),
         ...tr('statusText', 'Текст статуса', { defaultValue: 'Открыта к full-time и контрактной работе' }),
         heroPhoto2: siteImage('Фото на главной'),
         email: fields.text({ label: 'E-mail' }),

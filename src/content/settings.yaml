@@ -5,8 +5,9 @@ intro: >-
   Проектирую интерфейсы B2B и B2C, выстраиваю дизайн-системы и принимаю решения на основе аналитики,
   пользовательских исследований и бизнес-целей продукта
 location: Живу ~~за ноутбуком~~ в Москве
-openToWork: true
-statusText: Открыта к full-time и контрактной работе
+openToWork: false
+showResume: false
+statusText: Открыта к проектной работе
 heroPhoto2: ../assets/site/hero-2.jpg
 email: reginaeamineva@yandex.ru
 telegram: arousal_coffee
@@ -28,5 +29,5 @@ introEn: >-
   I design B2B and B2C interfaces, build design systems and make decisions based on analytics, user
   research and product goals
 locationEn: Living ~~at my laptop~~ in Moscow
-statusTextEn: Open to full-time and contract roles
+statusTextEn: Open to project work
 metrikaId: '113434865'
